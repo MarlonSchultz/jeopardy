@@ -1,0 +1,16 @@
+{
+    "name": "root/jeopardy",
+    "require": {
+        "twig/twig": "^2.1",
+        "nikic/fast-route": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "authors": [
+        {
+            "name": "Marlon Schultz",
+            "email": "spam@marlonschultz.de"
+        }
+    ]
+}
