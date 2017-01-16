@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 /**
  * Created by PhpStorm.
  * User: mgbs
@@ -6,5 +8,16 @@
  * Time: 17:51
  */
 
-require __DIR__.'../vendor/autoload.php';
+use Symfony\Component\HttpFoundation\Request;
 
+require __DIR__ . '/../vendor/autoload.php';
+
+
+$request = Request::createFromGlobals();
+
+$kernel = new AppKernel();
+
+$response = $kernel->handle($request);
+$response->send();
+
+$kernel->terminate($request, $response);
