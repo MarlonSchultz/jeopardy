@@ -8,14 +8,18 @@ declare(strict_types = 1);
  * Time: 17:51
  */
 
+require __DIR__ . '/../vendor/autoload.php';
+
+use mgbs\Library\AppKernel;
+use mgbs\Library\Routes;
 use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__ . '/../vendor/autoload.php';
 
 
 $request = Request::createFromGlobals();
 
-$kernel = new AppKernel();
+$routes = new Routes();
+$kernel = (new AppKernel($routes->getRoutes()))->getKernel();
 
 $response = $kernel->handle($request);
 $response->send();

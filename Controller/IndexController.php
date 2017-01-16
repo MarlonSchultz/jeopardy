@@ -1,6 +1,9 @@
 <?php
 declare(strict_types = 1);
-use Symfony\Component\Routing\Annotation;
+namespace mgbs\Controller;
+
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Created by PhpStorm.
  * User: mgbs
@@ -9,11 +12,9 @@ use Symfony\Component\Routing\Annotation;
  */
 class IndexController
 {
-    /**
-     * @Annotation\Route('/', name="home")
-     */
+
     public function indexAction()
     {
-
+        return new Response('basics are set');
     }
 }
