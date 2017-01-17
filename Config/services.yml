@@ -1,0 +1,4 @@
+services:
+  sqlite:
+    class: \SQLite3
+    arguments: [ "%db_path%" ]

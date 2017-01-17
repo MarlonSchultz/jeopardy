@@ -20,6 +20,7 @@ $request = Request::createFromGlobals();
 
 $routes = new Routes();
 $kernel = (new AppKernel($routes->getRoutes()))->getKernel();
+\mgbs\Library\DI::setRoutes($routes->getRoutes());
 
 $response = $kernel->handle($request);
 $response->send();
