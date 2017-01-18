@@ -7,6 +7,6 @@ services:
     class: mgbs\Model\Questions
     arguments: ['@database']
 
-  indexcontroller:
+  app.index_controller:
     class: mgbs\Library\IndexController
     arguments: ['@questionmodel']

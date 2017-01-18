@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Library\DI;
 use mgbs\Model\ModelAbstract;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,13 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IndexController
 {
-
     /**
      * @var ModelAbstract
      */
     private $questionsModel;
 
-    public function __construct(ModelAbstract $questionsModel)
+    public function __construct($questionsModel)
     {
         $this->questionsModel = $questionsModel;
     }
