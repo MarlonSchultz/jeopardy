@@ -13,6 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
     class IndexController
 {
+
+        public function __construct()
+        {
+
+    }
     public function indexAction()
     {
         $sqlite = DI::getContainer()->get('sqlite');

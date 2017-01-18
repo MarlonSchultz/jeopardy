@@ -1,4 +1,4 @@
 services:
-  sqlite:
-    class: \SQLite3
+  database:
+    class: mgbs\Library\Database
     arguments: [ "%db_path%" ]

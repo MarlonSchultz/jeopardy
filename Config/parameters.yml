@@ -1,2 +1,2 @@
-db_path: '/Vagrant/jeopardy/Var/Data/jeopardy.db'
+db_path: '/Var/Data/jeopardy.db'
 twig_debug: false
