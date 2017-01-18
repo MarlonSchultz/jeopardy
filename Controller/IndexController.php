@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
     public function indexAction()
     {
         $sqlite = DI::getContainer()->get('sqlite');
-        return new Response('basics are set');
+        /** @var \Twig_Environment $twig */
+        $twig = DI::getContainer()->get('twig');
+        return new Response($twig->render('jeopardy.html.twig'));
     }
 }
