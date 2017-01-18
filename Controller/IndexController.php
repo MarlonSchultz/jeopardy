@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace mgbs\Controller;
 
 use mgbs\Library\DI;
+use mgbs\Model\ModelAbstract;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -11,16 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
  * Date: 16.01.17
  * Time: 19:37
  */
-    class IndexController
+class IndexController
 {
 
-        public function __construct()
-        {
+    /**
+     * @var ModelAbstract
+     */
+    private $questionsModel;
 
+    public function __construct(ModelAbstract $questionsModel)
+    {
+        $this->questionsModel = $questionsModel;
     }
+
     public function indexAction()
     {
-
 
         return new Response('basics are set');
     }
