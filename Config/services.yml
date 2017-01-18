@@ -1,4 +1,12 @@
 services:
   database:
     class: mgbs\Library\Database
-    arguments: [ "%db_path%" ]
+    arguments: [ "%db_type%", "%db_path%" ]
+
+  questionmodel:
+    class: mgbs\Model\Questions
+    arguments: ['@database']
+
+  app.index_controller:
+    class: mgbs\Library\IndexController
+    arguments: ['@questionmodel']

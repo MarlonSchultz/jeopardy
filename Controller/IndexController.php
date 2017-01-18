@@ -2,8 +2,9 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Library\DI;
+use mgbs\Model\ModelAbstract;
 use Symfony\Component\HttpFoundation\Response;
+use mgbs\Library\DI;
 
 /**
  * Created by PhpStorm.
@@ -11,13 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
  * Date: 16.01.17
  * Time: 19:37
  */
-    class IndexController
+class IndexController
 {
+    /**
+     * @var ModelAbstract
+     */
+    private $questionsModel;
 
-        public function __construct()
-        {
-
+    public function __construct($questionsModel)
+    {
+        $this->questionsModel = $questionsModel;
     }
+
     public function indexAction()
     {
         $sqlite = DI::getContainer()->get('sqlite');
