@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace mgbs\Controller;
 
 use mgbs\Model\ModelInterface;
+use mgbs\Model\Questions;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
 
@@ -15,7 +16,7 @@ use mgbs\Library\DI;
 class IndexController
 {
     /**
-     * @var ModelInterface
+     * @var Questions
      */
     private $questionsModel;
 
@@ -23,7 +24,12 @@ class IndexController
     {
         $this->questionsModel = DI::getContainer()->get('questionmodel');
 
+        // encapsulated call for data from the model
+        $this->questionsModel->getAllQuestions();
+
+        // or less elegant "quick and dirty" write a query on the fly be getting the connection itself
         $this->questionsModel->getConnection()->query('select whatever');
+
 
         /** @var \Twig_Environment $twig */
         $twig = DI::getContainer()->get('twig');
