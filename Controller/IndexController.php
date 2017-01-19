@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Model\ModelAbstract;
 use mgbs\Model\ModelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
