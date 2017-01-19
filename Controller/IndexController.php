@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace mgbs\Controller;
 
 use mgbs\Model\ModelAbstract;
+use mgbs\Model\ModelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
 
@@ -15,20 +16,34 @@ use mgbs\Library\DI;
 class IndexController
 {
     /**
-     * @var ModelAbstract
+     * @var ModelInterface
      */
     private $questionsModel;
 
-    public function __construct($questionsModel)
-    {
-        $this->questionsModel = $questionsModel;
-    }
-
     public function indexAction()
     {
-        $sqlite = DI::getContainer()->get('sqlite');
+        $this->questionsModel = DI::getContainer()->get('questionmodel');
+
+        $this->questionsModel->getConnection()->query('select whatever');
+
         /** @var \Twig_Environment $twig */
         $twig = DI::getContainer()->get('twig');
         return new Response($twig->render('jeopardy.html.twig'));
+    }
+
+    /**
+     * @return ModelInterface
+     */
+    public function getQuestionsModel(): ModelInterface
+    {
+        return $this->questionsModel;
+    }
+
+    /**
+     * @param ModelInterface $questionsModel
+     */
+    public function setQuestionsModel(ModelInterface $questionsModel)
+    {
+        $this->questionsModel = $questionsModel;
     }
 }

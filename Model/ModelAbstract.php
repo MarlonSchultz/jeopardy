@@ -11,11 +11,9 @@ use mgbs\Library\Database;
  * Date: 18.01.17
  * Time: 21:47
  */
-class ModelAbstract
+class ModelAbstract implements ModelInterface
 {
     protected $connection;
-
-    protected $tablename;
 
     public function __construct(Database $database)
     {
@@ -25,7 +23,7 @@ class ModelAbstract
     /**
      * @return bool|\PDO
      */
-    public function getConnection()
+    public function getConnection() : \PDO
     {
         return $this->connection;
     }
@@ -39,9 +37,9 @@ class ModelAbstract
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTablename()
+    public function getTablename() : string
     {
         return $this->tablename;
     }
