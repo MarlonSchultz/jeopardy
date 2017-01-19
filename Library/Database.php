@@ -51,6 +51,7 @@ class Database
 
     /**
      * @return bool|\PDO
+     * @throws \InvalidArgumentException
      */
     public function getConnection()
     {
@@ -59,7 +60,7 @@ class Database
                 return new \PDO('sqlite:' . $this->host);
                 break;
             default:
-                return false;
+                throw new \InvalidArgumentException('DB Type not supported, yet');
                 break;
         }
     }
