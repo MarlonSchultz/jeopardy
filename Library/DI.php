@@ -79,6 +79,8 @@ class DI
         if (self::$container->hasParameter('twig_debug') && self::$container->getParameter('twig_debug')) {
             $twig->enableDebug();
         }
+        $path = __DIR__ . '/../Var/Cache/Twig';
+        exec('rm -rf ' . $path . '/*');
         self::$container->set('twig', $twig);
     }
 

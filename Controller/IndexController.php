@@ -4,6 +4,7 @@ namespace mgbs\Controller;
 
 use mgbs\Model\ModelAbstract;
 use Symfony\Component\HttpFoundation\Response;
+use mgbs\Library\DI;
 
 /**
  * Created by PhpStorm.
@@ -25,7 +26,9 @@ class IndexController
 
     public function indexAction()
     {
-
-        return new Response('basics are set');
+        $sqlite = DI::getContainer()->get('sqlite');
+        /** @var \Twig_Environment $twig */
+        $twig = DI::getContainer()->get('twig');
+        return new Response($twig->render('jeopardy.html.twig'));
     }
 }
