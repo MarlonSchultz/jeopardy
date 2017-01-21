@@ -1,33 +1,5 @@
 {% extends "base.html.twig" %}
 {% block content %}
-    <table class="highlight centered">
-        <thead>
-        <tr>
-            <th>Value</th>
-            <th>PHP - General</th>
-            <th>PHP - OOP</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr>
-            <td>10</td>
-            <td id="47" href="#modal1" data-question="A Question" data-answer="The answer" class="hoverable" data-action="answer" onclick="showQuestion(this)"><img src="/question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
-        </tr>
-        <tr>
-            <td>50</td>
-            <td data-question="A Question" data-answer="The answer" class="hovehandleItemrable"><img src="/question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
-        </tr>
-        <tr>
-            <td>100</td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
-        </tr>
-        </tbody>
-    </table>
-
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
@@ -47,4 +19,26 @@
             </div>
         </div>
     </div>
+
+    <table class="highlight centered">
+        <thead>
+        <tr>
+            <th>Value</th>
+            {% for category in jeopardy.allCategories %}
+                <th>{{ category }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for value, row in jeopardy %}
+            <tr>
+                <td>{{ value }}</td>
+                {% for item in row %}
+                    <td id="{{ item.id }}" href="#modal1" data-question="{{ item.question }}" data-answer="{{ item.answer }}" class="hoverable" onclick="showQuestion(this)"><img src="/question.jpg"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
