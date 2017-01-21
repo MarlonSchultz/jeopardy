@@ -25,7 +25,7 @@ class BaseModel implements ModelInterface
     /**
      * @return bool|\PDO
      */
-    public function getConnection() : \PDO
+    public function getConnection(): \PDO
     {
         return $this->connection;
     }
@@ -40,9 +40,13 @@ class BaseModel implements ModelInterface
 
     /**
      * @return string
+     * @throws \InvalidArgumentException
      */
     public function getTableName(): string
     {
+        if ('' === $this->tableName) {
+            throw new \InvalidArgumentException('TableName setter must be called first');
+        }
         return $this->tableName;
     }
 

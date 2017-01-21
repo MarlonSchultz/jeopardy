@@ -9,11 +9,11 @@ namespace mgbs\Model;
  * Date: 18.01.17
  * Time: 21:41
  */
-final class QuestionsBaseModel extends BaseModel
+final class QuestionsModel extends BaseModel
 {
     public function getAllQuestions()
     {
-        $this->getConnection()->query('SELECT * FROM ' . $this->getTableName());
+        return $this->getConnection()->query('SELECT * FROM ' . $this->getTableName());
     }
 
 

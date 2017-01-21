@@ -24,10 +24,11 @@ class IndexController
         $this->questionsModel = DI::getContainer()->get('questionmodel');
 
         // encapsulated call for data from the model
-        $this->questionsModel->getAllQuestions();
-
+        $data = $this->questionsModel->getAllQuestions();
+xdebug_break();
         // or less elegant "quick and dirty" write a query on the fly be getting the connection itself
-        $this->questionsModel->getConnection()->query('select whatever');
+//        $this->questionsModel->getConnection()->query('select whatever');
+
 
 
         /** @var \Twig_Environment $twig */

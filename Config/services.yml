@@ -4,5 +4,5 @@ services:
     arguments: [ "%db_type%", "%db_path%" ]
 
   questionmodel:
-    class: mgbs\Model\Questions
+    class: mgbs\Model\QuestionsModel
     arguments: ['@database']
