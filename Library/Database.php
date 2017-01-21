@@ -55,13 +55,10 @@ class Database
      */
     public function getConnection()
     {
-        switch ($this->databaseType) {
-            case 'sqlite3':
-                return new \PDO('sqlite:' . $this->host);
-                break;
-            default:
-                throw new \InvalidArgumentException('DB Type not supported, yet');
-                break;
+        if ('sqlite3' === $this->databaseType) {
+            return new \PDO('sqlite:' . $this->host);
+        } else {
+            throw new \InvalidArgumentException('DB Type not supported, yet');
         }
     }
 }

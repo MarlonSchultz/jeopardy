@@ -13,7 +13,12 @@ final class QuestionsModel extends BaseModel
 {
     public function getAllQuestions()
     {
-        return $this->getConnection()->query('SELECT * FROM ' . $this->getTableName());
+        $sql = 'SELECT * FROM :tableName';
+        $statement = $this->getConnection()->prepare($sql);
+        $statement->bindValue(':tableName', $this->getTableName());
+        if ($statement->execute()){
+            return $statement->fetchAll();
+        }
     }
 
 

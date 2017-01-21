@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Model\QuestionsBaseModel;
+use mgbs\Model\QuestionsModel;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
 
@@ -15,17 +15,15 @@ use mgbs\Library\DI;
 class IndexController
 {
     /**
-     * @var QuestionsBaseModel
+     * @var QuestionsModel
      */
     private $questionsModel;
 
     public function indexAction()
     {
         $this->questionsModel = DI::getContainer()->get('questionmodel');
-
         // encapsulated call for data from the model
-        $data = $this->questionsModel->getAllQuestions();
-xdebug_break();
+//        $data = $this->questionsModel->getAllQuestions();
         // or less elegant "quick and dirty" write a query on the fly be getting the connection itself
 //        $this->questionsModel->getConnection()->query('select whatever');
 
