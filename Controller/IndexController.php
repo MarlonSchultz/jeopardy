@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Model\Questions;
+use mgbs\Model\QuestionsBaseModel;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
 
@@ -15,7 +15,7 @@ use mgbs\Library\DI;
 class IndexController
 {
     /**
-     * @var Questions
+     * @var QuestionsBaseModel
      */
     private $questionsModel;
 

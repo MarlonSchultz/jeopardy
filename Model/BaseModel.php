@@ -11,9 +11,11 @@ use mgbs\Library\Database;
  * Date: 18.01.17
  * Time: 21:47
  */
-class ModelAbstract implements ModelInterface
+class BaseModel implements ModelInterface
 {
     protected $connection;
+
+    protected $tableName = '';
 
     public function __construct(Database $database)
     {
@@ -39,17 +41,17 @@ class ModelAbstract implements ModelInterface
     /**
      * @return string
      */
-    public function getTablename() : string
+    public function getTableName(): string
     {
-        return $this->tablename;
+        return $this->tableName;
     }
 
     /**
-     * @param mixed $tablename
+     * @param string $tableName
      */
-    public function setTablename($tablename)
+    public function setTableName(string $tableName)
     {
-        $this->tablename = $tablename;
+        $this->tableName = $tableName;
     }
 
 

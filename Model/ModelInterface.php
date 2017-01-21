@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: mgbs
@@ -14,7 +15,7 @@ interface ModelInterface
     /**
      * @return bool|\PDO
      */
-    public function getConnection() : \PDO;
+    public function getConnection(): \PDO;
 
     /**
      * @param bool|\PDO $connection
@@ -22,12 +23,12 @@ interface ModelInterface
     public function setConnection($connection);
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTablename() : string;
+    public function getTableName(): string;
 
     /**
-     * @param mixed $tablename
+     * @param string $tableName
      */
-    public function setTablename($tablename);
+    public function setTableName(string $tableName);
 }
