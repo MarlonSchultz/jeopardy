@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Model\ModelInterface;
 use mgbs\Model\Questions;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
@@ -36,19 +35,4 @@ class IndexController
         return new Response($twig->render('jeopardy.html.twig'));
     }
 
-    /**
-     * @return ModelInterface
-     */
-    public function getQuestionsModel(): ModelInterface
-    {
-        return $this->questionsModel;
-    }
-
-    /**
-     * @param ModelInterface $questionsModel
-     */
-    public function setQuestionsModel(ModelInterface $questionsModel)
-    {
-        $this->questionsModel = $questionsModel;
-    }
 }
