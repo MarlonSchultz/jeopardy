@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /**
  * @author dknx01 <e.witthauer@gmail.com>
@@ -136,7 +137,7 @@ class JeopardyCollection implements Countable, IteratorAggregate, ArrayAccess
      */
     private function get($key)
     {
-        return isset($this->elements[$key]) ? $this->elements[$key] : null;
+        return $this->elements[$key] ?? null;
     }
 
     /**

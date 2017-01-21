@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /**
  * @author dknx01 <e.witthauer@gmail.com>
