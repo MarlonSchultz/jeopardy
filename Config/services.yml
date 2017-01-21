@@ -6,3 +6,5 @@ services:
   questionmodel:
     class: mgbs\Model\QuestionsModel
     arguments: ['@database']
+    calls:
+        - [setTableName, ['questions']]
