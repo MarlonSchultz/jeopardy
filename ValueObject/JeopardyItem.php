@@ -1,12 +1,19 @@
 <?php
 declare(strict_types = 1);
 
+namespace mgbs\ValueObject;
+
 /**
  * @author dknx01 <e.witthauer@gmail.com>
  * @since 20.01.17 21:44
  */
 class JeopardyItem
 {
+    /**
+     * @var string
+     */
+    private $id;
+
     /**
      * @var string
      */
@@ -40,6 +47,15 @@ class JeopardyItem
         $this->answer = $answer;
         $this->category = $category;
         $this->value = $value;
+        $this->id = uniqid();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId() :string
+    {
+        return $this->id;
     }
 
     /**
