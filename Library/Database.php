@@ -16,7 +16,7 @@ class Database
     /**
      * @var string
      */
-    private $datebaseType;
+    private $databaseType;
     /**
      * @var string
      */
@@ -42,7 +42,7 @@ class Database
         int $port = null
     ) {
 
-        $this->datebaseType = $databaseType;
+        $this->databaseType = $databaseType;
         $this->host = $host;
         $this->user = $user;
         $this->password = $password;
@@ -55,7 +55,7 @@ class Database
      */
     public function getConnection()
     {
-        switch ($this->datebaseType) {
+        switch ($this->databaseType) {
             case 'sqlite3':
                 return new \PDO('sqlite:' . $this->host);
                 break;

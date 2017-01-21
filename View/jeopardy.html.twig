@@ -12,19 +12,39 @@
         <tbody>
         <tr>
             <td>10</td>
-            <td id="47" data-question="A Question" data-answer="The answer" class="hoverable" data-action="answer" onclick="handleItem(this)"><img src="question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="question.jpg"></td>
+            <td id="47" href="#modal1" data-question="A Question" data-answer="The answer" class="hoverable" data-action="answer" onclick="showQuestion(this)"><img src="/question.jpg"></td>
+            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
         </tr>
         <tr>
             <td>50</td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="question.jpg"></td>
+            <td data-question="A Question" data-answer="The answer" class="hovehandleItemrable"><img src="/question.jpg"></td>
+            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
         </tr>
         <tr>
             <td>100</td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="question.jpg"></td>
-            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="question.jpg"></td>
+            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
+            <td data-question="A Question" data-answer="The answer" class="hoverable"><img src="/question.jpg"></td>
         </tr>
         </tbody>
     </table>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="card teal lighten-2">
+                <div class="card-content white-text">
+                    <div class="card-title" id="answer"></div>
+                    <div id="question"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="card-action center-align">
+                <div id="wrong" class="btn-floating red"><i class="close material-icons" onclick="handleAnswer(this, 'wrong')">close</i></div>
+                <div id="right" class=" btn-floating green"><i class="close material-icons" onclick="handleAnswer(this, 'correct')">check</i></div>
+                <div id="close" class="waves-effect waves-green btn-flat"><i class="close material-icons" onclick="closeAnswer(this)">close</i></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
