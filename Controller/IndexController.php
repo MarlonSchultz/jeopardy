@@ -28,17 +28,10 @@ class IndexController
     {
         $this->questionsModel = DI::getContainer()->get('questionmodel');
 
-        // encapsulated call for data from the model
-        $test = $this->questionsModel->getAllQuestions();
-xdebug_break();
-        /**
-         * @todo must be filled with real database values
-         */
-        $jeopardyCollection = new JeopardyCollection();
-        $jeopardyRowCollection10 = new JeopardyRowCollection();
-        $jeopardyRowCollection10->offsetSet(null, new JeopardyItem('The meaning of life?', '42', 'basic', 10));
-        $jeopardyRowCollection10->offsetSet(null, new JeopardyItem('Why not?', 'Because of', 'misc', 10));
-        $jeopardyCollection->addElement(10, $jeopardyRowCollection10);
+        $jeopardyCollection = new JeopardyCollectionFactory(new JeopardyCollection(), new JeopardyRowCollection(), $this->questionsModel);
+//        $jeopardyCollection = new JeopardyCollection();
+//        $jeopardyRowCollection10 = new JeopardyRowCollection();
+
 
         $jeopardyRowCollection20 = new JeopardyRowCollection();
         $jeopardyRowCollection20->offsetSet(null, new JeopardyItem('The question?', 'The answer', 'basic', 20));

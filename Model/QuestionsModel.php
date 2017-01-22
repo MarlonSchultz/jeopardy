@@ -47,5 +47,27 @@ final class QuestionsModel extends BaseModel
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * @param int $points
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function getQuestionsByPoints(int $points)
+    {
+        $sql = 'SELECT 
+                  id,
+                  category,
+                  points,
+                  answer,
+                  question
+                FROM ' . $this->getTableName() . '
+                WHERE points = :pointValue';
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':pointValue', $points, \PDO::PARAM_INT);
+        if ($statement->execute()) {
+            return $statement->fetchAll(\PDO::FETCH_OBJ);
+        }
+    }
+
 
 }
