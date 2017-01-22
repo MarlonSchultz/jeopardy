@@ -13,6 +13,7 @@ use mgbs\Library\Database;
  */
 class BaseModel implements ModelInterface
 {
+    /** @var \PDO  */
     protected $connection;
 
     protected $tableName = '';

@@ -4,6 +4,7 @@ namespace mgbs\Controller;
 
 use mgbs\Model\ModelInterface;
 use mgbs\Model\Questions;
+use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyItem;
 use mgbs\ValueObject\JeopardyRowCollection;
@@ -19,7 +20,7 @@ use mgbs\Library\DI;
 class IndexController
 {
     /**
-     * @var Questions
+     * @var QuestionsModel
      */
     private $questionsModel;
 
@@ -28,10 +29,8 @@ class IndexController
         $this->questionsModel = DI::getContainer()->get('questionmodel');
 
         // encapsulated call for data from the model
-        $this->questionsModel->getAllQuestions();
-
-        // or less elegant "quick and dirty" write a query on the fly be getting the connection itself
-        $this->questionsModel->getConnection()->query('select whatever');
+        $test = $this->questionsModel->getAllQuestions();
+xdebug_break();
         /**
          * @todo must be filled with real database values
          */
@@ -40,6 +39,7 @@ class IndexController
         $jeopardyRowCollection10->offsetSet(null, new JeopardyItem('The meaning of life?', '42', 'basic', 10));
         $jeopardyRowCollection10->offsetSet(null, new JeopardyItem('Why not?', 'Because of', 'misc', 10));
         $jeopardyCollection->addElement(10, $jeopardyRowCollection10);
+
         $jeopardyRowCollection20 = new JeopardyRowCollection();
         $jeopardyRowCollection20->offsetSet(null, new JeopardyItem('The question?', 'The answer', 'basic', 20));
         $jeopardyRowCollection20->offsetSet(null, new JeopardyItem('Who am I?', 'Not Root', 'misc', 20));

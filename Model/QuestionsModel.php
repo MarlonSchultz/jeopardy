@@ -11,14 +11,40 @@ namespace mgbs\Model;
  */
 final class QuestionsModel extends BaseModel
 {
+    /**
+     *
+     * @throws \InvalidArgumentException
+     */
     public function getAllQuestions()
     {
-        $sql = 'SELECT * FROM :tableName';
-        $statement = $this->getConnection()->prepare($sql);
-        $statement->bindValue(':tableName', $this->getTableName());
-        if ($statement->execute()){
-            return $statement->fetchAll();
-        }
+        $sql = 'SELECT 
+                  id,
+                  category,
+                  points,
+                  answer,
+                  question
+                FROM ' . $this->getTableName();
+        return $this->connection->query($sql)->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    /**
+     * @param string $category
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function getQuestionsByCategory(string $category)
+    {
+        $sql = 'SELECT 
+                  id,
+                  category,
+                  points,
+                  answer,
+                  question
+                FROM ' . $this->getTableName() . '
+                WHERE category = :categoryName';
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':categoryName', $category, \PDO::PARAM_STR);
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
 
