@@ -9,7 +9,6 @@ declare(strict_types = 1);
 
 namespace mgbs\Controller;
 
-
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyItem;
@@ -21,10 +20,7 @@ class JeopardyCollectionFactory
      * @var JeopardyCollection
      */
     private $jeopardyCollection;
-    /**
-     * @var JeopardyRowCollection
-     */
-    private $jeopardyRowCollection;
+
     /**
      * @var QuestionsModel
      */
@@ -33,25 +29,26 @@ class JeopardyCollectionFactory
     /**
      * JeopardyCollectionFactory constructor.
      * @param JeopardyCollection $jeopardyCollection
-     * @param JeopardyRowCollection $jeopardyRowCollection
      */
     public function __construct(
-        JeopardyCollection $jeopardyCollection,
-        JeopardyRowCollection $jeopardyRowCollection
+        JeopardyCollection $jeopardyCollection
     ) {
         $this->jeopardyCollection = $jeopardyCollection;
-        $this->jeopardyRowCollection = $jeopardyRowCollection;
     }
 
 
-    public function buildCollection(int $points)
-    {
-        // todo: finish this shit next commit @myself (marlon)
-        foreach ($this->model->getQuestionsByPoints($points) as $singleQuestion)
-        {
-            $this->jeopardyRowCollection->offsetSet(null, new JeopardyItem(, 10));
+    public function addRowCollection(
+        JeopardyRowCollection $jeopardyRowCollection,
+        int $points
+    ): JeopardyCollectionFactory {
+
+        foreach ($this->model->getQuestionsByPoints($points) as $singleQuestion) {
+            $jeopardyRowCollection->offsetSet(null,
+                new JeopardyItem($singleQuestion->question, $singleQuestion->answer, $singleQuestion->category,
+                    $singleQuestion->points));
         }
-        return $this->jeopardyCollection->addElement($points, $this->jeopardyRowCollection);
+        $this->jeopardyCollection->addElement($points, $jeopardyRowCollection);
+        return $this;
     }
 
     /**
@@ -63,10 +60,20 @@ class JeopardyCollectionFactory
     }
 
     /**
-     * @return ModelInterface
+     * @return QuestionsModel
      */
     public function getModel(): QuestionsModel
     {
         return $this->model;
     }
+
+    /**
+     * @return JeopardyCollection
+     */
+    public function getCollection(): JeopardyCollection
+    {
+        return $this->jeopardyCollection;
+    }
+
+
 }

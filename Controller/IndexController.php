@@ -26,24 +26,21 @@ class IndexController
 
     public function indexAction()
     {
-        $this->questionsModel = DI::getContainer()->get('questionmodel');
 
-        $jeopardyCollection = new JeopardyCollectionFactory(new JeopardyCollection(), new JeopardyRowCollection(), $this->questionsModel);
-//        $jeopardyCollection = new JeopardyCollection();
-//        $jeopardyRowCollection10 = new JeopardyRowCollection();
+        $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
+        $jeopardyCollectionFactory->setModel(DI::getContainer()->get('questionmodel'));
 
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 10);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 20);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 30);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 40);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 50);
 
-        $jeopardyRowCollection20 = new JeopardyRowCollection();
-        $jeopardyRowCollection20->offsetSet(null, new JeopardyItem('The question?', 'The answer', 'basic', 20));
-        $jeopardyRowCollection20->offsetSet(null, new JeopardyItem('Who am I?', 'Not Root', 'misc', 20));
-        $jeopardyCollection->addElement(20, $jeopardyRowCollection20);
-        /**
-         * END
-         */
+        $jeopardyCollection = $jeopardyCollectionFactory->getCollection();
 
         /** @var \Twig_Environment $twig */
         $twig = DI::getContainer()->get('twig');
-        return new Response($twig->render('jeopardy.html.twig', array('jeopardy' => $jeopardyCollection)));
+        return new Response($twig->render('jeopardy.html.twig', ['jeopardy' => $jeopardyCollection]));
     }
 
     /**

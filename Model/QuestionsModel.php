@@ -61,7 +61,8 @@ final class QuestionsModel extends BaseModel
                   answer,
                   question
                 FROM ' . $this->getTableName() . '
-                WHERE points = :pointValue';
+                WHERE points = :pointValue
+                ORDER by category';
         $statement = $this->connection->prepare($sql);
         $statement->bindValue(':pointValue', $points, \PDO::PARAM_INT);
         if ($statement->execute()) {
