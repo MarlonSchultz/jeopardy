@@ -9,10 +9,8 @@ declare(strict_types = 1);
 
 namespace mgbs\Library;
 
-
 class Database
 {
-
     /**
      * @var string
      */
@@ -34,6 +32,13 @@ class Database
      */
     private $port;
 
+    /**
+     * @param string $databaseType
+     * @param string|null $host
+     * @param string|null $user
+     * @param string|null $password
+     * @param int|null $port
+     */
     public function __construct(
         string $databaseType,
         string $host = null,
@@ -51,6 +56,7 @@ class Database
 
     /**
      * @return bool|\PDO
+     * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
     public function getConnection()
@@ -59,9 +65,8 @@ class Database
             try {
                 return new \PDO('sqlite:' . $this->host);
             } catch (\Exception $e) {
-
+                throw new \RuntimeException('Cannot connect to database: ' . $e->getMessage());
             }
-
         } else {
             throw new \InvalidArgumentException('DB Type not supported, yet');
         }

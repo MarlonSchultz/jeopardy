@@ -21,9 +21,7 @@ class RoutingExtension extends \Twig_Extension
     }
 
     /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
+     * @inheritdoc
      */
     public function getFunctions()
     {
@@ -47,7 +45,7 @@ class RoutingExtension extends \Twig_Extension
      * @param bool $relative
      * @return string
      */
-    public function getPath($name, $parameters = array(), $relative = false)
+    public function getPath($name, array $parameters = array(), $relative = false)
     {
         return $this->generator->generate(
             $name,
@@ -62,7 +60,7 @@ class RoutingExtension extends \Twig_Extension
      * @param bool $schemeRelative
      * @return string
      */
-    public function getUrl($name, $parameters = array(), $schemeRelative = false)
+    public function getUrl($name, array $parameters = array(), $schemeRelative = false)
     {
         return $this->generator->generate(
             $name,

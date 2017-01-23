@@ -43,9 +43,15 @@ class JeopardyCollectionFactory
     ): JeopardyCollectionFactory {
 
         foreach ($this->model->getQuestionsByPoints($points) as $singleQuestion) {
-            $jeopardyRowCollection->offsetSet(null,
-                new JeopardyItem($singleQuestion->question, $singleQuestion->answer, $singleQuestion->category,
-                    $singleQuestion->points));
+            $jeopardyRowCollection->offsetSet(
+                null,
+                new JeopardyItem(
+                    $singleQuestion->question,
+                    $singleQuestion->answer,
+                    $singleQuestion->category,
+                    $singleQuestion->points
+                )
+            );
         }
         $this->jeopardyCollection->addElement($points, $jeopardyRowCollection);
         return $this;
@@ -74,6 +80,4 @@ class JeopardyCollectionFactory
     {
         return $this->jeopardyCollection;
     }
-
-
 }

@@ -3,10 +3,8 @@ declare(strict_types = 1);
 namespace mgbs\Controller;
 
 use mgbs\Model\ModelInterface;
-use mgbs\Model\Questions;
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
-use mgbs\ValueObject\JeopardyItem;
 use mgbs\ValueObject\JeopardyRowCollection;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;

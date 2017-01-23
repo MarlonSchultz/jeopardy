@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -78,14 +77,14 @@ class DI
         }
         if (self::$container->hasParameter('twig_debug') && self::$container->getParameter('twig_debug')) {
             $twig->enableDebug();
+            $path = __DIR__ . '/../Var/Cache/Twig';
+            exec('rm -rf ' . $path . '/*');
         }
-        $path = __DIR__ . '/../Var/Cache/Twig';
-        exec('rm -rf ' . $path . '/*');
         self::$container->set('twig', $twig);
     }
 
     /**
-     * @return DI|ContainerInterface
+     * @return ContainerInterface
      */
     public static function getContainer()
     {

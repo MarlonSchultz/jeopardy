@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class Routes
 {
-    /** @var  RouteCollection */
+    /** @var RouteCollection */
     private $routes;
 
     /**
@@ -27,7 +27,7 @@ class Routes
     }
 
     /**
-     * @return mixed
+     * @return RouteCollection
      */
     public function getRoutes()
     {
@@ -35,7 +35,6 @@ class Routes
     }
 
     /**
-     *
      * @throws \InvalidArgumentException
      */
     private function parseYml()

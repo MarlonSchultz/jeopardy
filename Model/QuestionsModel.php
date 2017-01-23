@@ -12,7 +12,6 @@ namespace mgbs\Model;
 final class QuestionsModel extends BaseModel
 {
     /**
-     *
      * @throws \InvalidArgumentException
      */
     public function getAllQuestions()
@@ -69,6 +68,4 @@ final class QuestionsModel extends BaseModel
             return $statement->fetchAll(\PDO::FETCH_OBJ);
         }
     }
-
-
 }

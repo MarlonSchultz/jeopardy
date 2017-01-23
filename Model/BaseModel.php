@@ -16,8 +16,14 @@ class BaseModel implements ModelInterface
     /** @var \PDO  */
     protected $connection;
 
+    /**
+     * @var string
+     */
     protected $tableName = '';
 
+    /**
+     * @param Database $database
+     */
     public function __construct(Database $database)
     {
         $this->connection = $database->getConnection();
@@ -58,6 +64,4 @@ class BaseModel implements ModelInterface
     {
         $this->tableName = $tableName;
     }
-
-
 }
