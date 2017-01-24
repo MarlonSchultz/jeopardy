@@ -24,7 +24,6 @@
     <table class="highlight centered">
         <thead>
         <tr>
-            {#<th>Value</th>#}
             {% for category in jeopardy.allCategories %}
                 <th>{{ category|capitalize }}</th>
             {% endfor %}
@@ -34,7 +33,6 @@
         <tbody>
         {% for value, row in jeopardy %}
             <tr>
-                {#<td>{{ value }}</td>#}
                 {% for item in row %}
                     <td id="{{ item.id }}" data-question="{{ item.question }}" data-answer="{{ item.answer }}" class="hoverable" onclick="showQuestion(this)">
                         <div class="card blue-grey darken-1">
@@ -49,17 +47,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <script type="text/javascript">
-//            startTimer()
-            {#var countdown =  $("#countdown").countdown360({#}
-                {#radius      : 60,#}
-                {#seconds     : 30,#}
-                {#fontColor   : '#FFFFFF',#}
-                {#autostart   : false,#}
-                {#onComplete  : function () { console.log('done') }#}
-            {#});#}
-            {#countdown.start();#}
-{#//#}
-        </script>
-{% endblock %}
+ {% endblock %}
