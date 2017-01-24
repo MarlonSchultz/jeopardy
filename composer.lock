@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c3505b1d8c3833723a4203087697557f",
+    "hash": "ca4eae9ffae6d50682a2bf3b0d281bbb",
     "content-hash": "97b3a650ecc2dbef9e16eb93f56a6ea8",
     "packages": [
         {
@@ -64,7 +64,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/74f3abd031c937d75549739e88995f1caabc4dd9",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3db4b0df21d1f527304650e717c66af48981f1c4",
                 "reference": "74f3abd031c937d75549739e88995f1caabc4dd9",
                 "shasum": ""
             },
@@ -589,7 +589,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/48c7362779d6937e6a3a4565b664740fe4d2fef2",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/987f3b66f80bf120b1ce0c23b6c4251862a677c9",
                 "reference": "48c7362779d6937e6a3a4565b664740fe4d2fef2",
                 "shasum": ""
             },
