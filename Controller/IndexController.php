@@ -5,6 +5,7 @@ namespace mgbs\Controller;
 use mgbs\Model\ModelInterface;
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
+use mgbs\ValueObject\JeopardyCollectionFactory;
 use mgbs\ValueObject\JeopardyRowCollection;
 use Symfony\Component\HttpFoundation\Response;
 use mgbs\Library\DI;
@@ -22,6 +23,9 @@ class IndexController
      */
     private $questionsModel;
 
+    /**
+     * @return Response
+     */
     public function indexAction()
     {
 

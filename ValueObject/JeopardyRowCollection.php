@@ -120,7 +120,7 @@ class JeopardyRowCollection implements \Countable, \IteratorAggregate, \ArrayAcc
         $categories = array();
         $this->filter(function ($value) use (&$categories) {
             /** @var JeopardyItem $value */
-            if (!in_array($value->getCategory(), $categories)) {
+            if (!in_array($value->getCategory(), $categories, true)) {
                 $categories[] = $value->getCategory();
             }
         });
@@ -149,7 +149,7 @@ class JeopardyRowCollection implements \Countable, \IteratorAggregate, \ArrayAcc
      */
     private function get($key)
     {
-        return isset($this->elements[$key]) ? $this->elements[$key] : null;
+        return $this->elements[$key] ?? null;
     }
 
     /**

@@ -7,7 +7,7 @@ declare(strict_types = 1);
  * Time: 13:57
  */
 
-namespace mgbs\Controller;
+namespace mgbs\ValueObject;
 
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
