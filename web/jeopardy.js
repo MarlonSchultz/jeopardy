@@ -10,8 +10,23 @@ function showQuestion(el) {
     $('#answer').html('<h1>' + answer + '</h1>');
     $('#question').html('');
     $('.card-action').attr('data-cell', cell);
+    startTimer();
     $('#modal1').modal('open');
 }
+
+function startTimer(){
+    var countdown = $("#countdown").countdown360({
+        radius: 60,
+        seconds: 30,
+        fontColor: '#FFFFFF',
+        autostart: false,
+        onComplete: function () {
+            console.log('done')
+        }
+    });
+    countdown.start();
+}
+
 
 function handleAnswer(el, choice) {
     var el = $(el);

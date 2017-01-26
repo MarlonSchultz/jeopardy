@@ -1,3 +1,3 @@
 db_path: '../Var/Data/jeopardy.db'
 db_type: 'sqlite3'
-twig_debug: false
+twig_debug: true
