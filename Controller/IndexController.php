@@ -50,6 +50,32 @@ class IndexController
     }
 
     /**
+     * @return Response
+     * @throws \Twig_Error_Syntax
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Loader
+     * @throws \InvalidArgumentException
+     */
+    public function moderatorAction()
+    {
+
+        $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
+        $jeopardyCollectionFactory->setModel(DI::getContainer()->get('questionmodel'));
+
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 10);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 20);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 30);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 40);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 50);
+
+        $jeopardyCollection = $jeopardyCollectionFactory->getCollection();
+
+        /** @var \Twig_Environment $twig */
+        $twig = DI::getContainer()->get('twig');
+        return new Response($twig->render('moderator.html.twig', ['jeopardy' => $jeopardyCollection]));
+    }
+
+    /**
      * @return ModelInterface
      */
     public function getQuestionsModel(): ModelInterface

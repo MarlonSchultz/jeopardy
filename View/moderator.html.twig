@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    <table class="highlight centered">
+        <thead>
+        <tr>
+            {% for category in jeopardy.allCategories %}
+                <th>{{ category|capitalize }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for value, row in jeopardy %}
+            <tr>
+                {% for item in row %}
+                    <td>
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">Valaue: {{ value }}</span>
+                                <span class="card-title">Question: {{ item.question }}</span>
+                                <span class="card-title">Answer: {{ item.answer }}</span>
+                            </div>
+                        </div>
+
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
