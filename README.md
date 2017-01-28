@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/MarlonSchultz/jeopardy.svg?branch=master)](https://travis-ci.org/MarlonSchultz/jeopardy)
+
 # Jeopardy in PHP
 
 This is a simple implementation of the game "Jeopardy".

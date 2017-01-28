@@ -16,13 +16,25 @@ class Routes
 {
     /** @var RouteCollection */
     private $routes;
+    /**
+     * @var array
+     */
+    private $fileLocatorPath;
+    /**
+     * @var string
+     */
+    private $routingFile;
 
     /**
      * Router constructor.
+     * @param array $fileLocatorPath
+     * @param string $routingFile
      * @throws \InvalidArgumentException
      */
-    public function __construct()
+    public function __construct(array $fileLocatorPath = [__DIR__ . '/../Config'], string $routingFile = 'routes.yml')
     {
+        $this->fileLocatorPath = $fileLocatorPath;
+        $this->routingFile = $routingFile;
         $this->parseYml();
     }
 
@@ -39,9 +51,9 @@ class Routes
      */
     private function parseYml()
     {
-        $locator = new FileLocator([__DIR__ . '/../Config']);
+        $locator = new FileLocator($this->fileLocatorPath);
         $loader = new YamlFileLoader($locator);
-        $collection = $loader->load('routes.yml');
+        $collection = $loader->load($this->routingFile);
         $this->routes = new RouteCollection();
         $this->routes->addCollection($collection);
     }
