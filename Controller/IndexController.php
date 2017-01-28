@@ -57,8 +57,8 @@ class IndexController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Loader
      * @throws \InvalidArgumentException
-    public function moderatorAction()
      */
+    public function moderatorAction()
     {
 
         $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
