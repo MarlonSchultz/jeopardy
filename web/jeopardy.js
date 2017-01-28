@@ -39,8 +39,8 @@ function handleAnswer(el, choice) {
 
 function closeAnswer(el) {
     var el = $(el);
-    var cell = $('#' + el.parent().parent().attr('data-cell'));
-    var cssClass = el.parent().attr('data-choice') === 'correct' ? 'green' : 'red';
+    var cell = $('#' + el.parent().attr('data-cell'));
+    var cssClass = el.attr('data-choice') === 'correct' ? 'green' : 'red';
     var answer = cell.attr('data-answer');
     var question = cell.attr('data-question');
     cell.removeAttr('onclick');
