@@ -23,6 +23,8 @@ class BaseModel implements ModelInterface
 
     /**
      * @param Database $database
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function __construct(Database $database)
     {

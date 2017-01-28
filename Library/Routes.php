@@ -41,7 +41,7 @@ class Routes
     /**
      * @return RouteCollection
      */
-    public function getRoutes()
+    public function getRoutes() : RouteCollection
     {
         return $this->routes;
     }
