@@ -14,9 +14,13 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RoutesTest extends \PHPUnit_Framework_TestCase
 {
-      public function testIfRoutesAreReturnedCorrectly()
+    public function testIfRoutesAreReturnedCorrectly()
     {
-        $routes = new Routes();
-        self::assertTrue(is_a($routes->getRoutes(), RouteCollection::class));
+        $routes = new Routes([__DIR__.'/Fixtures'], 'routes.yml');
+        self::assertTrue(is_a($routeCollection = $routes->getRoutes(), RouteCollection::class));
+
+        self::assertArrayHasKey('_controller', $routeArray = $routeCollection->get('landing_page')->getDefaults());
+
+        self::assertSame('mgbs\Controller\IndexController::indexAction', $routeArray['_controller']);
     }
 }
