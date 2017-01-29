@@ -26,5 +26,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $database->getConnection();
     }
 
+    public function testIfFactoryThrowsExceptionIfDatabaseFileIsMissing()
+    {
+        $database = new Database('strangeDbType', __DIR__ . 'dataBaseThatDoesNotExist');
+        $this->expectException(\InvalidArgumentException::class);
+        $database->getConnection();
+    }
+
 
 }

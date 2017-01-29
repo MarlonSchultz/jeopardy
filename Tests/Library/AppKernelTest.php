@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 namespace Tests\Library;
 
+use mgbs\Library\AppKernel;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouteCollection;
