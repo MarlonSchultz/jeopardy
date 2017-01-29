@@ -74,20 +74,4 @@ class IndexController
         $twig = DI::getContainer()->get('twig');
         return new Response($twig->render('moderator.html.twig', ['jeopardy' => $jeopardyCollection]));
     }
-
-    /**
-     * @return ModelInterface
-     */
-    public function getQuestionsModel(): ModelInterface
-    {
-        return $this->questionsModel;
-    }
-
-    /**
-     * @param ModelInterface $questionsModel
-     */
-    public function setQuestionsModel(ModelInterface $questionsModel)
-    {
-        $this->questionsModel = $questionsModel;
-    }
 }
