@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
-use mgbs\Model\ModelInterface;
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyCollectionFactory;
@@ -18,11 +17,6 @@ use mgbs\Library\DI;
  */
 class IndexController
 {
-    /**
-     * @var QuestionsModel
-     */
-    private $questionsModel;
-
     /**
      * @return Response
      * @throws \Twig_Error_Syntax

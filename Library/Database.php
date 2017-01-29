@@ -55,11 +55,11 @@ class Database
     }
 
     /**
-     * @return bool|\PDO
+     * @return \PDO
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function getConnection()
+    public function getConnection(): \PDO
     {
         if ('sqlite3' === $this->databaseType) {
             try {

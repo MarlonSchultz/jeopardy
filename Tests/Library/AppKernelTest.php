@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: mgbs
@@ -6,8 +7,7 @@
  * Time: 12:44
  */
 
-namespace mgbs\Library;
-
+namespace Tests\Library;
 
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
