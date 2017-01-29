@@ -7,28 +7,28 @@ declare(strict_types = 1);
  * Time: 14:39
  */
 
-namespace Tests\Library;
+namespace Tests\Library\Database;
 
-use mgbs\Library\Database;
+use mgbs\Library\Database\DatabaseFactory;
 
 class DatabaseTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfSQLite3ReturnsPDOObject()
     {
-        $database = new Database('sqlite3', __DIR__ . '/Fixtures/example.db');
+        $database = new DatabaseFactory('sqlite3', __DIR__ . '/Fixtures/example.db');
         self::assertTrue(is_a($database->getConnection(), \PDO::class));
     }
 
     public function testIfFactoryThrowsExceptionIfDBTypeIsUnknown()
     {
-        $database = new Database('strangeDbType', __DIR__ . '/Fixtures/example.db');
+        $database = new DatabaseFactory('strangeDbType', __DIR__ . '/Fixtures/example.db');
         $this->expectException(\InvalidArgumentException::class);
         $database->getConnection();
     }
 
     public function testIfFactoryThrowsExceptionIfDatabaseFileIsMissing()
     {
-        $database = new Database('strangeDbType', __DIR__ . 'dataBaseThatDoesNotExist');
+        $database = new DatabaseFactory('strangeDbType', __DIR__ . 'dataBaseThatDoesNotExist');
         $this->expectException(\InvalidArgumentException::class);
         $database->getConnection();
     }
