@@ -7,11 +7,11 @@ declare(strict_types = 1);
  * Time: 20:31
  */
 
-namespace mgbs\Library;
+namespace mgbs\Library\Database;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class Database
+class DatabaseFactory
 {
     /**
      * @var string

@@ -1,6 +1,6 @@
 services:
   database:
-    class: mgbs\Library\Database
+    class: mgbs\Library\Database\DatabaseFactory
     arguments: [ "%db_type%", "%db_path%" ]
 
   questionmodel:
