@@ -13,7 +13,7 @@ interface DatabaseAdapterInterface
     /**
      * Initializes the PDO instance
      *
-     * @return mixed
+     * @return void
      */
     public function initPdoInstance();
 

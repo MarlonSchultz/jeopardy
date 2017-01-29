@@ -9,8 +9,6 @@ declare(strict_types = 1);
 
 namespace mgbs\Library\Database;
 
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-
 class DatabaseFactory
 {
     /**
