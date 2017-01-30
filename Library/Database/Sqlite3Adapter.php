@@ -20,9 +20,9 @@ class Sqlite3Adapter implements DatabaseAdapterInterface
 
     private $pdo;
 
-    public function __construct(String $host)
+    public function __construct(String $filename)
     {
-        $this->filename = $host;
+        $this->filename = $filename;
         $this->initPdoInstance();
     }
 

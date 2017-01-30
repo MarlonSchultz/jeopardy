@@ -70,10 +70,16 @@ class DatabaseFactory
      */
     public function getConnection(): \PDO
     {
-        if ('sqlite3' === $this->databaseType) {
-            return (new Sqlite3Adapter($this->databaseFile))->getPdoInstance();
-        } else {
-            throw new \InvalidArgumentException('DB Type not supported, yet');
+        switch ($this->databaseType) {
+            case 'sqlite3':
+                return (new Sqlite3Adapter($this->databaseFile))->getPdoInstance();
+                break;
+            case 'flatfile':
+                return (new JsonAdapter($this->databaseFile))->getPdoInstance();
+                break;
+            default:
+                throw new \InvalidArgumentException('DB Type not supported, yet');
+                break;
         }
     }
 }
