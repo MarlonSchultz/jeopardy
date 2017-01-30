@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
@@ -47,6 +48,7 @@ class AppKernel
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
+        $dispatcher->addListener(KernelEvents::EXCEPTION, array(new KernelExceptionListener(), 'onKernelException'));
 
         $controllerResolver = new ControllerResolver();
         $argumentResolver = new ArgumentResolver();

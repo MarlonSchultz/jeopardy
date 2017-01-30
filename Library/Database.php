@@ -9,8 +9,6 @@ declare(strict_types = 1);
 
 namespace mgbs\Library;
 
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-
 class Database
 {
     /**
@@ -57,17 +55,13 @@ class Database
     }
 
     /**
-     * @return \PDO
-     * @throws \Symfony\Component\Filesystem\Exception\FileNotFoundException
+     * @return bool|\PDO
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function getConnection(): \PDO
+    public function getConnection()
     {
         if ('sqlite3' === $this->databaseType) {
-            if (!file_exists($this->host)) {
-                throw new FileNotFoundException('Databasefile' . $this->host . 'not found. Current BaseDir:' . __DIR__);
-            }
             try {
                 return new \PDO('sqlite:' . $this->host);
             } catch (\Exception $e) {

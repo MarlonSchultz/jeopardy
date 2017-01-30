@@ -67,7 +67,6 @@ class DI
     {
         $loader = new \Twig_Loader_Filesystem(array(__DIR__ . '/../View'));
         $twig = new \Twig_Environment($loader, ['cache' => __DIR__ . '/../Var/Cache/Twig']);
-        $twig->addExtension(new \Twig_Extension_Debug());
         $twig->addExtension(new \Twig_Extension_StringLoader());
         $twig->addExtension(new \Twig_Extensions_Extension_Array());
         $twig->addExtension(new \Twig_Extensions_Extension_Date());
@@ -76,6 +75,7 @@ class DI
             $twig->addExtension(new RoutingExtension(new UrlGenerator(self::$routes, new RequestContext())));
         }
         if (self::$container->hasParameter('twig_debug') && self::$container->getParameter('twig_debug')) {
+            $twig->addExtension(new \Twig_Extension_Debug());
             $twig->enableDebug();
             $path = __DIR__ . '/../Var/Cache/Twig';
             exec('rm -rf ' . $path . '/*');
