@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace mgbs\Model;
 
-use mgbs\Library\Database;
+use mgbs\Library\Database\DatabaseFactory;
 
 /**
  * Created by PhpStorm.
@@ -22,11 +22,11 @@ class BaseModel implements ModelInterface
     protected $tableName = '';
 
     /**
-     * @param Database $database
+     * @param DatabaseFactory $database
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function __construct(Database $database)
+    public function __construct(DatabaseFactory $database)
     {
         $this->connection = $database->getConnection();
     }

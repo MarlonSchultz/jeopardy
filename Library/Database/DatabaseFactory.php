@@ -7,20 +7,23 @@ declare(strict_types = 1);
  * Time: 20:31
  */
 
-namespace mgbs\Library;
+namespace mgbs\Library\Database;
 
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-
-class Database
+class DatabaseFactory
 {
     /**
-     * @var string
+     * @var string $databaseType
      */
     private $databaseType;
     /**
-     * @var string
+     * @var string $host Should contain hostname. If flatfile, or sqllite3 leave null and use $filename
      */
     private $host;
+
+    /**
+     * @var string $databaseFile Should contain filename for database
+     */
+    private $databaseFile;
     /**
      * @var string
      */
@@ -36,6 +39,7 @@ class Database
 
     /**
      * @param string $databaseType
+     * @param string|null $databaseFile
      * @param string|null $host
      * @param string|null $user
      * @param string|null $password
@@ -43,6 +47,7 @@ class Database
      */
     public function __construct(
         string $databaseType,
+        string $databaseFile = null,
         string $host = null,
         string $user = null,
         string $password = null,
@@ -50,6 +55,7 @@ class Database
     ) {
 
         $this->databaseType = $databaseType;
+        $this->databaseFile = $databaseFile;
         $this->host = $host;
         $this->user = $user;
         $this->password = $password;
@@ -64,17 +70,16 @@ class Database
      */
     public function getConnection(): \PDO
     {
-        if ('sqlite3' === $this->databaseType) {
-            if (!file_exists($this->host)) {
-                throw new FileNotFoundException('Databasefile' . $this->host . 'not found. Current BaseDir:' . __DIR__);
-            }
-            try {
-                return new \PDO('sqlite:' . $this->host);
-            } catch (\Exception $e) {
-                throw new \RuntimeException('Cannot connect to database: ' . $e->getMessage());
-            }
-        } else {
-            throw new \InvalidArgumentException('DB Type not supported, yet');
+        switch ($this->databaseType) {
+            case 'sqlite3':
+                return (new Sqlite3Adapter($this->databaseFile))->getPdoInstance();
+                break;
+            case 'flatfile':
+                return (new JsonAdapter($this->databaseFile))->getPdoInstance();
+                break;
+            default:
+                throw new \InvalidArgumentException('DB Type not supported, yet');
+                break;
         }
     }
 }
