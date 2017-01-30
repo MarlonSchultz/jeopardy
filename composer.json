@@ -9,6 +9,7 @@
     "symfony/config": "^3.2",
     "php": "^7.0",
     "ext-SQLite3": "*",
+    "ext-pdo_sqlite" : "*",
     "symfony/dependency-injection": "^3.2",
     "symfony/class-loader": "^3.2",
     "twig/extensions": "^1.4",
