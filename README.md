@@ -5,7 +5,10 @@
 This is a simple implementation of the game "Jeopardy".
 It relies on PHP 7 and SQLite3.
 
-# Install
+# Run on heruko
+https://jeophpardy.herokuapp.com/
+
+# Install locally
 
 Clone repository, run composer install.
 
