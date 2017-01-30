@@ -35,5 +35,9 @@ The database to which the game connects can be set in config/parameters.yml
 
 There is no such thing. This is for fun.
 If you want to add features, either fork and PR, or fork and do whatever you want.
-Please stick to PSR2 coding style.
+
+# Contribution
+
+* Please stick to PSR2 coding style.
+* Contributers with the power to accept MR´s and PR´s: Please use "ci" (w/o ") at the end of your commit message, otherwise Heruko wont pull the build.
 
