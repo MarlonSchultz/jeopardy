@@ -11,11 +11,17 @@ namespace Tests\Library\Database;
 
 use mgbs\Library\Database\DatabaseFactory;
 
-class DatabaseTest extends \PHPUnit_Framework_TestCase
+class DatabaseFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfSQLite3ReturnsPDOObject()
     {
         $database = new DatabaseFactory('sqlite3', __DIR__ . '/Fixtures/example.db');
+        self::assertTrue(is_a($database->getConnection(), \PDO::class));
+    }
+
+    public function testIfFlatfileReturnsPDOOBject()
+    {
+        $database = new DatabaseFactory('flatfile', __DIR__ . '/Fixtures/database.json');
         self::assertTrue(is_a($database->getConnection(), \PDO::class));
     }
 

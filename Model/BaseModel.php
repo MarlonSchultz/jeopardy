@@ -25,6 +25,7 @@ class BaseModel implements ModelInterface
      * @param DatabaseFactory $database
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
+     * @throws \Symfony\Component\Filesystem\Exception\FileNotFoundException
      */
     public function __construct(DatabaseFactory $database)
     {
