@@ -2,12 +2,15 @@
 declare(strict_types = 1);
 namespace mgbs\Controller;
 
+use mgbs\Library\DITrait;
+use mgbs\Model\ModelInterface;
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyCollectionFactory;
 use mgbs\ValueObject\JeopardyRowCollection;
+use mgbs\DTO\JeopardyItem;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use mgbs\Library\DI;
 
 /**
  * Created by PhpStorm.
@@ -17,6 +20,13 @@ use mgbs\Library\DI;
  */
 class IndexController
 {
+    use DITrait;
+
+    /**
+     * @var QuestionsModel
+     */
+    private $questionsModel;
+
     /**
      * @return Response
      * @throws \Twig_Error_Syntax
@@ -24,22 +34,21 @@ class IndexController
      * @throws \Twig_Error_Loader
      * @throws \InvalidArgumentException
      */
-    public function indexAction()
+    public function indexAction() :Response
     {
-
         $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
-        $jeopardyCollectionFactory->setModel(DI::getContainer()->get('questionmodel'));
+        $jeopardyCollectionFactory->setModel($this->getService('questionmodel'));
 
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 10);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 20);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 30);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 40);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 50);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 10);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 20);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 30);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 40);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 50);
 
         $jeopardyCollection = $jeopardyCollectionFactory->getCollection();
 
         /** @var \Twig_Environment $twig */
-        $twig = DI::getContainer()->get('twig');
+        $twig = $this->getService('twig');
         return new Response($twig->render('jeopardy.html.twig', ['jeopardy' => $jeopardyCollection]));
     }
 
@@ -50,22 +59,66 @@ class IndexController
      * @throws \Twig_Error_Loader
      * @throws \InvalidArgumentException
      */
-    public function moderatorAction()
+    public function moderatorAction() :Response
     {
 
         $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
-        $jeopardyCollectionFactory->setModel(DI::getContainer()->get('questionmodel'));
+        $jeopardyCollectionFactory->setModel($this->getService('questionmodel'));
 
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 10);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 20);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 30);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 40);
-        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection, 50);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 10);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 20);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 30);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 40);
+        $jeopardyCollectionFactory->addRowCollection(new JeopardyRowCollection(), 50);
 
         $jeopardyCollection = $jeopardyCollectionFactory->getCollection();
 
         /** @var \Twig_Environment $twig */
-        $twig = DI::getContainer()->get('twig');
+        $twig = $this->getService('twig');
         return new Response($twig->render('moderator.html.twig', ['jeopardy' => $jeopardyCollection]));
+    }
+
+    /**
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function adminAction() :Response
+    {
+        if ($this->getParameter('db_type') !== 'sqlite3') {
+            throw new \Exception('Admin only available for sqlite database');
+        }
+        if ($this->getService('request')->get('save')) {
+            /** @var Request $request */
+            $request = $this->getService('request');
+            $jeopardyItem = new JeopardyItem(
+                $request->get('id'),
+                $request->get('category'),
+                $request->get('points'),
+                $request->get('answer'),
+                $request->get('question')
+            );
+            $this->getService('questionmodel')->updateEntry($jeopardyItem);
+        }
+        $entries = $this->getService('questionmodel')->getAllQuestions();
+        return new Response(
+            $this->getService('twig')->render('admin.html.twig', array('entries' => $entries))
+        );
+    }
+
+    /**
+     * @return ModelInterface
+     */
+    public function getQuestionsModel(): ModelInterface
+    {
+        return $this->questionsModel;
+    }
+
+    /**
+     * @param ModelInterface $questionsModel
+     */
+    public function setQuestionsModel(ModelInterface $questionsModel)
+    {
+        $this->questionsModel = $questionsModel;
     }
 }

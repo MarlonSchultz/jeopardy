@@ -4,3 +4,6 @@ landing_page:
 moderator_page:
     path:     /moderator
     defaults: { _controller: 'mgbs\Controller\IndexController::moderatorAction' }
+admin_page:
+    path:     /admin
+    defaults: { _controller: 'mgbs\Controller\IndexController::adminAction' }

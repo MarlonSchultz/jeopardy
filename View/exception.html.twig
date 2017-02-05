@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% block title %}Exception{% endblock %}
+{% block content %}
+    <div class="row">
+
+        <div class="col s12 red accent-4">An exception occurred</div>
+        <div class="col s12 red accent-4">Message: <h5 class="center-align">{{ exception.message }}</h5></div>
+        <div class="col s12 red accent-1">File: {{ exception.file }}</div>
+        <div class="col s12 red accent-1">Line: {{ exception.line }}</div>
+        {% for key,entry in exception.trace %}
+            {% if key != 0 %}
+                <div class="col s12 red accent-1">
+                    <div class="col s2">{{ key }}</div>
+                    <div class="col s5">File/Line: {{ entry.file }}:{{ entry.line }}</div>
+                    <div class="col s5">Method: {{ entry.function }}()</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="col s12 red accent-1">
+            <hr>{{ exception.traceAsString }}
+        </div>
+    </div>
+{% endblock %}
