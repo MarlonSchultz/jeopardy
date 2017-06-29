@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 $request = Request::createFromGlobals();
 
-
 $routes = new Routes();
 $kernel = (new AppKernel($routes->getRoutes()))->getKernel();
 DI::setRoutes($routes->getRoutes());
