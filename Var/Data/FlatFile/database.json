@@ -2,178 +2,178 @@
   "questions": [
     {
       "id": "1",
-      "category": "php",
+      "category": "Kollegen",
       "points": "20",
       "answer": "This version added strict_types directive.",
-      "question": "What is PHP 7.0.0 ?');"
+      "question": "What is Kollegen 7.0.0 ?');"
     },
     {
       "id": "2",
-      "category": "php",
+      "category": "Kollegen",
       "points": "30",
-      "answer": "It is like a contract that a class or object must fulfill (can be with stubs).",
-      "question": "What is an interface ?');"
+      "answer": "Trypophobie",
+      "question": "Welche Angst hat Simon"
     },
     {
       "id": "3",
-      "category": "php",
+      "category": "Kollegen",
       "points": "40",
-      "answer": "A class that cannot be instantiated.",
-      "question": "What is an abstract class ?');"
+      "answer": "Jägermeister",
+      "question": ""
     },
     {
       "id": "4",
-      "category": "php",
+      "category": "Kollegen",
       "points": "50",
-      "answer": "It returns a generator object and does not end the method call",
-      "question": "unlike return."
+      "answer": "Jägermeister",
+      "question": "Was ist Jo´s Kryptonit?"
     },
     {
       "id": "5",
-      "category": "symfony",
+      "category": "MF global",
       "points": "10",
-      "answer": "The PHP extension used by Symfony to implement i18n.",
-      "question": "What is php-intl?');"
+      "answer": "Die Firmenband",
+      "question": "Wer oder was ist BOA?"
     },
     {
       "id": "6",
-      "category": "symfony",
+      "category": "MF global",
       "points": "20",
-      "answer": "This is the recommended (in Symfony’s Best Practices) format for translation files.",
-      "question": "What is xliff? (XML Localization Interchange File Format)');"
+      "answer": "2002.",
+      "question": "Seit wann gibt es die Mayflower GmbH?"
     },
     {
       "id": "7",
-      "category": "symfony",
+      "category": "MF global",
       "points": "30",
-      "answer": "Bundle that provides controller annotations such as @Route and @Method.",
-      "question": "What is the SensioFrameworkExtraBundle?');"
+      "answer": "13",
+      "question": "Wie viele weibliche Mitarbeiter hat MF ?"
     },
     {
       "id": "8",
-      "category": "symfony",
+      "category": "MF global",
       "points": "40",
       "answer": "Interface that indicates a class depends on the container.",
       "question": "What is the ContainerAwareInterface?');"
     },
     {
       "id": "9",
-      "category": "symfony",
+      "category": "MF global",
       "points": "50",
-      "answer": "A [logging] standard which is implemented in Symfony by using Monolog.",
+      "answer": "A [logging] standard which is implemented in MF global by using Monolog.",
       "question": "What is PSR-3?');"
     },
     {
       "id": "10",
-      "category": "javascript",
+      "category": "teams",
       "points": "10",
-      "answer": "This is JavaScript''s default behavior of moving all declarations to the top of the current scope.",
-      "question": "What is hoisting ?');"
+      "answer": "Macht die besten MayFlower Kekse.",
+      "question": "Wer ist Admin."
     },
     {
       "id": "11",
-      "category": "javascript",
+      "category": "teams",
       "points": "20",
-      "answer": "A variable accessible anywhere.",
-      "question": "What is global scope ?');"
+      "answer": "Nagelbier.",
+      "question": "Was ist das Lieblingsbier des Louis-Teams?"
     },
     {
       "id": "12",
-      "category": "javascript",
+      "category": "teams",
       "points": "30",
-      "answer": "This is a plain JavaScript function passed to some method as an argument or option.",
+      "answer": "This is a plain teams function passed to some method as an argument or option.",
       "question": "What is a callback ?');"
     },
     {
       "id": "13",
-      "category": "javascript",
+      "category": "teams",
       "points": "40",
       "answer": "With this mode you can not use undeclared variables.",
       "question": "What is strict mode ?');"
     },
     {
       "id": "14",
-      "category": "javascript",
+      "category": "teams",
       "points": "50",
       "answer": "A variable is overridden in JS.",
       "question": "What is shadowing ?');"
     },
     {
       "id": "15",
-      "category": "misc",
+      "category": "Standorte",
       "points": "10",
-      "answer": "..see recursion..",
-      "question": "What is recursion ?');"
+      "answer": "Ritterstraße.",
+      "question": "In welcher Straße ist das Berliner Office?"
     },
     {
       "id": "16",
-      "category": "misc",
+      "category": "Standorte",
       "points": "20",
       "answer": "Its the \"brain\" of a computer.",
       "question": "What is the CPU ? (Central processing unit)');"
     },
     {
       "id": "17",
-      "category": "misc",
+      "category": "Standorte",
       "points": "30",
       "answer": "42",
       "question": "What is the \"Answer to the Ultimate Question of Life"
     },
     {
       "id": "18",
-      "category": "misc",
+      "category": "Standorte",
       "points": "40",
       "answer": "Compu-Global-Hyper-Mega-Net",
       "question": "What is the name of Homer Simpsons internet company ?');"
     },
     {
       "id": "19",
-      "category": "misc",
+      "category": "Standorte",
       "points": "50",
       "answer": "brainfuck",
       "question": "What is an esoteric programmic langue for your brain ?');"
     },
     {
       "id": "20",
-      "category": "people",
+      "category": "mayflower",
       "points": "10",
-      "answer": "Robert C. Martin. - paved the ground for SOLID programming.",
-      "question": "Who is Uncle Bob ?');"
+      "answer": "Christoper Jones",
+      "question": "Wer war der Cptn der Mayflower?"
     },
     {
       "id": "21",
-      "category": "people",
+      "category": "mayflower",
       "points": "20",
-      "answer": "He is the lead dev behind the Symfony framework.",
-      "question": "Who is Fabien Potencier ?');"
+      "answer": "Plymouth",
+      "question": "Wo fuhr die Mayflower los ?"
     },
     {
       "id": "22",
-      "category": "people",
+      "category": "mayflower",
       "points": "30",
-      "answer": "He created PHPUnit.",
+      "answer": "Cape Cod",
       "question": "Who is Sebastian Bergmann ?');"
     },
     {
       "id": "23",
-      "category": "people",
+      "category": "mayflower",
       "points": "40",
       "answer": "He is the \"T\" in a CAPTCHA.",
       "question": "Who is Alan Turing ? (Completely Automated Public Turing test to tell Computers and Humans Apart)');"
     },
     {
       "id": "24",
-      "category": "people",
+      "category": "mayflower",
       "points": "50",
       "answer": "He is the developer of XDebug.",
       "question": "Who is Derick Rethans ?');"
     },
     {
       "id": "25",
-      "category": "php",
+      "category": "Kollegen",
       "points": "10",
-      "answer": "A class that cannot be extended.",
-      "question": "What is a final class ?');"
+      "answer": "Die Gute.",
+      "question": "Wer ist Ute?"
     }
   ]
 }
