@@ -1,13 +1,6 @@
 <?php
 declare(strict_types = 1);
 
-/**
- * Created by PhpStorm.
- * User: mgbs
- * Date: 12.01.17
- * Time: 17:51
- */
-
 require __DIR__ . '/../vendor/autoload.php';
 
 use mgbs\Library\AppKernel;

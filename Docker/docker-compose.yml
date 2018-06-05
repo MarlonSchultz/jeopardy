@@ -1,0 +1,11 @@
+version: "2.0"
+services:
+  nginx-php-fpm:
+    image: richarvey/nginx-php-fpm
+    container_name: php_container
+    restart: always
+    ports:
+        - 80:80
+    volumes:
+      - ../:/var/www/jeophpardy
+      - ./nginx.conf:/etc/nginx/sites-enabled/default.conf
