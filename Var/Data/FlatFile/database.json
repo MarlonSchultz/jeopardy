@@ -4,22 +4,22 @@
       "id": "1",
       "category": "Kollegen",
       "points": "20",
-      "answer": "This version added strict_types directive.",
-      "question": "What is Kollegen 7.0.0 ?');"
+      "answer": "Chunk",
+      "question": "Was ist die Spezialität von Willi Butz?"
     },
     {
       "id": "2",
       "category": "Kollegen",
       "points": "30",
       "answer": "Trypophobie",
-      "question": "Welche Angst hat Simon"
+      "question": "Welche Angst hat Simon?"
     },
     {
       "id": "3",
       "category": "Kollegen",
       "points": "40",
-      "answer": "Jägermeister",
-      "question": ""
+      "answer": "England",
+      "question": "Wohin geht evtl Johann und möchte Andreas Haberberger hin?"
     },
     {
       "id": "4",
@@ -32,7 +32,7 @@
       "id": "5",
       "category": "MF global",
       "points": "10",
-      "answer": "Die Firmenband",
+      "answer": "Die Firmenband.",
       "question": "Wer oder was ist BOA?"
     },
     {
@@ -40,7 +40,7 @@
       "category": "MF global",
       "points": "20",
       "answer": "2002.",
-      "question": "Seit wann gibt es die Mayflower GmbH?"
+      "question": "Seit wann gibt es Die Mayflower GmbH?"
     },
     {
       "id": "7",
@@ -53,27 +53,27 @@
       "id": "8",
       "category": "MF global",
       "points": "40",
-      "answer": "Interface that indicates a class depends on the container.",
-      "question": "What is the ContainerAwareInterface?');"
+      "answer": "1.589km",
+      "question": "Wie weit ist der Münchner Standort von hier mit Auto?"
     },
     {
       "id": "9",
       "category": "MF global",
       "points": "50",
-      "answer": "A [logging] standard which is implemented in MF global by using Monolog.",
-      "question": "What is PSR-3?');"
+      "answer": "Mallorca",
+      "question": "Wo waren wir zweimal beim BarCamp?"
     },
     {
       "id": "10",
       "category": "teams",
       "points": "10",
       "answer": "Macht die besten MayFlower Kekse.",
-      "question": "Wer ist Admin."
+      "question": "Wer ist Admin?"
     },
     {
       "id": "11",
       "category": "teams",
-      "points": "20",
+      "points": "50",
       "answer": "Nagelbier.",
       "question": "Was ist das Lieblingsbier des Louis-Teams?"
     },
@@ -81,22 +81,22 @@
       "id": "12",
       "category": "teams",
       "points": "30",
-      "answer": "This is a plain teams function passed to some method as an argument or option.",
-      "question": "What is a callback ?');"
+      "answer": "Tel.: 1111",
+      "question": "Wie ist die Durchwahl von Christine Färber?"
     },
     {
       "id": "13",
       "category": "teams",
       "points": "40",
-      "answer": "With this mode you can not use undeclared variables.",
-      "question": "What is strict mode ?');"
+      "answer": "Sie recherchierten über 20 Entscheidungsmethoden.",
+      "question": "Was ist die Managementrunde ?"
     },
     {
       "id": "14",
       "category": "teams",
-      "points": "50",
-      "answer": "A variable is overridden in JS.",
-      "question": "What is shadowing ?');"
+      "points": "20",
+      "answer": "Soziales Netzwerk für Gebäude.",
+      "question": "Was ist Mapolis? "
     },
     {
       "id": "15",
@@ -109,64 +109,64 @@
       "id": "16",
       "category": "Standorte",
       "points": "20",
-      "answer": "Its the \"brain\" of a computer.",
-      "question": "What is the CPU ? (Central processing unit)');"
+      "answer": "Hauptgrund für den Münchner Umzug.",
+      "question": "Was ist eine Dachterrasse?"
     },
     {
       "id": "17",
       "category": "Standorte",
-      "points": "30",
-      "answer": "42",
-      "question": "What is the \"Answer to the Ultimate Question of Life"
+      "points": "40",
+      "answer": "Mayflower - (m)eine Perle.",
+      "question": "Was ist HH?"
     },
     {
       "id": "18",
       "category": "Standorte",
-      "points": "40",
-      "answer": "Compu-Global-Hyper-Mega-Net",
-      "question": "What is the name of Homer Simpsons internet company ?');"
+      "points": "30",
+      "answer": "Meinaustr",
+      "question": "In welcher Strasse war das erste Würzburger Büro?"
     },
     {
       "id": "19",
       "category": "Standorte",
       "points": "50",
-      "answer": "brainfuck",
-      "question": "What is an esoteric programmic langue for your brain ?');"
+      "answer": "49.796728, 9.954574",
+      "question": "Wo ist das Würzburger Office?"
     },
     {
       "id": "20",
-      "category": "mayflower",
+      "category": "Die Mayflower",
       "points": "10",
       "answer": "Christoper Jones",
       "question": "Wer war der Cptn der Mayflower?"
     },
     {
       "id": "21",
-      "category": "mayflower",
+      "category": "Die Mayflower",
       "points": "20",
       "answer": "Plymouth",
-      "question": "Wo fuhr die Mayflower los ?"
+      "question": "Wo fuhr Die Mayflower los ?"
     },
     {
       "id": "22",
-      "category": "mayflower",
+      "category": "Die Mayflower",
       "points": "30",
       "answer": "Cape Cod",
-      "question": "Who is Sebastian Bergmann ?');"
+      "question": "Wo kam Die Mayflower an?"
     },
     {
       "id": "23",
-      "category": "mayflower",
+      "category": "Die Mayflower",
       "points": "40",
-      "answer": "He is the \"T\" in a CAPTCHA.",
-      "question": "Who is Alan Turing ? (Completely Automated Public Turing test to tell Computers and Humans Apart)');"
+      "answer": "102",
+      "question": "Wieviele Passagiere waren an Board?"
     },
     {
       "id": "24",
-      "category": "mayflower",
+      "category": "Die Mayflower",
       "points": "50",
-      "answer": "He is the developer of XDebug.",
-      "question": "Who is Derick Rethans ?');"
+      "answer": "Weinhandel.",
+      "question": "Was der Hauptzweck der Bootsklasse \"Mayflower\"?"
     },
     {
       "id": "25",
@@ -174,6 +174,77 @@
       "points": "10",
       "answer": "Die Gute.",
       "question": "Wer ist Ute?"
+    },
+    {
+      "id": "26",
+      "category": "Produkte",
+      "points": "40",
+      "answer": "Phprojekt",
+      "question": "Welches Produkt ist im Heise News Ticker gelandet ?"
+    },
+    {
+      "id": "27",
+      "category": "Produkte",
+      "points": "20",
+      "answer": "Plöppspeicher.",
+      "question": "Was sind Flaschenöffner USB Sticks?"
+    },
+    {
+      "id": "28",
+      "category": "Produkte",
+      "points": "30",
+      "answer": "Ein 'Deck' voller Missverständnisse!",
+      "question": "Was sind die Mayflower Anti-Pattern Karten?"
+    },
+    {
+      "id": "29",
+      "category": "Produkte",
+      "points": "50",
+      "answer": "Chorizo",
+      "question": "Bei welchem Prodkut hat Mayflower spätestens gemerkt, dass es nicht Produkte kann?"
+    },
+    {
+      "id": "30",
+      "category": "Produkte",
+      "points": "10",
+      "answer": "Der 31.12. hat schonmal darin gefehlt.",
+      "question": "Was ist der Mayflower Team Kalender ?"
+    },
+    {
+      "id": "31",
+      "category": "Agil",
+      "points": "10",
+      "answer": "Die drei Fragen.",
+      "question": "Was ist das Daily StandUp?"
+    },
+    {
+      "id": "32",
+      "category": "Agil",
+      "points": "40",
+      "answer": "DEEPer-SHIT",
+      "question": "Was ist das Produkt-BackLog?"
+    },
+    {
+      "id": "33",
+      "category": "Agil",
+      "points": "30",
+      "answer": "Promise of conversation.",
+      "question": "Was ist eine User-Story?"
+    },
+    {
+      "id": "34",
+      "category": "Agil",
+      "points": "20",
+      "answer": "Die Thesen wurden von 4 Reformern an die Tür genagelt.",
+      "question": "Was ist das agile Manifest?"
+    },
+    {
+      "id": "35",
+      "category": "Agil",
+      "points": "50",
+      "answer": "$sindNichtMitAufDemBarcamp . 'w'",
+      "question": "Was ist Flow?"
+
     }
   ]
 }
