@@ -22,6 +22,10 @@ db_path: '../Var/Data/jeopardy.db'
 db_type: 'sqlite3'
 ```
 
+# Consider this:
+
+Answer should be as precise as possible, to help contestants asking the correct question.
+
 If you dont want to edit a sqlite3 file, you can use the database.json file.
 
 Set the paramaters.yml to:

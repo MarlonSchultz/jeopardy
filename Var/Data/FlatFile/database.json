@@ -4,7 +4,7 @@
       "id": "1",
       "category": "Kollegen",
       "points": "20",
-      "answer": "Chunk",
+      "answer": "Tschunk",
       "question": "Was ist die Spezialität von Willi Butz?"
     },
     {
@@ -12,7 +12,7 @@
       "category": "Kollegen",
       "points": "30",
       "answer": "Trypophobie",
-      "question": "Welche Angst hat Simon?"
+      "question": "Welche Angst hat Simon W.?"
     },
     {
       "id": "3",
@@ -228,7 +228,7 @@
       "id": "33",
       "category": "Agil",
       "points": "30",
-      "answer": "Promise of conversation.",
+      "answer": "Promise for conversation.",
       "question": "Was ist eine User-Story?"
     },
     {
@@ -242,7 +242,7 @@
       "id": "35",
       "category": "Agil",
       "points": "50",
-      "answer": "$sindNichtMitAufDemBarcamp . 'w'",
+      "answer": "<?= $sindNichtMitAufDemBarcamp . 'w' ?>",
       "question": "Was ist Flow?"
 
     }
