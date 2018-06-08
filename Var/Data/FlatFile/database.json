@@ -39,14 +39,14 @@
       "id": "6",
       "category": "MF global",
       "points": "20",
-      "answer": "2002.",
-      "question": "Seit wann gibt es Die Mayflower GmbH?"
+      "answer": "Sie wurde 2002 gegründet.",
+      "question": "Seit wann gibt es die Mayflower GmbH?"
     },
     {
       "id": "7",
       "category": "MF global",
       "points": "30",
-      "answer": "13",
+      "answer": "13 Personen.",
       "question": "Wie viele weibliche Mitarbeiter hat MF ?"
     },
     {
@@ -54,7 +54,7 @@
       "category": "MF global",
       "points": "40",
       "answer": "1.589km",
-      "question": "Wie weit ist der Münchner Standort von hier mit Auto?"
+      "question": "Wie weit ist der Münchner Standort von hier mit Auto entfernt?"
     },
     {
       "id": "9",
@@ -145,14 +145,14 @@
       "category": "Die Mayflower",
       "points": "20",
       "answer": "Plymouth",
-      "question": "Wo fuhr Die Mayflower los ?"
+      "question": "Wo fuhr die Mayflower los ?"
     },
     {
       "id": "22",
       "category": "Die Mayflower",
       "points": "30",
       "answer": "Cape Cod",
-      "question": "Wo kam Die Mayflower an?"
+      "question": "Wo kam die Mayflower an?"
     },
     {
       "id": "23",
@@ -172,15 +172,15 @@
       "id": "25",
       "category": "Kollegen",
       "points": "10",
-      "answer": "Die Gute.",
+      "answer": "\"Die Gute\".",
       "question": "Wer ist Ute?"
     },
     {
       "id": "26",
       "category": "Produkte",
       "points": "40",
-      "answer": "Phprojekt",
-      "question": "Welches Produkt ist im Heise News Ticker gelandet ?"
+      "answer": "Es wurde mehrfach im Heise Newsticker erwähnt.",
+      "question": "Was ist PhProjekt ?"
     },
     {
       "id": "27",
@@ -201,7 +201,7 @@
       "category": "Produkte",
       "points": "50",
       "answer": "Chorizo",
-      "question": "Bei welchem Prodkut hat Mayflower spätestens gemerkt, dass es nicht Produkte kann?"
+      "question": "Bei welchem Produkt hat Mayflower spätestens gemerkt, dass es nicht Produkte kann?"
     },
     {
       "id": "30",
