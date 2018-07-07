@@ -1,0 +1,214 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "category": "Backlog",
+      "points": "10",
+      "answer": "It's Ordered to optimize the value of the work the dev team performs.",
+      "question": "What is a backlog?"
+    },
+    {
+      "id": "2",
+      "category": "Backlog",
+      "points": "20",
+      "answer": "It is Estimated, Prioritised, Detailed Appropriately and Emergent.",
+      "question": "What is a DEEP Backlog?"
+    },
+    {
+      "id": "3",
+      "category": "Backlog",
+      "points": "50",
+      "answer": "Prof Noriaki Kano knows her exciting places.",
+      "question": "What is the Kano Model(l)?"
+    },
+    {
+      "id": "4",
+      "category": "Backlog",
+      "points": "30",
+      "answer": "The price you pay for being late.",
+      "question": "What is Cost of Delay?"
+    },
+    {
+      "id": "5",
+      "category": "Backlog",
+      "points": "40",
+      "answer": "Things You Must, Should, Could or Would do in russia.",
+      "question": "What is the MoSCoW method?"
+    },
+    {
+      "id": "6",
+      "category": "Rituals",
+      "points": "10",
+      "answer": "Look backward to improve forward.",
+      "question": "What is the retrospective?"
+    },
+    {
+      "id": "7",
+      "category": "Rituals",
+      "points": "20",
+      "answer": "It's not grooming anymore.",
+      "question": "What is the refinement meeting?"
+    },
+    {
+      "id": "8",
+      "category": "Rituals",
+      "points": "30",
+      "answer": "It's their own planning.",
+      "question": "What is the sprint planning 2?"
+    },
+    {
+      "id": "9",
+      "category": "Rituals",
+      "points": "40",
+      "answer": "An informal meeting, not a reporting meeting.",
+      "question": "What is the Review Meeting?"
+    },
+    {
+      "id": "10",
+      "category": "Rituals",
+      "points": "50",
+      "answer": "Where the PO does not assign tasks in the Morning.",
+      "question": "What is the daily scrum?"
+    },
+    {
+      "id": "11",
+      "category": "Roles",
+      "points": "10",
+      "answer": "Accountable for ensuring that the team delivers value to the business.",
+      "question": "What is the Product Owner?"
+    },
+    {
+      "id": "12",
+      "category": "Roles",
+      "points": "20",
+      "answer": "POP is an Antipattern, but sometimes you got to do it.",
+      "question": "What is the short version of Product Owner Proxy? What is a Product Owner Proxy?"
+    },
+    {
+      "id": "13",
+      "category": "Roles",
+      "points": "30",
+      "answer": "Design by Dictator.",
+      "question": "How do You call Product Development where one person makes all the decisions?"
+    },
+    {
+      "id": "14",
+      "category": "Roles",
+      "points": "40",
+      "answer": "When they design a horse you'll get a camel.",
+      "question": "What is Design(ed) by / a commitee?"
+    },
+    {
+      "id": "15",
+      "category": "Roles",
+      "points": "50",
+      "answer": "Someone cries when you kill a puppy.",
+      "question": "What is the difference between a stakeholder and a puppy?"
+    },
+    {
+      "id": "16",
+      "category": "Stories",
+      "points": "10",
+      "answer": "The right place to INVEST.",
+      "question": "What are (ready) User Stories/DoR/is Readiness?"
+    },
+    {
+      "id": "17",
+      "category": "Stories",
+      "points": "20",
+      "answer": "A time-boxed investigation to resolve uncertainty around the implementation.",
+      "question": "What is a Spike?"
+    },
+    {
+      "id": "18",
+      "category": "Stories",
+      "points": "30",
+      "answer": "Not the Department of Defense.",
+      "question": "What is the DoD / the Definition of Done?"
+    },
+    {
+      "id": "19",
+      "category": "Stories",
+      "points": "40",
+      "answer": "When You are DONE with it. Twice!",
+      "question": "What is Done Done (Done)?"
+    },
+    {
+      "id": "20",
+      "category": "Stories",
+      "points": "50",
+      "answer": "The CCC of a User Story",
+      "question": "What is Card, Conversation, Confirmation?"
+    },
+    {
+      "id": "21",
+      "category": "Strategy",
+      "points": "10",
+      "answer": "It is minimal, but it is viable",
+      "question": "What is the MVP?"
+    },
+    {
+      "id": "22",
+      "category": "Strategy",
+      "points": "20",
+      "answer": "Eric Ries invented it when he ran out of money.",
+      "question": "What is Lean Startup?"
+    },
+    {
+      "id": "23",
+      "category": "Strategy",
+      "points": "30",
+      "answer": "It's visionary, sets the direction and guides the Scrum team.",
+      "question": "What is the Product Vision?"
+    },
+    {
+      "id": "24",
+      "category": "Strategy",
+      "points": "40",
+      "answer": "_ _ _ _ Canvas / Startup / Analytics / on me ...",
+      "question": "What is Lean?"
+    },
+    {
+      "id": "25",
+      "category": "Strategy",
+      "points": "50",
+      "answer": "Santa is there, Toyota want's to get there.",
+      "question": "What is the True North?"
+    },
+    {
+      "id": "26",
+      "category": "Tools",
+      "points": "10",
+      "answer": "It burns if it doesn't go down.",
+      "question": "What is a burndown chart?"
+    },
+    {
+      "id": "27",
+      "category": "Tools",
+      "points": "20",
+      "answer": "Where Alex Osterwalder started his Modeling Career.",
+      "question": "What is Business Modeling / the Business Model Canvas?"
+    },
+    {
+      "id": "28",
+      "category": "Tools",
+      "points": "30",
+      "answer": "Jeff Patton has them on his map.",
+      "question": "What are Stories?"
+    },
+    {
+      "id": "29",
+      "category": "Tools",
+      "points": "40",
+      "answer": "A short product vision, without stairs.",
+      "question": "What is the Elevator Pitch (Template)?"
+    },
+    {
+      "id": "30",
+      "category": "Tools",
+      "points": "50",
+      "answer": "Metrics that make you go \"AARRR!\"",
+      "question": "What are Pirate Metrics? What is Acquisition, Activation, Retention, Referral, Revenue?"
+    }
+  ]
+}
