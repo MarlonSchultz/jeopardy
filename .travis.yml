@@ -7,4 +7,4 @@ before_script:
   - composer install
 script:
   - php vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 Controller/ Library/ Model/ ValueObject/
-  - vendor/phpunit/phpunit/phpunit --no-configuration /var/www/jeopardy/Code/Tests
+  - vendor/phpunit/phpunit/phpunit --no-configuration Tests
