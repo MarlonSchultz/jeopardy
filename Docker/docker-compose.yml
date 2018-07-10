@@ -1,11 +1,35 @@
 version: "2.0"
 services:
-  nginx-php-fpm:
-    image: richarvey/nginx-php-fpm
-    container_name: php_container
-    restart: always
-    ports:
-        - 80:80
+  jeophardy_nginx:
+    image: nginx:latest
     volumes:
-      - ../:/var/www/jeophpardy
-      - ./nginx.conf:/etc/nginx/sites-enabled/default.conf
+      - ../Code/:/var/www/jeophpardy
+      - ./nginx.conf:/etc/nginx/conf.d/site.conf
+    ports:
+      - "80:80"
+    links:
+      - jeophpardy_php
+      - jeophpardy_db
+
+  jeophpardy_php:
+      build:
+        context: .
+        dockerfile: Dockerfile_php
+      environment:
+          PHP_IDE_CONFIG: "serverName=jeophpardy.local"
+      volumes:
+          - ../Code/:/var/www/jeophpardy
+
+  jeophpardy_db:
+      container_name: jeophpardy_db
+      image: mysql:latest
+      environment:
+          MYSQL_ROOT_PASSWORD: toor
+          MYSQL_USER: dev
+          MYSQL_PASSWORD: dev
+          MYSQL_DATABASE: jeophpardy
+      ports:
+          - "3308:3306"
+      restart: always
+      volumes:
+          - ../mysql-data:/var/lib/mysql
