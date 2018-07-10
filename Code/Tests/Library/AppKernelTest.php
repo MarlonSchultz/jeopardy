@@ -12,9 +12,10 @@ namespace Tests\Library;
 use mgbs\Library\AppKernel;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RouteCollection;
 
-class AppKernelTest extends \PHPUnit_Framework_TestCase
+class AppKernelTest extends TestCase
 {
     public function testIfKernelReturnsHttpKernelInterface()
     {

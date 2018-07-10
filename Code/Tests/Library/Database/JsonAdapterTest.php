@@ -10,9 +10,10 @@ declare(strict_types = 1);
 namespace mgbs\Tests\Library\Database;
 
 use mgbs\Library\Database\JsonAdapter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class JsonAdapterTest extends \PHPUnit_Framework_TestCase
+class JsonAdapterTest extends TestCase
 {
     public function testIfFileNotFoundExceptionIsThrownIfFileIsNotFound()
     {

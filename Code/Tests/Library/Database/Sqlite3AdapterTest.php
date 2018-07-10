@@ -10,9 +10,10 @@ declare(strict_types = 1);
 namespace mgbs\Tests\Library\Database;
 
 use mgbs\Library\Database\Sqlite3Adapter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class Sqlite3AdapterTest extends \PHPUnit_Framework_TestCase
+class Sqlite3AdapterTest extends TestCase
 {
     public function testIfFileNotFoundExceptionIsThrownIfFileIsNotFound()
     {
