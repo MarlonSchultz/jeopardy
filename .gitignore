@@ -2,5 +2,5 @@
 .gitignore
 .idea/
 /Code/vendor/
-Code/Var/Cache/
+/Code/Var/Cache/
 /mysql-data/
