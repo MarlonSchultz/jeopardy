@@ -10,10 +10,11 @@ declare(strict_types = 1);
 namespace Tests\Library;
 
 use mgbs\Library\Routes;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Routing\RouteCollection;
 
-class RoutesTest extends \PHPUnit_Framework_TestCase
+class RoutesTest extends TestCase
 {
     public function testIfRoutesAreReturnedCorrectly()
     {

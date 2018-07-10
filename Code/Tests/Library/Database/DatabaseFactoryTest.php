@@ -10,8 +10,9 @@ declare(strict_types = 1);
 namespace Tests\Library\Database;
 
 use mgbs\Library\Database\DatabaseFactory;
+use PHPUnit\Framework\TestCase;
 
-class DatabaseFactoryTest extends \PHPUnit_Framework_TestCase
+class DatabaseFactoryTest extends TestCase
 {
     public function testIfSQLite3ReturnsPDOObject()
     {
