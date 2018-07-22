@@ -1,12 +1,9 @@
-[![Build Status](https://travis-ci.org/MarlonSchultz/jeopardy.svg?branch=master)](https://travis-ci.org/MarlonSchultz/jeopardy)
+[![Build Status](https://travis-ci.org/mayflower/jeopardy.svg?branch=master)](https://travis-ci.org/mayflower/jeopardy)
 
 # Jeopardy in PHP
 
 This is a simple implementation of the game "Jeopardy".
 It relies on PHP 7 and SQLite3.
-
-# Run on heruko
-https://jeophpardy.herokuapp.com/
 
 # Install locally
 
