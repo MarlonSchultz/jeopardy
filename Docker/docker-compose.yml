@@ -22,14 +22,9 @@ services:
 
   jeophpardy_db:
       container_name: jeophpardy_db
-      image: mysql:latest
-      environment:
-          MYSQL_ROOT_PASSWORD: toor
-          MYSQL_USER: dev
-          MYSQL_PASSWORD: dev
-          MYSQL_DATABASE: jeophpardy
+      image: postgres:latest
       ports:
           - "3308:3306"
       restart: always
       volumes:
-          - ../mysql-data:/var/lib/mysql
+        - ./postgres-data:/var/lib/postgresql/data
