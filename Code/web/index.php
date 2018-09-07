@@ -12,6 +12,7 @@ $request = Request::createFromGlobals();
 
 $routes = new Routes();
 $kernel = (new AppKernel($routes->getRoutes()))->getKernel();
+
 DI::setRoutes($routes->getRoutes());
 DI::getContainer()->set('request', $request);
 

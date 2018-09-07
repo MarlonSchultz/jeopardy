@@ -8,3 +8,9 @@ services:
     arguments: ['@database']
     calls:
         - [setTableName, ['questions']]
+
+  playeranswermodel:
+    class: mgbs\Model\PlayerAnswerModel
+    arguments: ['@database']
+    calls:
+    - [setTableName, ['playeranswers']]
