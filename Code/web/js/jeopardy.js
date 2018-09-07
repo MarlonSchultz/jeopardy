@@ -47,8 +47,7 @@ function closeAnswer(el) {
     var content =
         '<div class="card ' + cssClass + '">' +
         '<div class="card-content white-text">' +
-        '<div class="text-center"><strong>Answer: </strong>' + answer + '</div>' +
-        '<div><strong>Question: </strong>' + question + '</div>' +
+        '<span class="card-title">ANSWERED</span>' +
         '</div>' +
         '</div>';
     cell.html(content);

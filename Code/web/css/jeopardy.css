@@ -2,3 +2,11 @@
     width: 80% !important;
     max-height: none;
 }
+
+table.fixed {
+    table-layout: fixed;
+}
+
+.card.green .card-title, .card.red .card-title {
+    color: transparent !important;
+}
