@@ -3,7 +3,7 @@ services:
   jeophardy_nginx:
     image: nginx:latest
     volumes:
-      - ../Code/:/var/www/jeophpardy
+      - ../Code/PHP:/var/www/jeophpardy
       - ./nginx.conf:/etc/nginx/conf.d/site.conf
     ports:
       - "8080:80"
@@ -17,4 +17,4 @@ services:
       environment:
           PHP_IDE_CONFIG: "serverName=jeophpardy.local"
       volumes:
-          - ../Code/:/var/www/jeophpardy
+          - ../Code/PHP:/var/www/jeophpardy
