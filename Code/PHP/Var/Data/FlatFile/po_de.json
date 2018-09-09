@@ -11,7 +11,7 @@
       "id": "2",
       "category": "Backlog & Priorisierung",
       "points": "20",
-      "answer": "Apropriat detailliert, Estimated, Emergent und Priorisiert.",
+      "answer": "Angemessen detailliert, geschätzt, emergent und priorisiert.",
       "question": "Was ist ein/das DEEP Backlog?"
     },
     {
@@ -33,7 +33,7 @@
       "category": "Backlog & Priorisierung",
       "points": "40",
       "answer": "Beschreibt, was man in Russland tun müsste, sollte, könnte oder würde.",
-      "question": "Was ist die MoSCoW method?"
+      "question": "Was ist die MoSCoW Methode?"
     },
     {
       "id": "6",
@@ -46,14 +46,14 @@
       "id": "7",
       "category": "Rituale",
       "points": "20",
-      "answer": "The Ritual formerly known as Grooming.",
+      "answer": "Das Ritual, das man auch als Grooming kennt.",
       "question": "Was ist das Refinement?"
     },
     {
       "id": "8",
       "category": "Rituale",
       "points": "30",
-      "answer": "Jeden Tag & drei Fragen. ",
+      "answer": "Es findet jeden Tag statt & beantwortet drei Fragen.",
       "question": "Was ist das Daily Scrum?"
     },
     {
@@ -74,7 +74,7 @@
       "id": "11",
       "category": "Rollen",
       "points": "10",
-      "answer": "Er ist veranrtwortlich dafür, dass das Team Wert liefert.",
+      "answer": "Er ist verantwortlich dafür, dass das Team Wert liefert.",
       "question": "Wer ist der Product Owner?"
     },
     {
@@ -109,7 +109,7 @@
       "id": "16",
       "category": "Stories",
       "points": "10",
-      "answer": "... in gute User Stories und SMARTE Tasks.",
+      "answer": "Ein Akronym und Gedankenstütze für Backlog Items guter Qualität.",
       "question": "Was ist INVEST?"
     },
     {
