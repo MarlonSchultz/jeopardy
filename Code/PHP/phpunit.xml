@@ -39,8 +39,10 @@
             <directory>./Model/</directory>
             <directory>./ValueObject/</directory>
             <directory>./View/</directory>
+            <directory>./DTO/</directory>
             <exclude>
                 <directory>./Var/</directory>
+                <directory>./web/</directory>
             </exclude>
         </whitelist>
     </filter>

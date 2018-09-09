@@ -39,7 +39,7 @@ class JeopardyItem
      * @param string $answer
      * @param string $question
      */
-    public function __construct($id, $category, $points, $answer, $question)
+    public function __construct(int $id, string $category, int $points, string $answer, string $question)
     {
         $this->id = $id;
         $this->category = $category;
