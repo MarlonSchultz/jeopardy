@@ -20,18 +20,19 @@ use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\EnvVarProcessorInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Tests\Fixtures\StubbedTranslator;
-use Symfony\Component\DependencyInjection\TypedReference;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\DependencyInjection\Tests\Fixtures\CustomDefinition;
+use Symfony\Component\DependencyInjection\Tests\Fixtures\StubbedTranslator;
 use Symfony\Component\DependencyInjection\Tests\Fixtures\TestServiceSubscriber;
+use Symfony\Component\DependencyInjection\TypedReference;
 use Symfony\Component\DependencyInjection\Variable;
 use Symfony\Component\ExpressionLanguage\Expression;
 
@@ -96,10 +97,10 @@ class PhpDumperTest extends TestCase
 
         $container = new ContainerBuilder();
         $container->setDefinition('test', $definition);
-        $container->setParameter('foo', 'wiz'.dirname(__DIR__));
+        $container->setParameter('foo', 'wiz'.\dirname(__DIR__));
         $container->setParameter('bar', __DIR__);
         $container->setParameter('baz', '%bar%/PhpDumperTest.php');
-        $container->setParameter('buz', dirname(dirname(__DIR__)));
+        $container->setParameter('buz', \dirname(\dirname(__DIR__)));
         $container->compile();
 
         $dumper = new PhpDumper($container);
@@ -184,7 +185,7 @@ class PhpDumperTest extends TestCase
     {
         $container = include self::$fixturesPath.'/containers/container9.php';
         $dumper = new PhpDumper($container);
-        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services9.php', str_replace(str_replace('\\', '\\\\', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), '%path%', $dumper->dump()), '->dump() dumps services');
+        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services9.php', str_replace(str_replace('\\', '\\\\', self::$fixturesPath.\DIRECTORY_SEPARATOR.'includes'.\DIRECTORY_SEPARATOR), '%path%', $dumper->dump()), '->dump() dumps services');
     }
 
     public function testAddService()
@@ -192,7 +193,7 @@ class PhpDumperTest extends TestCase
         $container = include self::$fixturesPath.'/containers/container9.php';
         $container->compile();
         $dumper = new PhpDumper($container);
-        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services9_compiled.php', str_replace(str_replace('\\', '\\\\', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), '%path%', $dumper->dump()), '->dump() dumps services');
+        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services9_compiled.php', str_replace(str_replace('\\', '\\\\', self::$fixturesPath.\DIRECTORY_SEPARATOR.'includes'.\DIRECTORY_SEPARATOR), '%path%', $dumper->dump()), '->dump() dumps services');
 
         $container = new ContainerBuilder();
         $container->register('foo', 'FooClass')->addArgument(new \stdClass())->setPublic(true);
@@ -214,7 +215,7 @@ class PhpDumperTest extends TestCase
         $container->compile();
         $dumper = new PhpDumper($container);
         $dump = print_r($dumper->dump(array('as_files' => true, 'file' => __DIR__, 'hot_path_tag' => 'hot')), true);
-        if ('\\' === DIRECTORY_SEPARATOR) {
+        if ('\\' === \DIRECTORY_SEPARATOR) {
             $dump = str_replace('\\\\Fixtures\\\\includes\\\\foo.php', '/Fixtures/includes/foo.php', $dump);
         }
         $this->assertStringMatchesFormatFile(self::$fixturesPath.'/php/services9_as_files.txt', $dump);
@@ -530,50 +531,22 @@ class PhpDumperTest extends TestCase
         $container->compile();
 
         $dumper = new PhpDumper($container);
-        $dumper->dump();
-
-        $this->addToAssertionCount(1);
-    }
-
-    public function testCircularReferenceAllowanceForInlinedDefinitionsForLazyServices()
-    {
-        /*
-         *   test graph:
-         *              [connection] -> [event_manager] --> [entity_manager](lazy)
-         *                                                           |
-         *                                                           --(call)- addEventListener ("@lazy_service")
-         *
-         *              [lazy_service](lazy) -> [entity_manager](lazy)
-         *
-         */
-
-        $container = new ContainerBuilder();
-
-        $eventManagerDefinition = new Definition('stdClass');
-
-        $connectionDefinition = $container->register('connection', 'stdClass')->setPublic(true);
-        $connectionDefinition->addArgument($eventManagerDefinition);
-
-        $container->register('entity_manager', 'stdClass')
-            ->setPublic(true)
-            ->setLazy(true)
-            ->addArgument(new Reference('connection'));
-
-        $lazyServiceDefinition = $container->register('lazy_service', 'stdClass');
-        $lazyServiceDefinition->setPublic(true);
-        $lazyServiceDefinition->setLazy(true);
-        $lazyServiceDefinition->addArgument(new Reference('entity_manager'));
-
-        $eventManagerDefinition->addMethodCall('addEventListener', array(new Reference('lazy_service')));
-
-        $container->compile();
-
-        $dumper = new PhpDumper($container);
-
         $dumper->setProxyDumper(new \DummyProxyDumper());
         $dumper->dump();
 
         $this->addToAssertionCount(1);
+
+        $dumper = new PhpDumper($container);
+
+        $message = 'Circular reference detected for service "foo", path: "foo -> bar -> foo". Try running "composer require symfony/proxy-manager-bridge".';
+        if (method_exists($this, 'expectException')) {
+            $this->expectException(ServiceCircularReferenceException::class);
+            $this->expectExceptionMessage($message);
+        } else {
+            $this->setExpectedException(ServiceCircularReferenceException::class, $message);
+        }
+
+        $dumper->dump();
     }
 
     public function testDedupLazyProxy()
@@ -851,6 +824,12 @@ class PhpDumperTest extends TestCase
 
         $foo5 = $container->get('foo5');
         $this->assertSame($foo5, $foo5->bar->foo);
+
+        $manager = $container->get('manager');
+        $this->assertEquals(new \stdClass(), $manager);
+
+        $manager = $container->get('manager2');
+        $this->assertEquals(new \stdClass(), $manager);
     }
 
     public function provideAlmostCircular()
@@ -867,7 +846,7 @@ class PhpDumperTest extends TestCase
         $dumper = new PhpDumper($container);
 
         $dump = $dumper->dump(array('hot_path_tag' => 'container.hot_path', 'inline_class_loader_parameter' => 'inline_requires', 'file' => self::$fixturesPath.'/php/services_inline_requires.php'));
-        if ('\\' === DIRECTORY_SEPARATOR) {
+        if ('\\' === \DIRECTORY_SEPARATOR) {
             $dump = str_replace("'\\\\includes\\\\HotPath\\\\", "'/includes/HotPath/", $dump);
         }
 
@@ -911,6 +890,29 @@ class PhpDumperTest extends TestCase
         $container = new \Symfony_DI_PhpDumper_Test_Object_Class_Name();
 
         $this->assertInstanceOf('stdClass', $container->get('bar'));
+    }
+
+    public function testUninitializedSyntheticReference()
+    {
+        $container = new ContainerBuilder();
+        $container->register('foo', 'stdClass')->setPublic(true)->setSynthetic(true);
+        $container->register('bar', 'stdClass')->setPublic(true)->setShared(false)
+            ->setProperty('foo', new Reference('foo', ContainerBuilder::IGNORE_ON_UNINITIALIZED_REFERENCE));
+
+        $container->compile();
+
+        $dumper = new PhpDumper($container);
+        eval('?>'.$dumper->dump(array(
+            'class' => 'Symfony_DI_PhpDumper_Test_UninitializedSyntheticReference',
+            'inline_class_loader_parameter' => 'inline_requires',
+        )));
+
+        $container = new \Symfony_DI_PhpDumper_Test_UninitializedSyntheticReference();
+
+        $this->assertEquals((object) array('foo' => null), $container->get('bar'));
+
+        $container->set('foo', (object) array(123));
+        $this->assertEquals((object) array('foo' => (object) array(123)), $container->get('bar'));
     }
 
     /**

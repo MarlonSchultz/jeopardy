@@ -23,4 +23,4 @@ RUN apt-get install -y git unzip libpng-dev wget default-jre mysql-client libmys
     usermod -u 1000 www-data ; \
     groupmod -g 1000 www-data
 
-WORKDIR /var/www/jeopardy
+WORKDIR /var/www/jeophpardy
