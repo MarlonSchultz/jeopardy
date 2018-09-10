@@ -1,5 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-.gitignore
 .idea/
 /Code/PHP/vendor/
 Code/PHP/Var/Cache/Twig/
