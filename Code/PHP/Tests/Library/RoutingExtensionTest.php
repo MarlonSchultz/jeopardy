@@ -8,11 +8,9 @@
 
 namespace mgbs\PHP\Library;
 
-use mgbs\Library\Routes;
 use mgbs\Library\RoutingExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RequestContext;
 
 class RoutingExtensionTest extends TestCase
 {

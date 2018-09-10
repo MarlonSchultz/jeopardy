@@ -35,6 +35,4 @@ class RestController
         $this->playeranswermodel->insertBuzz((int) $buzzer);
         return new Response('KotRoller aufgerufen . ');
     }
-
-
 }
