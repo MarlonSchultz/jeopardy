@@ -6,7 +6,10 @@ admin_page:
     defaults: { _controller: 'mgbs\Controller\IndexController::adminAction' }
 rest_buzzer:
     path:       /buzzer/{buzzer}
-    defaults: { _controller: 'mgbs\Controller\RestController::buzzerAction' }
+    defaults: { _controller: 'mgbs\Controller\Rest\BuzzerController::buzzerAction' }
+rest_get_all_answers:
+    path:       /api/getAllAnswers
+    defaults: { _controller: 'mgbs\Controller\Rest\DataController::getAnswersAction' }
 landing_page:
     path:     /
     defaults: { _controller: 'mgbs\Controller\IndexController::indexAction' }
