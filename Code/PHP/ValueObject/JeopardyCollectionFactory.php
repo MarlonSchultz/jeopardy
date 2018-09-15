@@ -10,9 +10,6 @@ declare(strict_types = 1);
 namespace mgbs\ValueObject;
 
 use mgbs\Model\QuestionsModel;
-use mgbs\ValueObject\JeopardyCollection;
-use mgbs\ValueObject\JeopardyItem;
-use mgbs\ValueObject\JeopardyRowCollection;
 
 class JeopardyCollectionFactory
 {

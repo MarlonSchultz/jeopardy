@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace mgbs\Controller;
+namespace mgbs\Controller\Rest;
 
 use mgbs\Library\DITrait;
 use mgbs\Model\PlayerAnswerModel;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Date: 16.01.17
  * Time: 19:37
  */
-class RestController
+class BuzzerController
 {
     use DITrait;
 
