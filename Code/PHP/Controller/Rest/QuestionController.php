@@ -36,10 +36,12 @@ class QuestionController
         return new JsonResponse($data);
     }
 
-    public function setQuestionOpenClosed(int $questionId): void
+    public function setQuestionOpenAction(int $questionId): JsonResponse
     {
-        $this->playerAnswerModel->getQuestionById($questionId);
+        $isAnswerOpen = $this->playerAnswerModel->isAnswerOpen($questionId);
+        if (!$isAnswerOpen) {
+            $this->playerAnswerModel->setAnswerOpenClose(1, true);
+        }
+        return new JsonResponse($isAnswerOpen);
     }
-
-
 }

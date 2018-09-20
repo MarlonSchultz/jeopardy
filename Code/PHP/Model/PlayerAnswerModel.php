@@ -19,12 +19,40 @@ class PlayerAnswerModel extends BaseModel
         return $statement->execute();
     }
 
-    public function getQuestionById(int $questionId)
+    public function getAnswerById(int $questionId)
     {
-        $sql = 'SELECT question_id, buzzer_id, correct_or_false, player_answer_id, question_is_open from '
-            .$this->getTableName();
+        $sql = 'SELECT question_id,
+                        buzzer_id,
+                        correct_or_false,
+                        player_answer_id,
+                        question_is_open from ' . $this->getTableName() . ' WHERE question_id = :questionId';
 
-            return $this->connection->exec()
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':questionId', $questionId, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function isAnswerOpen(int $questionId): bool
+    {
+        $sql = 'SELECT count(question_id) as countId from ' . $this->getTableName() . ' WHERE question_id = :questionId and question_is_open';
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':questionId', $questionId, \PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_OBJ);
+        return ((int)$result->countId) === 1;
+    }
+
+    public function setAnswerOpenClose(int $playerAnswerId, bool $open = true): bool
+    {
+        $openInt = $open ? 1 : 0;
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET question_is_open = :open WHERE player_answer_id = :answerId';
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':answerId', $playerAnswerId, \PDO::PARAM_INT);
+        $statement->bindValue(':open', $openInt, \PDO::PARAM_INT);
+        return $statement->execute();
     }
 }
 
