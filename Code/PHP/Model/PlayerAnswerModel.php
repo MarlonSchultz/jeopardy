@@ -10,7 +10,7 @@ namespace mgbs\Model;
 
 class PlayerAnswerModel extends BaseModel
 {
-    public function insertBuzz(int $buzzer): bool
+    public function insertBuzz(int $buzzer, int $questionId): bool
     {
         $sql = 'insert into ' . $this->getTableName()
             . ' (question_id, buzzer_id, correct_or_false) VALUES (1,:buzzer,0)';
@@ -18,4 +18,13 @@ class PlayerAnswerModel extends BaseModel
         $statement->bindValue(':buzzer', $buzzer, \PDO::PARAM_INT);
         return $statement->execute();
     }
+
+    public function getQuestionById(int $questionId)
+    {
+        $sql = 'SELECT question_id, buzzer_id, correct_or_false, player_answer_id, question_is_open from '
+            .$this->getTableName();
+
+            return $this->connection->exec()
+    }
 }
+

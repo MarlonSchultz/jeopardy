@@ -5,10 +5,11 @@ namespace mgbs\Controller\Rest;
 
 
 use mgbs\Library\DITrait;
+use mgbs\Model\PlayerAnswerModel;
 use mgbs\Model\QuestionsModel;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DataController
+class QuestionController
 {
     use DITrait;
 
@@ -16,18 +17,28 @@ class DataController
      * @var QuestionsModel
      */
     private $questionModel;
+    /**
+     * @var PlayerAnswerModel
+     */
+    private $playerAnswerModel;
 
     public function __construct()
     {
         $this->questionModel = $this->getService('questionmodel');
+        $this->playerAnswerModel = $this->getService('playeranswermodel');
     }
 
-    public function getAnswersAction(): JsonResponse
+    public function getAllAnswersAction(): JsonResponse
     {
         if (!\is_array($data = $this->questionModel->getAllQuestions())) {
             throw new \DatabaseException('Seems DB is empty');
         }
         return new JsonResponse($data);
+    }
+
+    public function setQuestionOpenClosed(int $questionId): void
+    {
+        $this->playerAnswerModel->getQuestionById($questionId);
     }
 
 
