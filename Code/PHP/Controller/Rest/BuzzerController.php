@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace mgbs\Controller\Rest;
 
 use mgbs\Library\DITrait;
-use mgbs\Model\PlayerAnswerModel;
+use mgbs\Model\GameEventsModel;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,7 +18,7 @@ class BuzzerController
     use DITrait;
 
     /**
-     * @var PlayerAnswerModel
+     * @var GameEventsModel
      */
     private $playeranswermodel;
 

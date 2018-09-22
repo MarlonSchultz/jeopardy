@@ -10,19 +10,14 @@ rest_buzzer:
 rest_get_all_answers:
     path:       /api/getAllAnswers
     defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::getAllAnswersAction' }
-rest_set_question_open_close:
+rest_set_question_open:
     path:       /api/setQuestionOpen/{questionId}
     requirements:
         questionId: '\d+'
-    defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::setQuestionOpenAction' }
-rest_get_single_question_from_gameplay:
-    path:       /api/getQuestion/{questionId}
-    requirements:
-        questionId: '\d+'
-    defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::setQuestionOpenAction' }
+    defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setQuestionOpenAction' }
 rest_get_all_player_events:
     path:       /api/getAllPlayerEvents
-    defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::getAllPlayerEventsAction' }
+    defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::getAllPlayerEventsAction' }
 landing_page:
     path:     /
     defaults: { _controller: 'mgbs\Controller\IndexController::indexAction' }

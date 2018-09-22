@@ -8,9 +8,9 @@
 
 namespace mgbs\Model;
 
-class PlayerAnswerModel extends BaseModel
+class GameEventsModel extends BaseModel
 {
-    public function insertBuzz(int $buzzer, int $questionId): bool
+    public function insertBuzz(int $buzzer): bool
     {
         $sql = 'insert into ' . $this->getTableName()
             . ' (question_id, buzzer_id, correct_or_false) VALUES (1,:buzzer,0)';
@@ -45,24 +45,31 @@ class PlayerAnswerModel extends BaseModel
         return ((int)$result->countId) === 1;
     }
 
-    public function setAnswerOpenClose(int $playerAnswerId, bool $open = true): bool
+    public function insertNewOpenAnswer(int $answerId): bool
     {
-        $openInt = $open ? 1 : 0;
-        $sql = 'UPDATE ' . $this->getTableName() . ' SET question_is_open = :open WHERE player_answer_id = :answerId';
-
+        $sql = 'insert into ' . $this->getTableName()
+            . ' (question_id) VALUES (:answerId)';
         $statement = $this->connection->prepare($sql);
-        $statement->bindValue(':answerId', $playerAnswerId, \PDO::PARAM_INT);
-        $statement->bindValue(':open', $openInt, \PDO::PARAM_INT);
+        $statement->bindValue(':answerId', $answerId, \PDO::PARAM_INT);
         return $statement->execute();
     }
 
-    public function getAllPlayerEvents()
+    public function closeAnswer(int $playerAnswerId): bool
+    {
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET question_is_open = 0 WHERE player_answer_id = :answerId';
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':answerId', $playerAnswerId, \PDO::PARAM_INT);
+        return $statement->execute();
+    }
+
+    public function getAllGameEvents()
     {
         $sql = 'SELECT question_id,
                         buzzer_id,
                         correct_or_false,
-                        player_answer_id,
-                        question_is_open from ' . $this->getTableName();
+                        player_answer_id
+                        from ' . $this->getTableName();
 
         $statement = $this->connection->query($sql);
         return $statement->fetchAll(\PDO::FETCH_OBJ);

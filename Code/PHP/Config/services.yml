@@ -9,8 +9,8 @@ services:
     calls:
         - [setTableName, ['questions']]
 
-  playeranswermodel:
-    class: mgbs\Model\PlayerAnswerModel
+  gameeventsmodel:
+    class: mgbs\Model\GameEventsModel
     arguments: ['@database']
     calls:
-    - [setTableName, ['playeranswers']]
+    - [setTableName, ['gameevents']]
