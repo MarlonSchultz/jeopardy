@@ -15,6 +15,16 @@ rest_set_question_open:
     requirements:
         questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setQuestionOpenAction' }
+rest_set_open_question_to_wrong:
+    path:       /api/setQuestionWrong
+    requirements:
+        questionId: '\d+'
+    defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setOpenQuestionToWrongAction' }
+rest_set_open_question_to_correct:
+    path:       /api/setQuestionCorrect
+    requirements:
+        questionId: '\d+'
+    defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setOpenQuestionToCorrectAction' }
 rest_get_all_player_events:
     path:       /api/getAllGameEvents
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::getAllGameEventsAction' }

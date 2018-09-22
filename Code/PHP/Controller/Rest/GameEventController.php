@@ -40,7 +40,7 @@ class GameEventController
         return new JsonResponse($this->gameEventsModel->getAllGameEvents());
     }
 
-    public function setQuestionClosed(int $eventId)
+    public function setQuestionClosed(int $eventId): JsonResponse
     {
         $returnVal = $this->gameEventsModel->closeAnswer($eventId);
 
@@ -49,5 +49,24 @@ class GameEventController
         }
 
         return new JsonResponse('Cloud not close');
+    }
+
+
+    public function setOpenQuestionToWrongAction(): JsonResponse
+    {
+        if ($this->gameEventsModel->setOpenQuestionToWrong() === 1) {
+            return new JsonResponse('Marked as wrongly answered');
+        }
+
+        return new JsonResponse('Could not find open question');
+    }
+
+    public function setOpenQuestionToCorrectAction(): JsonResponse
+    {
+        if ($this->gameEventsModel->setOpenQuestionToCorrect() === 1) {
+            return new JsonResponse('Marked as correct answered');
+        }
+
+        return new JsonResponse('Could not find open question');
     }
 }

@@ -62,6 +62,18 @@ host.tld/api/insertBuzzer/{buzzer_id}
 
 Looks for the latest open answer/question in GameEvents an adds buzzer_id
 
+```yml
+host.tld/api/setQuestionWrong
+```
+
+Sets last opened question to wrong, if not yet set.
+
+```yml
+host.tld/api/setQuestionCorrect
+```
+
+Sets last opened question to correct, if not yet set.  
+
 # Contribution
 
 * Please stick to PSR2 coding style.

@@ -24,8 +24,8 @@ class GameEventsModel extends BaseModel
         $sql = 'SELECT question_id,
                         buzzer_id,
                         correct_or_false,
-                        player_answer_id,
-                        question_is_open from ' . $this->getTableName() . ' WHERE question_id = :questionId';
+                        game_event_id,
+                        question_closed from ' . $this->getTableName() . ' WHERE question_id = :questionId';
 
         $statement = $this->connection->prepare($sql);
         $statement->bindValue(':questionId', $questionId, \PDO::PARAM_INT);
@@ -59,7 +59,8 @@ class GameEventsModel extends BaseModel
         $sql = 'SELECT question_id,
                         buzzer_id,
                         correct_or_false,
-                        player_answer_id
+                        game_event_id,
+                        question_closed
                         from ' . $this->getTableName();
 
         $statement = $this->connection->query($sql);
@@ -71,11 +72,34 @@ class GameEventsModel extends BaseModel
         $sql = 'SELECT question_id,
                         buzzer_id,
                         correct_or_false,
-                        player_answer_id
-                        from ' . $this->getTableName(). '
-        WHERE buzzer_id is null order by player_answer_id desc limit 1';
+                        game_event_id
+                        from ' . $this->getTableName() . '
+        WHERE buzzer_id is null and question_closed = 0 
+        order by game_event_id desc limit 1';
 
         $statement = $this->connection->query($sql);
         return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function setOpenQuestionToWrong(): int
+    {
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET correct_or_false = 0 WHERE 
+        correct_or_false is null 
+        AND game_event_id=(SELECT MAX(game_event_id) from ' . $this->getTableName() . ')
+        AND buzzer_id is not null';
+
+        $statement = $this->connection->query($sql);
+        return $statement->rowCount();
+    }
+
+    public function setOpenQuestionToCorrect(): int
+    {
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET correct_or_false = 1 WHERE 
+        correct_or_false is null
+        AND game_event_id=(SELECT MAX(game_event_id) from ' . $this->getTableName() . ')
+        AND buzzer_id is not null';
+
+        $statement = $this->connection->query($sql);
+        return $statement->rowCount();
     }
 }
