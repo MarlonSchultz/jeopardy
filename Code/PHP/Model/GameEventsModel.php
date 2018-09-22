@@ -81,6 +81,16 @@ class GameEventsModel extends BaseModel
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    public function cloneLastAnswer() : bool
+    {
+        $sql = 'insert into ' . $this->getTableName() . ' (question_id) 
+        VALUES ((SELECT question_id from ' . $this->getTableName() . '
+                order by game_event_id desc limit 1))';
+
+        $statement = $this->connection->prepare($sql);
+        return $statement->execute();
+    }
+
     public function closeQuestions()
     {
         $sql = 'UPDATE ' . $this->getTableName() . ' SET question_closed = 1';

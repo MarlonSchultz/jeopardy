@@ -55,6 +55,7 @@ class GameEventController
     public function setOpenQuestionToWrongAction(): JsonResponse
     {
         if ($this->gameEventsModel->setOpenQuestionToWrong() === 1) {
+            $this->reinsertQuestion();
             return new JsonResponse('Marked as wrongly answered');
         }
 
@@ -77,6 +78,10 @@ class GameEventController
         }
 
         return new JsonResponse('Some Database Sanfu happened');
+    }
 
+    private function reinsertQuestion(): void
+    {
+        $this->gameEventsModel->cloneLastAnswer();
     }
 }
