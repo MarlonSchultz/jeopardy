@@ -72,10 +72,17 @@ Sets last opened question to wrong, if not yet set.
 host.tld/api/setQuestionCorrect
 ```
 
-Sets last opened question to correct, if not yet set.  
+Sets last opened question to correct, if not yet set.
+
+```yml
+host.tld/api/setQuestionsClosed
+```
+Marks all open questions as closed
+
+# Flow 
+![alt text](flowdiagramm.png "Title")
 
 # Contribution
 
-* Please stick to PSR2 coding style.
-* Contributers with the power to accept MR´s and PR´s: Please use "ci" (w/o ") at the end of your commit message, otherwise Heruko wont pull the build.
+* Please stick to PSR2 coding style- Travis will sniff you out !
 

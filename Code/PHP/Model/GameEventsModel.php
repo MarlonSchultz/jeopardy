@@ -81,6 +81,13 @@ class GameEventsModel extends BaseModel
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    public function closeQuestions()
+    {
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET question_closed = 1';
+
+        return $this->connection->query($sql);
+    }
+
     public function setOpenQuestionToWrong(): int
     {
         $sql = 'UPDATE ' . $this->getTableName() . ' SET correct_or_false = 0 WHERE 

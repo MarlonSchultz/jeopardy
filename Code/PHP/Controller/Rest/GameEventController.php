@@ -69,4 +69,14 @@ class GameEventController
 
         return new JsonResponse('Could not find open question');
     }
+
+    public function closeOpenQuestionsAction(): JsonResponse
+    {
+        if ($this->gameEventsModel->closeQuestions()) {
+            return new JsonResponse('All open questions are closed');
+        }
+
+        return new JsonResponse('Some Database Sanfu happened');
+
+    }
 }

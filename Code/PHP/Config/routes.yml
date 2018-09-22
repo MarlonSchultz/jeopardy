@@ -6,6 +6,8 @@ admin_page:
     defaults: { _controller: 'mgbs\Controller\IndexController::adminAction' }
 rest_buzzer:
     path:       /api/insertBuzzer/{buzzer}
+    requirements:
+        questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\BuzzerController::buzzerAction' }
 rest_get_all_answers:
     path:       /api/getAllAnswers
@@ -17,14 +19,13 @@ rest_set_question_open:
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setQuestionOpenAction' }
 rest_set_open_question_to_wrong:
     path:       /api/setQuestionWrong
-    requirements:
-        questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setOpenQuestionToWrongAction' }
 rest_set_open_question_to_correct:
     path:       /api/setQuestionCorrect
-    requirements:
-        questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::setOpenQuestionToCorrectAction' }
+rest_set_open_question_to_closed:
+    path:       /api/setQuestionsClosed
+    defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::closeOpenQuestionsAction' }
 rest_get_all_player_events:
     path:       /api/getAllGameEvents
     defaults: { _controller: 'mgbs\Controller\Rest\GameEventController::getAllGameEventsAction' }
