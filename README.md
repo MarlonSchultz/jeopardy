@@ -7,7 +7,7 @@ It relies on PHP 7 and SQLite3.
 
 # Install locally
 
-Clone repository, run composer install.
+Clone repository, run docker-compose build
 
 # Adding own questions
 
@@ -36,6 +36,31 @@ The database to which the game connects can be set in config/parameters.yml
 
 There is no such thing. This is for fun.
 If you want to add features, either fork and PR, or fork and do whatever you want.
+
+# API
+```yml
+host.tld/api/getAllAnswers
+```
+
+Returns Json with all Answers and coresponding questions:
+
+```yml
+host.tld/api/setQuestionOpen/{id}
+```
+
+Inserts new question/answer in gameEvents
+
+```yml
+host.tld/api/getAllGameEvents
+```
+
+Returns Json with all game events
+
+```yml
+host.tld/api/insertBuzzer/{buzzer_id}
+```
+
+Looks for the latest open answer/question in GameEvents an adds buzzer_id
 
 # Contribution
 

@@ -5,6 +5,7 @@ namespace mgbs\Controller\Rest;
 
 use mgbs\Library\DITrait;
 use mgbs\Model\GameEventsModel;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,11 +21,11 @@ class BuzzerController
     /**
      * @var GameEventsModel
      */
-    private $playeranswermodel;
+    private $gameEventsModel;
 
     public function __construct()
     {
-        $this->playeranswermodel = $this->getService('playeranswermodel');
+        $this->gameEventsModel = $this->getService('gameeventsmodel');
     }
 
     /**
@@ -32,7 +33,10 @@ class BuzzerController
      */
     public function buzzerAction($buzzer): Response
     {
-        $this->playeranswermodel->insertBuzz((int) $buzzer);
-        return new Response('KotRoller aufgerufen . ');
+        if (sizeof($lastAnswer = $this->gameEventsModel->getLastAnswerWithOutBuzzer()) === 1) {
+            $this->gameEventsModel->insertBuzz((int)$buzzer);
+            return new JsonResponse('buzzed');
+        }
+        return new JsonResponse('No open answer found');
     }
 }

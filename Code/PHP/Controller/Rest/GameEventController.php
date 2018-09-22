@@ -35,7 +35,7 @@ class GameEventController
         return new JsonResponse('Could not insert new row');
     }
 
-    public function getAllPlayerEventsAction(): JsonResponse
+    public function getAllGameEventsAction(): JsonResponse
     {
         return new JsonResponse($this->gameEventsModel->getAllGameEvents());
     }

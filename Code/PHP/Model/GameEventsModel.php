@@ -12,10 +12,10 @@ class GameEventsModel extends BaseModel
 {
     public function insertBuzz(int $buzzer): bool
     {
-        $sql = 'insert into ' . $this->getTableName()
-            . ' (question_id, buzzer_id, correct_or_false) VALUES (1,:buzzer,0)';
+        $sql = 'UPDATE ' . $this->getTableName() . ' SET buzzer_id = :buzzer_id WHERE buzzer_id is null';
+
         $statement = $this->connection->prepare($sql);
-        $statement->bindValue(':buzzer', $buzzer, \PDO::PARAM_INT);
+        $statement->bindValue(':buzzer_id', $buzzer, \PDO::PARAM_INT);
         return $statement->execute();
     }
 
@@ -54,15 +54,6 @@ class GameEventsModel extends BaseModel
         return $statement->execute();
     }
 
-    public function closeAnswer(int $playerAnswerId): bool
-    {
-        $sql = 'UPDATE ' . $this->getTableName() . ' SET question_is_open = 0 WHERE player_answer_id = :answerId';
-
-        $statement = $this->connection->prepare($sql);
-        $statement->bindValue(':answerId', $playerAnswerId, \PDO::PARAM_INT);
-        return $statement->execute();
-    }
-
     public function getAllGameEvents()
     {
         $sql = 'SELECT question_id,
@@ -70,6 +61,19 @@ class GameEventsModel extends BaseModel
                         correct_or_false,
                         player_answer_id
                         from ' . $this->getTableName();
+
+        $statement = $this->connection->query($sql);
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function getLastAnswerWithOutBuzzer()
+    {
+        $sql = 'SELECT question_id,
+                        buzzer_id,
+                        correct_or_false,
+                        player_answer_id
+                        from ' . $this->getTableName(). '
+        WHERE buzzer_id is null order by player_answer_id desc limit 1';
 
         $statement = $this->connection->query($sql);
         return $statement->fetchAll(\PDO::FETCH_OBJ);
