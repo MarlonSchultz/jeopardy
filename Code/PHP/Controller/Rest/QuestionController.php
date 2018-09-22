@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace mgbs\Controller\Rest;
 
-
 use mgbs\Library\DITrait;
 use mgbs\Model\PlayerAnswerModel;
 use mgbs\Model\QuestionsModel;
@@ -43,5 +42,10 @@ class QuestionController
             $this->playerAnswerModel->setAnswerOpenClose(1, true);
         }
         return new JsonResponse($isAnswerOpen);
+    }
+
+    public function getAllPlayerEventsAction(): JsonResponse
+    {
+        return new JsonResponse($this->playerAnswerModel->getAllPlayerEvents());
     }
 }

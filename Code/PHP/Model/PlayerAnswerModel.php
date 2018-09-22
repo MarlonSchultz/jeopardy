@@ -35,7 +35,8 @@ class PlayerAnswerModel extends BaseModel
 
     public function isAnswerOpen(int $questionId): bool
     {
-        $sql = 'SELECT count(question_id) as countId from ' . $this->getTableName() . ' WHERE question_id = :questionId and question_is_open';
+        $sql = 'SELECT count(question_id) as countId from ' . $this->getTableName()
+            . ' WHERE question_id = :questionId and question_is_open';
 
         $statement = $this->connection->prepare($sql);
         $statement->bindValue(':questionId', $questionId, \PDO::PARAM_INT);
@@ -54,5 +55,16 @@ class PlayerAnswerModel extends BaseModel
         $statement->bindValue(':open', $openInt, \PDO::PARAM_INT);
         return $statement->execute();
     }
-}
 
+    public function getAllPlayerEvents()
+    {
+        $sql = 'SELECT question_id,
+                        buzzer_id,
+                        correct_or_false,
+                        player_answer_id,
+                        question_is_open from ' . $this->getTableName();
+
+        $statement = $this->connection->query($sql);
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+}

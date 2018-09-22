@@ -20,6 +20,9 @@ rest_get_single_question_from_gameplay:
     requirements:
         questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::setQuestionOpenAction' }
+rest_get_all_player_events:
+    path:       /api/getAllPlayerEvents
+    defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::getAllPlayerEventsAction' }
 landing_page:
     path:     /
     defaults: { _controller: 'mgbs\Controller\IndexController::indexAction' }
