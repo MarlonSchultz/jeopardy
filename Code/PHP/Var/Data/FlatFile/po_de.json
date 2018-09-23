@@ -60,14 +60,14 @@
       "id": "9",
       "category": "Rituale",
       "points": "40",
-      "answer": "Wo das Team das Wie des Sprints plant.",
+      "answer": "Dort plant das Team das WIE des Sprints.",
       "question": "Was ist das Technical Planning? (Früher Planning 2)"
     },
     {
       "id": "10",
       "category": "Rituale",
       "points": "50",
-      "answer": "Ein informelles Meeting, in dem nicht(!) reported wird.",
+      "answer": "Ein informelles Meeting, in dem nicht (!) reported wird.",
       "question": "Was ist das Sprint Review?"
     },
     {
@@ -89,7 +89,7 @@
       "category": "Rollen",
       "points": "30",
       "answer": "Kocht guten Kaffee und bringt den Entwicklern Süßigkeiten.",
-      "question": "Was ist die Scrum-Mutti? (aka Scrum Master Antipattern)"
+      "question": "Was ist die Scrum-Mutti? (AKA Scrum Master Antipattern)"
     },
     {
       "id": "14",
@@ -110,7 +110,7 @@
       "category": "Stories",
       "points": "10",
       "answer": "Ein Akronym und Gedankenstütze für Backlog Items guter Qualität.",
-      "question": "Was ist INVEST?"
+      "question": "Was sind INVEST-Kriterien?"
     },
     {
       "id": "17",
@@ -130,7 +130,7 @@
       "id": "19",
       "category": "Stories",
       "points": "40",
-      "answer": "Das CCC einer guten User Story.",
+      "answer": "Das CCC einer guten User Story. Kein Club.",
       "question": "Was ist Card, Conversation, Confirmation?"
     },
     {
@@ -158,7 +158,7 @@
       "id": "23",
       "category": "Strategy",
       "points": "30",
-      "answer": "Visionär, motiviert das Scrum Team zur Arbeit an dem Produkt.",
+      "answer": "Sie ist visionär und motiviert das Scrum Team zur Arbeit an dem Produkt.",
       "question": "Was ist die (Produkt) Vision?"
     },
     {
@@ -179,7 +179,7 @@
       "id": "26",
       "category": "Tools",
       "points": "10",
-      "answer": "Wenn alles gut ist brennt es nach unten.",
+      "answer": "Wenn alles gut ist, dann brennt es nach unten.",
       "question": "Was ist ein Burndown Chart?"
     },
     {
