@@ -21,11 +21,17 @@ class JsonAdapter implements DatabaseAdapterInterface
 
     /** @var  \PDO $pdo */
     private $pdo;
+    /**
+     * @var String
+     */
+    private $sqliteFileToDumpFlatFileIn;
 
-    public function __construct(String $filename)
+    public function __construct(String $filename, String $sqliteFileToDumpFlatFileIn)
     {
         $this->filename = $filename;
+        $this->sqliteFileToDumpFlatFileIn = $sqliteFileToDumpFlatFileIn;
         $this->initPdoInstance();
+        $this->truncateQuestionTable();
         $this->loadFileIntoDatabase();
     }
 
@@ -39,11 +45,17 @@ class JsonAdapter implements DatabaseAdapterInterface
     public function initPdoInstance()
     {
         if (!file_exists($this->filename)) {
-            throw new FileNotFoundException('Databasefile' . $this->filename . 'not found. Current BaseDir:' . __DIR__);
+            throw new FileNotFoundException('Databasefile ' . $this->filename
+                . ' not found. Current BaseDir:' . __DIR__);
+        }
+
+        if (!file_exists($this->sqliteFileToDumpFlatFileIn)) {
+            throw new FileNotFoundException('SqliteFile ' . $this->sqliteFileToDumpFlatFileIn
+                . ' not found. Current BaseDir:' . __DIR__);
         }
 
         try {
-            $this->pdo = new \PDO('sqlite::memory:');
+            $this->pdo = new \PDO('sqlite:' . $this->sqliteFileToDumpFlatFileIn);
         } catch (\Exception $e) {
             throw new \RuntimeException('Cannot connect to database: ' . $e->getMessage());
         }
@@ -56,7 +68,7 @@ class JsonAdapter implements DatabaseAdapterInterface
     private function loadFileIntoDatabase()
     {
         $jsonAsObject = $this->readJsonAsObject();
-        $this->createQuestionsTable();
+        $this->createGameTables();
 
         $insertTableData = 'INSERT INTO "questions" (category, points, answer, question)
                             VALUES (:category, :points, :answer, :question)';
@@ -100,9 +112,9 @@ class JsonAdapter implements DatabaseAdapterInterface
     /**
      * Creates table in memory db
      */
-    private function createQuestionsTable()
+    private function createGameTables(): void
     {
-        $createTableSql = '
+        $createQuestionsTable = '
         CREATE TABLE "questions" (
                 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 	`category`	TEXT DEFAULT \' \',
@@ -111,6 +123,23 @@ class JsonAdapter implements DatabaseAdapterInterface
                 	`question`	TEXT DEFAULT \' \'
                 )';
 
-        $this->pdo->exec($createTableSql);
+        $this->pdo->exec($createQuestionsTable);
+
+        $createGameEventsTable = '
+        CREATE TABLE "GameEvents" ( 
+                    `question_id` INTEGER NOT NULL, 
+                    `buzzer_id` INTEGER, 
+                    `correct_or_false` INTEGER, 
+                    `game_event_id` INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    `question_closed` INTEGER DEFAULT 0 )';
+
+        $this->pdo->exec($createGameEventsTable);
+    }
+
+    private function truncateQuestionTable(): void
+    {
+        $truncateQuestionTableSql = 'DELETE FROM questions';
+
+        $this->pdo->exec($truncateQuestionTableSql);
     }
 }

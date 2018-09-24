@@ -18,6 +18,6 @@ class JsonAdapterTest extends TestCase
     public function testIfFileNotFoundExceptionIsThrownIfFileIsNotFound()
     {
         $this->expectException(FileNotFoundException::class);
-        new JsonAdapter('FileThatDoesntExist');
+        new JsonAdapter('FileThatDoesntExist', 'SqliteFileThatDoesntExist');
     }
 }

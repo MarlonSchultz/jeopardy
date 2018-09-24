@@ -1,7 +1,7 @@
 services:
   database:
     class: mgbs\Library\Database\DatabaseFactory
-    arguments: [ "%db_type%", "%db_path%" ]
+    arguments: [ "%db_type%", "%db_path%", "%db_sqlite_file%"]
 
   questionmodel:
     class: mgbs\Model\QuestionsModel

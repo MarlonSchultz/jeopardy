@@ -15,10 +15,6 @@ class DatabaseFactory
      * @var string $databaseType
      */
     private $databaseType;
-    /**
-     * @var string $host Should contain hostname. If flatfile, or sqllite3 leave null and use $filename
-     */
-    private $host;
 
     /**
      * @var string $databaseFile Should contain filename for database
@@ -27,35 +23,22 @@ class DatabaseFactory
     /**
      * @var string
      */
-    private $user;
-    /**
-     * @var string
-     */
-    private $password;
-    /**
-     * @var int
-     */
-    private $port;
+    private $sqliteFileToDumpFlatFileIn;
 
     /**
      * @param string $databaseType
      * @param string|null $databaseFile
-     * @param string|null $host
-     * @param string|null $user
-     * @param string|null $password
-     * @param int|null $port
+     * @param string $sqliteFileToDumpFlatFileIn
      */
     public function __construct(
         string $databaseType,
         string $databaseFile = null,
-        string $host = null,
-        string $user = null,
-        string $password = null,
-        int $port = null
+        string $sqliteFileToDumpFlatFileIn
     ) {
 
         $this->databaseType = $databaseType;
         $this->databaseFile = $databaseFile;
+        $this->sqliteFileToDumpFlatFileIn = $sqliteFileToDumpFlatFileIn;
     }
 
     /**
@@ -71,7 +54,7 @@ class DatabaseFactory
                 return (new Sqlite3Adapter($this->databaseFile))->getPdoInstance();
                 break;
             case 'flatfile':
-                return (new JsonAdapter($this->databaseFile))->getPdoInstance();
+                return (new JsonAdapter($this->databaseFile, $this->sqliteFileToDumpFlatFileIn))->getPdoInstance();
                 break;
             default:
                 throw new \InvalidArgumentException('DB Type not supported, yet');
