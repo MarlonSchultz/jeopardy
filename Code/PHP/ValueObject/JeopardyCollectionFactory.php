@@ -46,7 +46,8 @@ class JeopardyCollectionFactory
                     $singleQuestion->question,
                     $singleQuestion->answer,
                     $singleQuestion->category,
-                    $singleQuestion->points
+                    $singleQuestion->points,
+                    $singleQuestion->id
                 )
             );
         }

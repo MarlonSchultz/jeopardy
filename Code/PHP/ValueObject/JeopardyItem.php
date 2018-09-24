@@ -41,13 +41,13 @@ class JeopardyItem
      * @param string $category
      * @param int $value
      */
-    public function __construct($question, $answer, $category, $value)
+    public function __construct($question, $answer, $category, $value, $id)
     {
         $this->question = $question;
         $this->answer = $answer;
         $this->category = $category;
         $this->value = $value;
-        $this->id = uniqid();
+        $this->id = $id;
     }
 
     /**

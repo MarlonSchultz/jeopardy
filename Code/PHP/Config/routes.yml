@@ -9,6 +9,9 @@ rest_buzzer:
     requirements:
         questionId: '\d+'
     defaults: { _controller: 'mgbs\Controller\Rest\BuzzerController::buzzerAction' }
+rest_has_been_buzzered:
+    path:       /api/getLastBuzzer
+    defaults: { _controller: 'mgbs\Controller\Rest\BuzzerController::hasLastQuestionBeenBuzzered' }
 rest_get_all_answers:
     path:       /api/getAllAnswers
     defaults: { _controller: 'mgbs\Controller\Rest\QuestionController::getAllAnswersAction' }

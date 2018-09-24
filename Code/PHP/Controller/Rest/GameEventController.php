@@ -27,6 +27,7 @@ class GameEventController
 
     public function setQuestionOpenAction(int $questionId): JsonResponse
     {
+        $this->closeOpenQuestionsAction();
         $returnVal = $this->gameEventsModel->insertNewOpenAnswer($questionId);
         if ($returnVal) {
             return new JsonResponse('Inserted new row');
@@ -49,6 +50,11 @@ class GameEventController
         }
 
         return new JsonResponse('Cloud not close');
+    }
+
+    public function get()
+    {
+        
     }
 
 

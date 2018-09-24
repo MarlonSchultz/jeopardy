@@ -39,4 +39,9 @@ class BuzzerController
         }
         return new JsonResponse('No open answer found');
     }
+
+    public function hasLastQuestionBeenBuzzered()
+    {
+        return new JsonResponse($this->gameEventsModel->getLastOpenAnswerWithBuzzer());
+    }
 }

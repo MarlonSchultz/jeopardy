@@ -67,7 +67,7 @@ class GameEventsModel extends BaseModel
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    public function getLastAnswerWithOutBuzzer()
+    public function getLastAnswerWithOutBuzzer(): array
     {
         $sql = 'SELECT question_id,
                         buzzer_id,
@@ -75,6 +75,21 @@ class GameEventsModel extends BaseModel
                         game_event_id
                         from ' . $this->getTableName() . '
         WHERE buzzer_id is null and question_closed = 0 
+        order by game_event_id desc limit 1';
+
+        $statement = $this->connection->query($sql);
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function getLastOpenAnswerWithBuzzer(): array
+    {
+        $sql = 'SELECT question_id,
+                        buzzer_id,
+                        correct_or_false,
+                        game_event_id
+                        from ' . $this->getTableName() . '
+        WHERE buzzer_id is not null and question_closed = 0
+        and correct_or_false is null 
         order by game_event_id desc limit 1';
 
         $statement = $this->connection->query($sql);
