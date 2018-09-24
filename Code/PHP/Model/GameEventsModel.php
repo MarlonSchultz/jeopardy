@@ -119,4 +119,10 @@ class GameEventsModel extends BaseModel
         $statement = $this->connection->query($sql);
         return $statement->rowCount();
     }
+
+    public function resetAllGameEvents()
+    {
+        $sql = 'DELETE FROM '. $this->getTableName();
+        return $this->connection->exec($sql);
+    }
 }

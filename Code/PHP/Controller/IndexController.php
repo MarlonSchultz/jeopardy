@@ -1,16 +1,21 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace mgbs\Controller;
 
 use mgbs\Library\DITrait;
+use mgbs\Model\GameEventsModel;
 use mgbs\Model\ModelInterface;
 use mgbs\Model\QuestionsModel;
 use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyCollectionFactory;
 use mgbs\ValueObject\JeopardyRowCollection;
 use mgbs\DTO\JeopardyItem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Created by PhpStorm.
@@ -36,7 +41,7 @@ class IndexController
      * @throws \Twig_Error_Loader
      * @throws \InvalidArgumentException
      */
-    public function indexAction() :Response
+    public function indexAction(): Response
     {
         $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
         $jeopardyCollectionFactory->setModel($this->getService('questionmodel'));
@@ -63,8 +68,16 @@ class IndexController
      * @throws \Twig_Error_Loader
      * @throws \InvalidArgumentException
      */
-    public function moderatorAction() :Response
+    public function moderatorAction(): Response
     {
+        $deleted = false;
+
+        if ($this->getService('request')->get('resetGameEvents') !== null) {
+            $gameEventModel = $this->getGameEventsModel();
+            $gameEventModel->resetAllGameEvents();
+            $deleted = true;
+        }
+
 
         $jeopardyCollectionFactory = new JeopardyCollectionFactory(new JeopardyCollection());
         $jeopardyCollectionFactory->setModel($this->getService('questionmodel'));
@@ -79,7 +92,8 @@ class IndexController
 
         /** @var \Twig_Environment $twig */
         $twig = $this->getService('twig');
-        return new Response($twig->render('moderator.html.twig', ['jeopardy' => $jeopardyCollection]));
+        return new Response($twig->render('moderator.html.twig',
+            ['jeopardy' => $jeopardyCollection, 'deleted' => $deleted]));
     }
 
     /**
@@ -87,7 +101,7 @@ class IndexController
      *
      * @throws \Exception
      */
-    public function adminAction() :Response
+    public function adminAction(): Response
     {
         if ($this->getParameter('db_type') !== 'sqlite3') {
             throw new \Exception('Admin only available for sqlite database');
@@ -121,8 +135,13 @@ class IndexController
     /**
      * @param ModelInterface $questionsModel
      */
-    public function setQuestionsModel(ModelInterface $questionsModel)
+    public function setQuestionsModel(ModelInterface $questionsModel): void
     {
         $this->questionsModel = $questionsModel;
+    }
+
+    public function getGameEventsModel(): GameEventsModel
+    {
+        return $this->getService('GameEventsModel');
     }
 }
