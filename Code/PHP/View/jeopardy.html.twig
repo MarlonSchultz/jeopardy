@@ -13,8 +13,9 @@
         </div>
         <div class="modal-footer">
             <div class="card-action center-align">
-                <div id="wrong" class="btn-floating red"><i class="close material-icons" onclick="handleAnswer(this, 'wrong')">close</i></div>
-                <div id="right" class=" btn-floating green"><i class="close material-icons" onclick="handleAnswer(this, 'correct')">check</i></div>
+                <div id="wrong" class="btn-floating red"><i class="close material-icons" onclick="handleAnswerWrong(this)">close</i></div>
+                <div id="right" class=" btn-floating green"><i class="close material-icons" onclick="handleAnswerCorrect(this)">check</i></div>
+                <div id="reveal" class=" btn-floating grey"><i class="close material-icons" onclick="revealAnswer(this)">search</i></div>
                 <div id="close" class="waves-effect waves-green btn-flat" onclick="closeAnswer(this)"><i class="close material-icons">close</i></div>
             </div>
         </div>

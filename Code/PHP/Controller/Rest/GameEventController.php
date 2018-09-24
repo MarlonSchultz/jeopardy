@@ -62,19 +62,19 @@ class GameEventController
     {
         if ($this->gameEventsModel->setOpenQuestionToWrong() === 1) {
             $this->reinsertQuestion();
-            return new JsonResponse('Marked as wrongly answered');
+            return new JsonResponse('Marked as wrongly answered', 200);
         }
 
-        return new JsonResponse('Could not find open question');
+        return new JsonResponse('Could not find open question', 400);
     }
 
     public function setOpenQuestionToCorrectAction(): JsonResponse
     {
         if ($this->gameEventsModel->setOpenQuestionToCorrect() === 1) {
-            return new JsonResponse('Marked as correct answered');
+            return new JsonResponse('Marked as correct answered', 200);
         }
 
-        return new JsonResponse('Could not find open question');
+        return new JsonResponse('Could not find open question', 400);
     }
 
     public function closeOpenQuestionsAction(): JsonResponse
