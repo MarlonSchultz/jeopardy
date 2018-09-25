@@ -38,23 +38,19 @@ function checkIfBuzzered() {
                         switch (data[0].buzzer_id) {
                             case "1":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#c12c1d');
-                                //rot
+                                $('#buzzerColour').css('background', '#13266b');
                                 break;
                             case "2":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#c1ad1c');
-                                //gelb
+                                $('#buzzerColour').css('background', '#136b1a');
                                 break;
                             case "3":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#13266b');
-                                //blau
+                                $('#buzzerColour').css('background', '#c1ad1c');
                                 break;
                             case "4":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#136b1a');
-                                //grün
+                                $('#buzzerColour').css('background', '#c12c1d');
                                 break;
                         }
                         resetWrongWarning();
