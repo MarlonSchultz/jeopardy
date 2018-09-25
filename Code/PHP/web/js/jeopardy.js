@@ -131,6 +131,9 @@ function closeAnswer(el) {
     cell.html(content);
     $('#modal1').modal('close');
     stopRequests();
+    $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionsClosed"
+    })
 }
 
 function revealAnswer(el) {
