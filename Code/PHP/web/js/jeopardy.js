@@ -87,9 +87,15 @@ function startTimer() {
 function handleAnswerCorrect(el) {
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
-    $('#close').attr('data-choice', 'correct');
-    $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
     stopRequests();
+    $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionCorrect"
+    }).success(() => {
+        $('#close').attr('data-choice', 'correct');
+        $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
+    }).error(() => {
+
+    });
 }
 
 function handleAnswerWrong(el) {
@@ -111,7 +117,6 @@ function handleAnswerWrong(el) {
 }
 
 function closeAnswer(el) {
-    // todo alle fragen schließen (oder eine neue aufmachen ?)
     resetBuzzerColour();
     var el = $(el);
     var cell = $('#' + el.parent().attr('data-cell'));
