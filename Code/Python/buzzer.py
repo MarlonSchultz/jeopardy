@@ -1,44 +1,38 @@
+#!/usr/bin/env python3
 import time
 import RPi.GPIO as GPIO
 import urllib3
 
-
-http = urllib3.PoolManager()
+mapping = { 11: 1, 12: 3, 13: 2, 16: 4 }
+lastStamp = 0
 
 # RPi.GPIO Layout verwenden (wie Pin-Nummern)
 GPIO.setmode(GPIO.BOARD)
 
+def buzzer_pressed(channel):
+    global lastStamp
 
-GPIO.setup(11, GPIO.IN)
-GPIO.setup(12, GPIO.IN)
-GPIO.setup(13, GPIO.IN)
-GPIO.setup(16, GPIO.IN)
+    if time.time() - lastStamp < 5:
+        print('Ignore button press %d' % mapping[channel])
+        return
 
-def buzzer_called(colour):
-	print('Es wurde gedrückt' + colour)
-	try:
-            conn = urllib3.connection_from_url('192.168.1.101')
-            conn.request('GET', '192.168.1.101/api/insertBuzzer/'+colour)
-            conn.close()
-	except:
-		print('Request Failed')
-	time.sleep(2)
-	
-# Dauersschleife
-while 1:
+    url = "/api/insertBuzzer/%d" % mapping[channel]
+    lastStamp = time.time()
 
-	if GPIO.input(11) == GPIO.HIGH:
-		buzzer_called('1')
-		#print('Blau is an')
-	
-	if GPIO.input(13) == GPIO.HIGH:
-		buzzer_called('2')
-		#print('Grün is an')
-        
-	if GPIO.input(12) == GPIO.HIGH:
-		buzzer_called('3')
-		#print('Grün is an')
+    try:
+        print("Sending request to %s" % url)
+        pool = urllib3.HTTPConnectionPool('10.93.98.217', port=8080, maxsize=1)
+        pool.urlopen('GET', url, retries=1)
+        pool.close()
+    except:
+        print('Request failed')
 
-	if GPIO.input(16) == GPIO.HIGH:
-		buzzer_called('4')
-		#print('Grün is an')
+for pin in mapping.keys():
+    GPIO.setup(pin, GPIO.IN)
+    GPIO.add_event_detect(pin, GPIO.RISING, callback=buzzer_pressed)
+
+try:
+    while True:
+        time.sleep(3600)
+except KeyboardInterrupt:
+    GPIO.cleanup()
