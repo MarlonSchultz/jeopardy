@@ -92,8 +92,10 @@ class IndexController
 
         /** @var \Twig_Environment $twig */
         $twig = $this->getService('twig');
-        return new Response($twig->render('moderator.html.twig',
-            ['jeopardy' => $jeopardyCollection, 'deleted' => $deleted]));
+        return new Response($twig->render(
+            'moderator.html.twig',
+            ['jeopardy' => $jeopardyCollection, 'deleted' => $deleted]
+        ));
     }
 
     /**

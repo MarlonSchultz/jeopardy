@@ -54,7 +54,6 @@ class GameEventController
 
     public function get()
     {
-        
     }
 
 

@@ -38,23 +38,19 @@ function checkIfBuzzered() {
                         switch (data[0].buzzer_id) {
                             case "1":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#c12c1d');
-                                //rot
+                                $('#buzzerColour').css('background', '#13266b');
                                 break;
                             case "2":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#c1ad1c');
-                                //gelb
+                                $('#buzzerColour').css('background', '#136b1a');
                                 break;
                             case "3":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#13266b');
-                                //blau
+                                $('#buzzerColour').css('background', '#c1ad1c');
                                 break;
                             case "4":
                                 numberOfRequests = maxNumberOfRequests;
-                                $('#buzzerColour').css('background', '#136b1a');
-                                //grün
+                                $('#buzzerColour').css('background', '#c12c1d');
                                 break;
                         }
                         resetWrongWarning();
@@ -91,9 +87,15 @@ function startTimer() {
 function handleAnswerCorrect(el) {
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
-    $('#close').attr('data-choice', 'correct');
-    $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
     stopRequests();
+    $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionCorrect"
+    }).success(() => {
+        $('#close').attr('data-choice', 'correct');
+        $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
+    }).error(() => {
+
+    });
 }
 
 function handleAnswerWrong(el) {
@@ -115,7 +117,6 @@ function handleAnswerWrong(el) {
 }
 
 function closeAnswer(el) {
-    // todo alle fragen schließen (oder eine neue aufmachen ?)
     resetBuzzerColour();
     var el = $(el);
     var cell = $('#' + el.parent().attr('data-cell'));
@@ -130,6 +131,9 @@ function closeAnswer(el) {
     cell.html(content);
     $('#modal1').modal('close');
     stopRequests();
+    $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionsClosed"
+    })
 }
 
 function revealAnswer(el) {
