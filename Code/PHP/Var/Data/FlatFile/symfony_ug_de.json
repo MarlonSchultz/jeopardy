@@ -1,0 +1,214 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "category": "PHP",
+      "points": "10",
+      "answer": "Creator and Author of PHP",
+      "question": "Who is Rasmus Lerdorf?"
+    },
+    {
+      "id": "2",
+      "category": "PHP",
+      "points": "20",
+      "answer": "Platform to search for and download PHP packages",
+      "question": "What is packagist.org?"
+    },
+    {
+      "id": "3",
+      "category": "PHP",
+      "points": "30",
+      "answer": "Open source engine that interprets PHP scripts",
+      "question": "What is the Zend Engine?"
+    },
+    {
+      "id": "4",
+      "category": "PHP",
+      "points": "40",
+      "answer": "New - much loved - feature in PHP 7.4",
+      "question": "What are typed properties?"
+    },
+    {
+      "id": "5",
+      "category": "PHP",
+      "points": "50",
+      "answer": "An iterator that never stops",
+      "question": "What is the InfiniteIterator?"
+    },
+    {
+      "id": "6",
+      "category": "Symfony",
+      "points": "10",
+      "answer": "Creator and Author of Symfony",
+      "question": "Who is Fabien Potencier?"
+    },
+    {
+      "id": "7",
+      "category": "Symfony",
+      "points": "20",
+      "answer": "New Component in Symfony 4.1 for ansynchron communication",
+      "question": "What is the Messenger Component?"
+    },
+    {
+      "id": "8",
+      "category": "Symfony",
+      "points": "30",
+      "answer": "A Composer Plugin to automate Symfony integrations",
+      "question": "What is Symfony Flex?"
+    },
+    {
+      "id": "9",
+      "category": "Symfony",
+      "points": "40",
+      "answer": "New Component in Symfony 4.3 to replace SwiftMailer",
+      "question": "What is the Mailer Component?"
+    },
+    {
+      "id": "10",
+      "category": "Symfony",
+      "points": "50",
+      "answer": "An Event dispatched after sending the response to the client",
+      "question": "What is the kernel.terminate Event?"
+    },
+    {
+      "id": "11",
+      "category": "Libraries",
+      "points": "10",
+      "answer": "An ORM maintained by Ocramius",
+      "question": "What is Doctrine ORM?"
+    },
+    {
+      "id": "12",
+      "category": "Libraries",
+      "points": "20",
+      "answer": "Logs all your log messages",
+      "question": "What is Monolog?"
+    },
+    {
+      "id": "13",
+      "category": "Libraries",
+      "points": "30",
+      "answer": "Most popular HTTP library",
+      "question": "What is Guzzle?"
+    },
+    {
+      "id": "14",
+      "category": "Libraries",
+      "points": "40",
+      "answer": "The small - but deprecated - sister of Symfony",
+      "question": "What is Silex?"
+    },
+    {
+      "id": "15",
+      "category": "Libraries",
+      "points": "50",
+      "answer": "The most downloaded package from packagist.org",
+      "question": "What is psr/log?"
+    },
+    {
+      "id": "16",
+      "category": "Berlin",
+      "points": "10",
+      "answer": "The part of the city we are currently in",
+      "question": "What is Kreuzberg?"
+    },
+    {
+      "id": "17",
+      "category": "Berlin",
+      "points": "20",
+      "answer": "A Usergroup monthly happening at Co.up (first Tue of the month)",
+      "question": "What is the Berlin PHP Usergroup?"
+    },
+    {
+      "id": "18",
+      "category": "Berlin",
+      "points": "30",
+      "answer": "Builds a lot e-commerce portals with Alice & Bob",
+      "question": "What is Rocket Internet?"
+    },
+    {
+      "id": "19",
+      "category": "Berlin",
+      "points": "40",
+      "answer": "Europe's biggest fashion e-commerce based in Berlin.",
+      "question": "What is Zalando?"
+    },
+    {
+      "id": "20",
+      "category": "Berlin",
+      "points": "50",
+      "answer": "The oldest crashed space station on earth",
+      "question": "What is the c-base?"
+    },
+    {
+      "id": "21",
+      "category": "Tools",
+      "points": "10",
+      "answer": "A dependency manager for PHP",
+      "question": "What is Composer?"
+    },
+    {
+      "id": "22",
+      "category": "Tools",
+      "points": "20",
+      "answer": "Sebastian Bergmann and contributors.",
+      "question": "What is PHPUnit?"
+    },
+    {
+      "id": "23",
+      "category": "Tools",
+      "points": "30",
+      "answer": "Calculates the npath complexity",
+      "question": "What is PHP Mess Detector?"
+    },
+    {
+      "id": "24",
+      "category": "Tools",
+      "points": "40",
+      "answer": "Checks and fixes Symfony's Code Style",
+      "question": "What is PHP-Cs-Fixer?"
+    },
+    {
+      "id": "25",
+      "category": "Tools",
+      "points": "50",
+      "answer": "Uses Mink to execute E2E tests",
+      "question": "What is behat?"
+    },
+    {
+      "id": "26",
+      "category": "DevOps",
+      "points": "10",
+      "answer": "Used to inject sensitive config into containers",
+      "question": "What are Environment Variables?"
+    },
+    {
+      "id": "27",
+      "category": "DevOps",
+      "points": "20",
+      "answer": "A tool managing virtual machines",
+      "question": "What is Vagrant?"
+    },
+    {
+      "id": "28",
+      "category": "DevOps",
+      "points": "30",
+      "answer": "Software hosting without server management",
+      "question": "What is Serverless?"
+    },
+    {
+      "id": "29",
+      "category": "DevOps",
+      "points": "40",
+      "answer": "A container-orchestration system by Google",
+      "question": "What is Kubernetes?"
+    },
+    {
+      "id": "30",
+      "category": "DevOps",
+      "points": "50",
+      "answer": "OSS IaaS platform by Rackspace and NASA",
+      "question": "What is OpenStack?"
+    }
+  ]
+}
