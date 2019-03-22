@@ -2,3 +2,4 @@
 .idea/
 /Code/PHP/vendor/
 Code/PHP/Var/Cache/Twig/
+/MysqlData

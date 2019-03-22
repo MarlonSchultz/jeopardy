@@ -11,11 +11,8 @@ use mgbs\ValueObject\JeopardyCollection;
 use mgbs\ValueObject\JeopardyCollectionFactory;
 use mgbs\ValueObject\JeopardyRowCollection;
 use mgbs\DTO\JeopardyItem;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Created by PhpStorm.
