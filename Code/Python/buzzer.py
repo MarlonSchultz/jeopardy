@@ -21,14 +21,14 @@ def buzzer_pressed(channel):
 
     try:
         print("Sending request to %s" % url)
-        pool = urllib3.HTTPConnectionPool('10.93.98.217', port=8080, maxsize=1)
+        pool = urllib3.HTTPConnectionPool('192.168.1.20', port=8080, maxsize=1)
         pool.urlopen('GET', url, retries=1)
         pool.close()
     except:
         print('Request failed')
 
 for pin in mapping.keys():
-    GPIO.setup(pin, GPIO.IN)
+    GPIO.setup(pin, GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(pin, GPIO.RISING, callback=buzzer_pressed)
 
 try:
