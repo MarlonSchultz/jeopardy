@@ -1,5 +1,5 @@
 var numberOfRequests = 1;
-const maxNumberOfRequests = 30;
+const maxNumberOfRequests = 120;
 
 
 $(document).ready(function () {
@@ -30,6 +30,7 @@ function showQuestion(el) {
 function checkIfBuzzered() {
 
     if (numberOfRequests < maxNumberOfRequests) {
+
         setTimeout(() => {
             $.ajax({
                 url: window.location.protocol + "//" + window.location.host + "/api/getLastBuzzer",
@@ -60,7 +61,7 @@ function checkIfBuzzered() {
                     checkIfBuzzered(++numberOfRequests);
                 }
             })
-        }, 1000);
+        }, 250);
     }
 }
 
