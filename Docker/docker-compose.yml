@@ -10,8 +10,8 @@ services:
 
   jeophpardy_php:
       build:
-        context: .
-        dockerfile: Dockerfile_php
+        context: ..
+        dockerfile: Docker/Dockerfile_php
       environment:
           PHP_IDE_CONFIG: "serverName=jeophpardy.local"
       volumes:
