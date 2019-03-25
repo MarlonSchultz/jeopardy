@@ -1,17 +1,19 @@
-FROM php:7-fpm
+FROM php:7-fpm-alpine
 
-RUN apt-get update && apt-get install -y \
-  vim
+RUN apk update && apk add \
+  git \
+  openssh-client \
+  vim \
+  libzip-dev \
+  zip
 
-RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer ; \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer ; \
     composer --version ; \
-    echo "Europe/Berlin" > /etc/timezone ; \
-    dpkg-reconfigure -f noninteractive tzdata ; \
-    docker-php-ext-install pdo calendar pcntl opcache; \
-    apt-get clean ; \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
-    usermod -u 1000 www-data ; \
-    groupmod -g 1000 www-data
+    echo "Europe/Berlin" > /etc/timezone
 
-COPY --chown=www-data:www-data /Code/PHP/ /var/www/jeophpardy
+RUN docker-php-ext-install pdo calendar pcntl opcache zip
+
+# exec into docker with "sh -l" to load profile aliases
+RUN echo "alias checkCode='/var/www/jeophpardy/vendor/bin/phpunit && /var/www/jeophpardy/vendor/bin/phpcs --standard=PSR2 Controller/ '" >> /root/.profile
+
 WORKDIR /var/www/jeophpardy
