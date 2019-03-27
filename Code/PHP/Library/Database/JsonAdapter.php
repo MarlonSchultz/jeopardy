@@ -26,9 +26,10 @@ class JsonAdapter implements DatabaseAdapterInterface
      */
     private $sqliteFileToDumpFlatFileIn;
 
-    public function __construct(String $filename)
+    public function __construct(String $filename, String $sqliteFileToDumpFlatFileIn)
     {
         $this->filename = $filename;
+        $this->sqliteFileToDumpFlatFileIn = $sqliteFileToDumpFlatFileIn;
         $this->initPdoInstance();
         $this->truncateQuestionTable();
         $this->loadFileIntoDatabase();
@@ -48,8 +49,13 @@ class JsonAdapter implements DatabaseAdapterInterface
                 . ' not found. Current BaseDir:' . __DIR__);
         }
 
+        if (!file_exists($this->sqliteFileToDumpFlatFileIn)) {
+            throw new FileNotFoundException('SqliteFile ' . $this->sqliteFileToDumpFlatFileIn
+                . ' not found. Current BaseDir:' . __DIR__);
+        }
+
         try {
-            $this->pdo = new \PDO('sqlite::memory:');
+            $this->pdo = new \PDO('sqlite:' . $this->sqliteFileToDumpFlatFileIn);
         } catch (\Exception $e) {
             throw new \RuntimeException('Cannot connect to database: ' . $e->getMessage());
         }
