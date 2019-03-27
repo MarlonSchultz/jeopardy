@@ -33,15 +33,23 @@ class BuzzerController
      */
     public function buzzerAction($buzzer): Response
     {
-        if (sizeof($lastAnswer = $this->gameEventsModel->getLastAnswerWithOutBuzzer()) === 1) {
-            $this->gameEventsModel->insertBuzz((int)$buzzer);
-            return new JsonResponse('buzzed');
-        }
-        return new JsonResponse('No open answer found');
+        $file = __DIR__ . '/../../Var/Data/activeBuzzer';
+                file_put_contents($file, $buzzer);
+                return new JsonResponse('buzzered');
+
+       // return new JsonResponse('No open answer found');
     }
 
     public function hasLastQuestionBeenBuzzered()
     {
-        return new JsonResponse($this->gameEventsModel->getLastOpenAnswerWithBuzzer());
+        $file = __DIR__ . '/../../Var/Data/activeBuzzer';
+        if (file_exists($file)) {
+            $fileContent = (int)file_get_contents($file);
+            if ($fileContent !== 0) {
+                file_put_contents($file, 0);
+                return new JsonResponse(json_encode(['buzzer_id' => $fileContent]));
+            }
+        }
+        return new JsonResponse(json_encode(['buzzer_id' => 5]));
     }
 }
