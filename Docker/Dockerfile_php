@@ -1,24 +1,19 @@
-FROM php:7-fpm
+FROM php:7-fpm-alpine
 
-RUN apt-get update && apt-get install -y \
-  autoconf \
-  automake \
-  gcc \
+RUN apk update && apk add \
   git \
   openssh-client \
-  valgrind \
-  vim
+  vim \
+  libzip-dev \
+  zip
 
-RUN apt-get install -y git unzip libpng-dev wget default-jre mysql-client libmysql-java libjpeg62-turbo-dev libfreetype6-dev; \
-    pecl install xdebug ; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer ; \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer ; \
     composer --version ; \
-    echo "Europe/Berlin" > /etc/timezone ; \
-    dpkg-reconfigure -f noninteractive tzdata ; \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
-    docker-php-ext-install pdo pdo_mysql mysqli calendar pcntl opcache gd   ; \
-    docker-php-ext-enable xdebug; \
-    apt-get clean ; \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
-    usermod -u 1000 www-data ; \
-    groupmod -g 1000 www-data
+    echo "Europe/Berlin" > /etc/timezone
+
+RUN docker-php-ext-install pdo calendar pcntl opcache zip
+
+# exec into docker with "sh -l" to load profile aliases
+RUN echo "alias checkCode='/var/www/jeophpardy/vendor/bin/phpunit && /var/www/jeophpardy/vendor/bin/phpcs --standard=PSR2 Controller/ '" >> /root/.profile
+
+WORKDIR /var/www/jeophpardy

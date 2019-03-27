@@ -1,3 +1,0 @@
-db_path: '../Var/Data/FlatFile/database.json'
-db_type: 'flatfile'
-twig_debug: true

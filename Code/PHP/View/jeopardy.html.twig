@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="card blue-grey lighten-2">
+                <div class="card-content white-text center-align" id="buzzerColour">
+                    <div class="card-title" id="answer"></div>
+                    <div id="question"></div>
+                    <div id="countdown"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="card-action center-align">
+                <div id="wrong" class="btn-floating red"><i class="close material-icons" onclick="handleAnswerWrong(this)">close</i></div>
+                <div id="right" class=" btn-floating green"><i class="close material-icons" onclick="handleAnswerCorrect(this)">check</i></div>
+                <div id="reveal" class=" btn-floating grey"><i class="close material-icons" onclick="revealAnswer(this)">search</i></div>
+                <div id="close" class="waves-effect waves-green btn-flat" onclick="closeAnswer(this)"><i class="close material-icons">close</i></div>
+            </div>
+        </div>
+    </div>
+
+    <table class="highlight centered fixed">
+        <thead>
+        <tr>
+            {% for category in jeopardy.allCategories %}
+                <th>{{ category|upper }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for value, row in jeopardy %}
+            <tr>
+                {% for item in row %}
+                    <td id="{{ item.id }}" data-question="{{ item.question }}" data-answer="{{ item.answer }}" class="hoverable" onclick="showQuestion(this)">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">{{ value }}</span>
+                            </div>
+                        </div>
+
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ {% endblock %}
