@@ -99,6 +99,7 @@ function handleAnswerWrong(el) {
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
 
+    fetch(window.location.protocol + "//" + window.location.host + "/api/setQuestionOpen/1").then(resetWrongWarning);
     $('#close').attr('data-choice', 'red');
     $('#question').html('<h2 class="z-depth-4 red"> Leider falsch </h2>');
     startTimer();

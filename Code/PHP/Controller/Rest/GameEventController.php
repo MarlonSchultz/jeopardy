@@ -25,15 +25,10 @@ class GameEventController
         $this->gameEventsModel = $this->getService('gameeventsmodel');
     }
 
-    public function setQuestionOpenAction(int $questionId): JsonResponse
+    public function setQuestionOpenAction(): JsonResponse
     {
-        $this->closeOpenQuestionsAction();
-        $returnVal = $this->gameEventsModel->insertNewOpenAnswer($questionId);
-        if ($returnVal) {
-            return new JsonResponse('Inserted new row');
-        }
-
-        return new JsonResponse('Could not insert new row');
+        file_put_contents(__DIR__ . '/../../Var/Data/openQuestion', 'true');
+        return new JsonResponse('Question opened for buzzing');
     }
 
     public function getAllGameEventsAction(): JsonResponse
@@ -41,21 +36,11 @@ class GameEventController
         return new JsonResponse($this->gameEventsModel->getAllGameEvents());
     }
 
-    public function setQuestionClosed(int $eventId): JsonResponse
+    public function setQuestionClosed(): JsonResponse
     {
-        $returnVal = $this->gameEventsModel->closeAnswer($eventId);
-
-        if ($returnVal) {
-            return new JsonResponse('Closed');
-        }
-
-        return new JsonResponse('Cloud not close');
+        file_put_contents(__DIR__ . '/../../Var/Data/openQuestion', 'false');
+        return new JsonResponse('Question closed for buzzing');
     }
-
-    public function get()
-    {
-    }
-
 
     public function setOpenQuestionToWrongAction(): JsonResponse
     {
@@ -78,11 +63,8 @@ class GameEventController
 
     public function closeOpenQuestionsAction(): JsonResponse
     {
-        if ($this->gameEventsModel->closeQuestions()) {
-            return new JsonResponse('All open questions are closed');
-        }
-
-        return new JsonResponse('Some Database Sanfu happened');
+        file_put_contents(__DIR__ . '/../../Var/Data/openQuestion', 'false');
+        return new JsonResponse('Question closed for buzzing');
     }
 
     private function reinsertQuestion(): void

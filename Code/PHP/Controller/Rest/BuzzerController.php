@@ -34,10 +34,12 @@ class BuzzerController
     public function buzzerAction($buzzer): Response
     {
         $file = __DIR__ . '/../../Var/Data/activeBuzzer';
-                file_put_contents($file, $buzzer);
-                return new JsonResponse('buzzered');
-
-       // return new JsonResponse('No open answer found');
+        if (file_get_contents(__DIR__ . '/../../Var/Data/openQuestion') === 'true') {
+            file_put_contents($file, $buzzer);
+            file_put_contents(__DIR__ . '/../../Var/Data/openQuestion', 'false');
+            return new JsonResponse('buzzered');
+        }
+        return new JsonResponse('No open answer found');
     }
 
     public function hasLastQuestionBeenBuzzered()
@@ -50,6 +52,6 @@ class BuzzerController
                 return new JsonResponse(json_encode(['buzzer_id' => $fileContent]));
             }
         }
-        return new JsonResponse(json_encode(['buzzer_id' => 5]));
+        return new JsonResponse(json_encode(['buzzer_id' => 0]));
     }
 }
