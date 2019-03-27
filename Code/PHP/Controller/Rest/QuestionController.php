@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace mgbs\Controller\Rest;
 
+use mgbs\Exceptions\DatabaseException;
 use mgbs\Library\DITrait;
 use mgbs\Model\QuestionsModel;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,7 @@ class QuestionController
     public function getAllAnswersAction(): JsonResponse
     {
         if (!\is_array($data = $this->questionModel->getAllQuestions())) {
-            throw new \DatabaseException('Seems DB is empty');
+            throw new DatabaseException('Seems DB is empty');
         }
         return new JsonResponse($data);
     }

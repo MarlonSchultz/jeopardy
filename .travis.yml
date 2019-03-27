@@ -2,9 +2,11 @@ language: php
 php:
   - '7.1'
   - '7.2'
+  - '7.3'
 before_script:
   - cd Code/PHP
   - composer install
 script:
   - php vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 Controller/ Library/ Model/ ValueObject/
   - vendor/phpunit/phpunit/phpunit --configuration phpunit.xml Tests
+  - vendor/bin/phpstan analyse Controller Library Model DTO View
