@@ -36,25 +36,26 @@ function checkIfBuzzered() {
                 url: window.location.protocol + "//" + window.location.host + "/api/getLastBuzzer",
                 success: function (data) {
                     if (data.length > 0) {
-                        switch (data[0].buzzer_id) {
-                            case "1":
+                        let parsed = JSON.parse(data);
+                        switch (parsed.buzzer_id) {
+                            case 1:
                                 numberOfRequests = maxNumberOfRequests;
                                 $('#buzzerColour').css('background', '#13266b');
                                 break;
-                            case "2":
+                            case 2:
                                 numberOfRequests = maxNumberOfRequests;
                                 $('#buzzerColour').css('background', '#136b1a');
                                 break;
-                            case "3":
+                            case 3:
                                 numberOfRequests = maxNumberOfRequests;
                                 $('#buzzerColour').css('background', '#c1ad1c');
                                 break;
-                            case "4":
+                            case 4:
                                 numberOfRequests = maxNumberOfRequests;
                                 $('#buzzerColour').css('background', '#c12c1d');
                                 break;
                         }
-                        resetWrongWarning();
+                        //resetWrongWarning();
                     }
                 },
                 complete: function () {
@@ -88,33 +89,23 @@ function startTimer() {
 function handleAnswerCorrect(el) {
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
-    stopRequests();
-    $.ajax({
-        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionCorrect"
-    }).success(() => {
-        $('#close').attr('data-choice', 'correct');
-        $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
-    }).error(() => {
 
-    });
+    stopRequests();
+    $('#close').attr('data-choice', 'correct');
+    $('#question').html('<h2 class="z-depth-4 green">' + cell.attr('data-question') + '</h2>');
 }
 
 function handleAnswerWrong(el) {
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
-    $.ajax({
-        url: window.location.protocol + "//" + window.location.host + "/api/setQuestionWrong"
-    }).success(() => {
-        $('#close').attr('data-choice', 'red');
-        $('#question').html('<h2 class="z-depth-4 red"> Leider falsch </h2>');
-        startTimer();
-        numberOfRequests = 1; // reset for checkIfBuzzered
-        checkIfBuzzered();
-        resetBuzzerColour();
-    }).error(() => {
 
-    });
-
+    fetch(window.location.protocol + "//" + window.location.host + "/api/setQuestionOpen/1").then(resetWrongWarning);
+    $('#close').attr('data-choice', 'red');
+    $('#question').html('<h2 class="z-depth-4 red"> Leider falsch </h2>');
+    startTimer();
+    numberOfRequests = 1; // reset for checkIfBuzzered
+    checkIfBuzzered();
+    resetBuzzerColour();
 }
 
 function closeAnswer(el) {
@@ -138,7 +129,8 @@ function closeAnswer(el) {
 }
 
 function revealAnswer(el) {
-    resetBuzzerColour();
+    stopRequests();
+    //resetBuzzerColour();
     var el = $(el);
     var cell = $('#' + el.parent().parent().attr('data-cell'));
     $('#question').html('<h2 class="z-depth-4 grey">' + cell.attr('data-question') + '</h2>');
@@ -164,4 +156,8 @@ function resetBuzzerColour() {
 
 function resetWrongWarning() {
     $('#question').html('');
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

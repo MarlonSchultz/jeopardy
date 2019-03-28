@@ -32,11 +32,13 @@ class DatabaseFactory
      */
     public function __construct(
         string $databaseType,
-        string $databaseFile = null
+        string $databaseFile = null,
+        string $sqliteFileToDumpFlatFileIn
     ) {
 
         $this->databaseType = $databaseType;
         $this->databaseFile = $databaseFile;
+        $this->sqliteFileToDumpFlatFileIn = $sqliteFileToDumpFlatFileIn;
     }
 
     /**
@@ -52,7 +54,7 @@ class DatabaseFactory
                 return (new Sqlite3Adapter($this->databaseFile))->getPdoInstance();
                 break;
             case 'flatfile':
-                return (new JsonAdapter($this->databaseFile))->getPdoInstance();
+                return (new JsonAdapter($this->databaseFile, $this->sqliteFileToDumpFlatFileIn))->getPdoInstance();
                 break;
             default:
                 throw new \InvalidArgumentException('DB Type not supported, yet');

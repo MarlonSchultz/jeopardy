@@ -26,9 +26,10 @@ class JsonAdapter implements DatabaseAdapterInterface
      */
     private $sqliteFileToDumpFlatFileIn;
 
-    public function __construct(String $filename)
+    public function __construct(String $filename, String $sqliteFileToDumpFlatFileIn)
     {
         $this->filename = $filename;
+        $this->sqliteFileToDumpFlatFileIn = $sqliteFileToDumpFlatFileIn;
         $this->initPdoInstance();
         $this->truncateQuestionTable();
         $this->loadFileIntoDatabase();
