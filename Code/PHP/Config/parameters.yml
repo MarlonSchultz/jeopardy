@@ -1,4 +1,4 @@
-db_path: '../Var/Data/FlatFile/devcamp2019.json'
+db_path: '../Var/Data/FlatFile/devcamp2019_1.json'
 db_sqlite_file: '../Var/Data/jeopardy.db'
 db_type: 'flatfile'
 twig_debug: true

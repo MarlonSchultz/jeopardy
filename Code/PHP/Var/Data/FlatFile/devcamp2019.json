@@ -2,213 +2,178 @@
   "questions": [
     {
       "id": "1",
-      "category": "Akronyme",
+      "category": "Denglish",
       "points": "10",
-      "answer": "CCC",
-      "question": "Was ist der Chaos Computer Club?"
+      "answer": "Kernspeicherabzug",
+      "question": "Was ist ein Core Dump?"
     },
     {
       "id": "2",
-      "category": "Akronyme",
+      "category": "Denglish",
       "points": "20",
-      "answer": "IBM",
-      "question": "Was ist International Business Machines?"
+      "answer": "Rahmenkonstruktion",
+      "question": "Was ist ein Framework?"
     },
     {
       "id": "3",
-      "category": "Akronyme",
+      "category": "Denglish",
       "points": "30",
-      "answer": "<img src=\"https://www.todaysparent.com/wp-content/uploads/2017/06/when-your-kid-becomes-a-meme-1024x576-1497986561.jpg\" />",
-      "question": "Was ist Universal Serial Bus?"
+      "answer": "Einstöpseln und Spielen",
+      "question": "Was ist Plug & Play?"
     },
     {
       "id": "4",
-      "category": "Akronyme",
+      "category": "Denglish",
       "points": "40",
-      "answer": "TCP",
-      "question": "Was ist das Transmission Control Protocol?"
+      "answer": "Gehirnstürmen",
+      "question": "Was ist Brainstorming?"
     },
     {
       "id": "5",
-      "category": "Akronyme",
+      "category": "Denglish",
       "points": "50",
-      "answer": "RAID",
-      "question": "Was ist ein Redundant Array of Independent Discs"
+      "answer": "Arbeitsladen",
+      "question": "Was ist ein Workshop?"
     },
     {
       "id": "6",
-      "category": "Menschen",
+      "category": "Würzburg",
       "points": "10",
-      "answer": "Er ist der Namenspate für das T in CapTcha",
-      "question": "Wer war Alan Turing?"
+      "answer": "Sanderring 2, 97070 Würzburg",
+      "question": "Wo ist das DevCamp 2019 \\o/ ?"
     },
     {
       "id": "7",
-      "category": "Menschen",
+      "category": "Würzburg",
       "points": "20",
-      "answer": "Sie entwickelte den ersten Compiler A-0 (lief auf dem UNIVAC I)",
-      "question": "Wer war Grace Hopper?"
+      "answer": "Diese Brücke wird im Volksmund gerne Löwenbrücke genannt.",
+      "question": "Was ist die Ludwigsbrücke?"
     },
     {
       "id": "8",
-      "category": "Menschen",
+      "category": "Würzburg",
       "points": "30",
-      "answer": "Sie ist die Namenspatin für das L in SOLID",
-      "question": "Wer ist Barbara Liskov? (Liskovsche Substitutionsprinzip)"
+      "answer": "Ein für Wein aus Franken typisches Hohlraumgefäß aus Glas",
+      "question": "Was ist der Bocksbeutel"
     },
     {
       "id": "9",
-      "category": "Menschen",
+      "category": "Würzburg",
       "points": "40",
-      "answer": "Das sind die Namesgeber für das asymmetrische Kryptoververfahren RSA",
-      "question": "Wer sind die Mathematiker Rivest, Shamir und Adleman?"
+      "answer": "Ein bei Einheimischen und Touristen beliebte, aber auch sehr kontrovers diskutierte, Freizeitaktivirtät auf der alten Mainbrücke",
+      "question": "Was ist der BRückenschoppen?"
     },
     {
       "id": "10",
-      "category": "Symfony",
+      "category": "Würzburg",
       "points": "50",
-      "answer": "Er ist der \"Vater\" eines ersten ChatBots names “ELIZA” 1966",
-      "question": "Wer war Jospeh Weizenbaum?"
+      "answer": "In diesem Jahr erhielt die Universität Würzburg Zugang zum Internet.",
+      "question": "Was war 1991 los?"
     },
     {
       "id": "11",
-      "category": "Libraries",
+      "category": "Code names",
       "points": "10",
-      "answer": "An ORM maintained by Ocramius",
-      "question": "What is Doctrine ORM?"
+      "answer": "Playground, Krestrel, Merlin, Tiger",
+      "question": "Was ist Java?"
     },
     {
       "id": "12",
-      "category": "Libraries",
+      "category": "Code names",
       "points": "20",
-      "answer": "Logs all your log messages",
-      "question": "What is Monolog?"
+      "answer": "Clarkdale, Haswell, Broadwell, Kaby Lake",
+      "question": "Was sind Intel Prozessoren?"
     },
     {
       "id": "13",
-      "category": "Libraries",
+      "category": "Code names",
       "points": "30",
-      "answer": "Most popular HTTP library",
-      "question": "What is Guzzle?"
+      "answer": "Squeeze, Wheezy, Jessie, Stretch",
+      "question": "Was ist Debian?"
     },
     {
       "id": "14",
-      "category": "Libraries",
+      "category": "Code names",
       "points": "40",
-      "answer": "The small - but deprecated - sister of Symfony",
-      "question": "What is Silex?"
+      "answer": "Janus, Memphis, Whistler, Vienna",
+      "question": "Was ist Windows?"
     },
     {
       "id": "15",
-      "category": "Libraries",
+      "category": "Code names",
       "points": "50",
-      "answer": "The most downloaded package from packagist.org",
-      "question": "What is psr/log?"
+      "answer": "Fast Eddy, Strange Cargo, Venus in Furs, White Rabbit",
+      "question": "Was ist Photoshop?"
     },
     {
       "id": "16",
-      "category": "Berlin",
+      "category": "Berühmte Bärte",
       "points": "10",
-      "answer": "The part of the city we are currently in",
-      "question": "What is Kreuzberg?"
+      "answer": "<img src=\"/img/gosling.jpg\" />",
+      "question": "Wer ist James Gosling (Java)?"
     },
     {
       "id": "17",
-      "category": "Berlin",
+      "category": "Berühmte Bärte",
       "points": "20",
-      "answer": "A Usergroup monthly happening at Co.up (first Tue of the month)",
-      "question": "What is the Berlin PHP Usergroup?"
+      "answer": "<img src=\"/img/jobs.jpg\" />",
+      "question": "Wer ist Steve Jobs?"
     },
     {
       "id": "18",
-      "category": "Berlin",
+      "category": "Berühmte Bärte",
       "points": "30",
-      "answer": "Builds a lot e-commerce portals with Alice & Bob",
-      "question": "What is Rocket Internet?"
+      "answer": "<img src=\"/img/Dennis_Ritchie_2011.jpg\" />",
+      "question": "Wer ist Dennis Ritchie (C) ?"
     },
     {
       "id": "19",
-      "category": "Berlin",
+      "category": "Berühmte Bärte",
       "points": "40",
-      "answer": "Europe's biggest fashion e-commerce based in Berlin.",
-      "question": "What is Zalando?"
+      "answer": "<img src=\"/img/richard_stallmann.jpeg\" />",
+      "question": "Wer ist Richard Stallmann? Free Software Foundation\n"
     },
     {
       "id": "20",
-      "category": "Berlin",
+      "category": "Berühmte Bärte",
       "points": "50",
-      "answer": "The oldest crashed space station on earth",
-      "question": "What is the c-base?"
+      "answer": "<img src=\"/img/Alan_Cox_at_FOSS_2007.jpg\" />",
+      "question": "Wer ist Alan Cox ? Früher/bekannter Linux Kernel Entwickler bei Redhat"
     },
     {
       "id": "21",
-      "category": "Tools",
+      "category": "Farbenfrohes Denken",
       "points": "10",
-      "answer": "A dependency manager for PHP",
-      "question": "What is Composer?"
+      "answer": "#F00",
+      "question": "Was ist (die Kurzschreibweise in Hex von) red?"
     },
     {
       "id": "22",
-      "category": "Tools",
+      "category": "Farbenfrohes Denken",
       "points": "20",
-      "answer": "Sebastian Bergmann and contributors.",
-      "question": "What is PHPUnit?"
+      "answer": "Das ist der CSS Hex Code von “yellow”\n",
+      "question": "Was ist FFFF00?"
     },
     {
       "id": "23",
-      "category": "Tools",
+      "category": "Farbenfrohes Denken",
       "points": "30",
-      "answer": "Calculates the npath complexity",
-      "question": "What is PHP Mess Detector?"
+      "answer": "#800000",
+      "question": "Was ist der Hexcode von “maroon”?"
     },
     {
       "id": "24",
-      "category": "Tools",
+      "category": "Farbenfrohes Denken",
       "points": "40",
-      "answer": "Checks and fixes Symfony's Code Style",
-      "question": "What is PHP-Cs-Fixer?"
+      "answer": "purple",
+      "question": "Wie ist der CSS-Name von #800080?"
     },
     {
       "id": "25",
-      "category": "Tools",
+      "category": "Farbenfrohes Denken",
       "points": "50",
-      "answer": "Uses Mink to execute E2E tests",
-      "question": "What is behat?"
-    },
-    {
-      "id": "26",
-      "category": "DevOps",
-      "points": "10",
-      "answer": "Used to inject sensitive config into containers",
-      "question": "What are Environment Variables?"
-    },
-    {
-      "id": "27",
-      "category": "DevOps",
-      "points": "20",
-      "answer": "A tool managing virtual machines",
-      "question": "What is Vagrant?"
-    },
-    {
-      "id": "28",
-      "category": "DevOps",
-      "points": "30",
-      "answer": "Software hosting without server management",
-      "question": "What is Serverless?"
-    },
-    {
-      "id": "29",
-      "category": "DevOps",
-      "points": "40",
-      "answer": "A container-orchestration system by Google",
-      "question": "What is Kubernetes?"
-    },
-    {
-      "id": "30",
-      "category": "DevOps",
-      "points": "50",
-      "answer": "OSS IaaS platform by Rackspace and NASA",
-      "question": "What is OpenStack?"
+      "answer": "rgb(255, 215, 0)",
+      "question": "Was ist der rgb-Farbwert von “gold”?"
     }
   ]
 }
