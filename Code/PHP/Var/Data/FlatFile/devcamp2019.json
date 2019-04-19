@@ -61,7 +61,7 @@
       "category": "Würzburg",
       "points": "40",
       "answer": "Ein bei Einheimischen und Touristen beliebte, aber auch sehr kontrovers diskutierte, Freizeitaktivirtät auf der alten Mainbrücke",
-      "question": "Was ist der BRückenschoppen?"
+      "question": "Was ist der Brückenschoppen?"
     },
     {
       "id": "10",
@@ -106,18 +106,18 @@
       "question": "Was ist Photoshop?"
     },
     {
-      "id": "16",
+      "id": "17",
       "category": "Berühmte Bärte",
-      "points": "10",
+      "points": "20",
       "answer": "<img src=\"/img/gosling.jpg\" />",
       "question": "Wer ist James Gosling (Java)?"
     },
     {
-      "id": "17",
+      "id": "16",
       "category": "Berühmte Bärte",
-      "points": "20",
-      "answer": "<img src=\"/img/jobs.jpg\" />",
-      "question": "Wer ist Steve Jobs?"
+      "points": "10",
+      "answer": "<img src=\"/img/prechtel.jpg\" />",
+      "question": "Wer ist Frank Prechtel?"
     },
     {
       "id": "18",
