@@ -9,7 +9,6 @@ table.fixed {
 
 .card.green .card-title, .card.red .card-title {
     color: transparent !important;
-}
 
 img {
     max-height: 450px;
