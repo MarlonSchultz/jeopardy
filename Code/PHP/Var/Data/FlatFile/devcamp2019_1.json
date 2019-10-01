@@ -1,0 +1,179 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "category": "Amazon WebServices",
+      "points": "10",
+      "answer": "<img src=\"/img/s3.png\" />",
+      "question": "Was ist S3? (Simple Storage Service)"
+    },
+    {
+      "id": "2",
+      "category": "Amazon WebServices",
+      "points": "20",
+      "answer": "<img src=\"/img/ec2.png\" />",
+      "question": "Was ist EC2?"
+    },
+    {
+      "id": "3",
+      "category": "Amazon WebServices",
+      "points": "30",
+      "answer": "<img src=\"/img/lambda.png\" />",
+      "question": "Was ist Lambda?"
+    },
+    {
+      "id": "4",
+      "category": "Amazon WebServices",
+      "points": "40",
+      "answer": "<img src=\"/img/rds.png\" />",
+      "question": "Was ist RDS?"
+    },
+    {
+      "id": "5",
+      "category": "Amazon WebServices",
+      "points": "50",
+      "answer": "<img src=\"/img/sqs.png\" />",
+      "question": "Was ist SQS?"
+    },
+    {
+      "id": "6",
+      "category": "ASCII",
+      "points": "10",
+      "answer": "0xA",
+      "question": "Was ist Newline?"
+    },
+    {
+      "id": "7",
+      "category": "ASCII",
+      "points": "20",
+      "answer": "65",
+      "question": "Was ist A?"
+    },
+    {
+      "id": "8",
+      "category": "ASCII",
+      "points": "30",
+      "answer": "48",
+      "question": "Was ist 0?"
+    },
+    {
+      "id": "9",
+      "category": "ASCII",
+      "points": "40",
+      "answer": "0x20",
+      "question": "Was ist Space?"
+    },
+    {
+      "id": "10",
+      "category": "ASCII",
+      "points": "50",
+      "answer": "1963",
+      "question": "Wann kam ASCII heraus?"
+    },
+    {
+      "id": "11",
+      "category": "Ports",
+      "points": "10",
+      "answer": "80",
+      "question": "Was ist http?"
+    },
+    {
+      "id": "12",
+      "category": "Ports",
+      "points": "20",
+      "answer": "993",
+      "question": "Auf welchem Port läuft IMAP over SSL (IMAPS)?"
+    },
+    {
+      "id": "13",
+      "category": "Ports",
+      "points": "30",
+      "answer": "Der xmpp-client läuft auf diesem Port.",
+      "question": "Was läuft auf Port 5222?"
+    },
+    {
+      "id": "14",
+      "category": "Ports",
+      "points": "40",
+      "answer": "1833",
+      "question": "Was ist mqtt?"
+    },
+    {
+      "id": "15",
+      "category": "Ports",
+      "points": "50",
+      "answer": "ntp - http + 400",
+      "question": "Was ist https?"
+    },
+    {
+      "id": "16",
+      "category": "Akronyme",
+      "points": "10",
+      "answer": "IBM",
+      "question": "Was ist die Abkürzung für International Business Machines?"
+    },
+    {
+      "id": "17",
+      "category": "Akronyme",
+      "points": "20",
+      "answer": "USB",
+      "question": "Was ist die Abkürzung für Universal Serial Bus?"
+    },
+    {
+      "id": "18",
+      "category": "Akronyme",
+      "points": "30",
+      "answer": "RAID",
+      "question": "Was ist die Abkürzung für Redundant Array of Independent Discs?"
+    },
+    {
+      "id": "19",
+      "category": "Akronyme",
+      "points": "40",
+      "answer": "JPEG",
+      "question": "Was ist die Abkürzung Joint Photographic Experts Group?"
+    },
+    {
+      "id": "20",
+      "category": "Akronyme",
+      "points": "50",
+      "answer": "PCMCIA",
+      "question": "Was ist die abkürzung für Personal Computer Memory Card International Association  "
+    },
+    {
+      "id": "21",
+      "category": "Menschen",
+      "points": "10",
+      "answer": "Sie ist die Namenspatin für das L in SOLID.",
+      "question": "Wer ist Barbara Liskov? (Liskovsche Substitutionsprinzip)"
+    },
+    {
+      "id": "22",
+      "category": "Menschen",
+      "points": "20",
+      "answer": "Sie entwickelte den ersten Compiler A-0 (lief auf dem UNIVAC I)",
+      "question": "Wer war Grace Hopper?"
+    },
+    {
+      "id": "23",
+      "category": "Menschen",
+      "points": "30",
+      "answer": "Das sind die Namesgeber für das asymmetrische Kryptoververfahren RSA.",
+      "question": "Wer sind Rivest, Shamir und Adleman?"
+    },
+    {
+      "id": "24",
+      "category": "Menschen",
+      "points": "40",
+      "answer": "Er ist der Namenspate für das T in CapTcha\n",
+      "question": "Wer war Alan Turing?"
+    },
+    {
+      "id": "25",
+      "category": "Menschen",
+      "points": "50",
+      "answer": "Er baute die erste funktionstüchtige programmgesteuerte binäre Rechenmaschine.",
+      "question": "Wer war Konrad Zuse?"
+    }
+  ]
+}
