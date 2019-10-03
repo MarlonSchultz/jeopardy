@@ -1,6 +1,10 @@
 FROM php:7-fpm-alpine
 
-RUN apk update && apk add \
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/*
+
+RUN apk update 
+RUN apk add \
   git \
   openssh-client \
   vim \
@@ -12,6 +16,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     echo "Europe/Berlin" > /etc/timezone
 
 RUN docker-php-ext-install pdo calendar pcntl opcache zip
+
+RUN composer global require hirak/prestissimo
 
 # exec into docker with "sh -l" to load profile aliases
 RUN echo "alias checkCode='/var/www/jeophpardy/vendor/bin/phpunit && /var/www/jeophpardy/vendor/bin/phpcs --standard=PSR2 Controller/ '" >> /root/.profile

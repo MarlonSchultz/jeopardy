@@ -6,7 +6,7 @@
     "symfony/routing": "^3.2",
     "symfony/yaml": "^3.2",
     "symfony/config": "^3.2",
-    "php": "^7.0",
+    "php": "^7.3",
     "ext-SQLite3": "*",
     "ext-pdo_sqlite" : "*",
     "symfony/dependency-injection": "^3.2",
