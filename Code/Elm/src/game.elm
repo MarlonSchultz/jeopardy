@@ -3,6 +3,7 @@ module GAME exposing (Msg(..), main, update, view)
 import Browser
 import Html exposing (Html, pre, text)
 import Http
+import Json.Decode as JD exposing (Decoder, field, int, string)
 
 
 main =
@@ -15,7 +16,7 @@ main =
 
 
 type Msg
-    = GotText (Result Http.Error String)
+    = GotJson (Result Http.Error String)
 
 
 
@@ -28,14 +29,29 @@ type Model
     | Success String
 
 
+type alias Answer =
+    { points : Int
+    , answer : String
+    , question : String
+    }
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( Loading
     , Http.get
-        { url = "https://elm-lang.org/assets/public-opinion.txt"
-        , expect = Http.expectString GotText
+        { url = "http://localhost:8080/api/getAllAnswers"
+        , expect = Http.expectJson GotJson string
         }
     )
+
+
+answerDecoder : Decoder Answer
+answerDecoder =
+    JD.map3 Answer
+        (field "points" int)
+        (field "answer" string)
+        (field "question" string)
 
 
 
@@ -44,7 +60,7 @@ init _ =
 
 update msg model =
     case msg of
-        GotText result ->
+        GotJson result ->
             case result of
                 Ok fullText ->
                     ( Success fullText, Cmd.none )
@@ -70,7 +86,7 @@ view : Model -> Html Msg
 view model =
     case model of
         Failure ->
-            text "I was unable to load your book."
+            text "Couldn't load the json"
 
         Loading ->
             text "Loading..."
