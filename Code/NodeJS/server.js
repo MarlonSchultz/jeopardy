@@ -1,10 +1,9 @@
 let WebSocketServer = require('websocket').server;
 let http = require('http');
-
 let server = http.createServer(function (request, response) {
 
 });
-server.listen(8081, function () {
+server.listen(process.env.PORT, function () {
 });
 
 // create the server
