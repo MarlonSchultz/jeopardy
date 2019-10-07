@@ -27,7 +27,7 @@ type Msg
 type Model
     = Failure String
     | Loading
-    | Success String
+    | Success (Array Answer)
 
 
 type alias Answer =
@@ -114,10 +114,7 @@ update msg model =
         GotJson result ->
             case result of
                 Ok fullText ->
-                    ( Success
-                        (answerToStringAnswer
-                            (arrayOfAnswersToAnswer ( 0, fullText ))
-                        )
+                    ( Success fullText
                     , Cmd.none
                     )
 
@@ -148,4 +145,9 @@ view model =
             text "Loading..."
 
         Success fullText ->
-            div [] [ text fullText ]
+            div []
+                [ text
+                    (answerToStringAnswer
+                        (arrayOfAnswersToAnswer ( 0, fullText ))
+                    )
+                ]
