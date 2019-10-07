@@ -1,9 +1,10 @@
 module GAME exposing (Msg(..), main, update, view)
 
+import Array exposing (Array)
 import Browser
-import Html exposing (Html, pre, text)
+import Html exposing (Html, div, pre, text)
 import Http exposing (..)
-import Json.Decode as JD exposing (Decoder, field, int, string)
+import Json.Decode as JD exposing (Decoder, array, field, int, string)
 
 
 main =
@@ -16,7 +17,7 @@ main =
 
 
 type Msg
-    = GotJson (Result Http.Error Answer)
+    = GotJson (Result Http.Error (Array Answer))
 
 
 
@@ -30,7 +31,7 @@ type Model
 
 
 type alias Answer =
-    { points : Int
+    { points : String
     , answer : String
     , question : String
     }
@@ -41,18 +42,42 @@ init _ =
     ( Loading
     , Http.get
         { url = "http://localhost:8080/api/getAllAnswers"
-        , expect = Http.expectJson GotJson answerDecoder
+        , expect = Http.expectJson GotJson arrayOfAnswerDecoder
         }
     )
 
 
-answerDecoder : Decoder Answer
+answerDecoder : JD.Decoder Answer
 answerDecoder =
     JD.map3
         Answer
-        (field "points" int)
+        (field "points" string)
         (field "answer" string)
         (field "question" string)
+
+
+arrayOfAnswerDecoder : JD.Decoder (Array Answer)
+arrayOfAnswerDecoder =
+    JD.array answerDecoder
+
+
+arrayOfAnswersToAnswer : ( Int, Array Answer ) -> Maybe Answer
+arrayOfAnswersToAnswer ( int, array ) =
+    Array.get int array
+
+
+answerToStringAnswer : Maybe Answer -> String
+answerToStringAnswer maybe =
+    case maybe of
+        Nothing ->
+            "String empty"
+
+        Just a ->
+            a.answer
+
+
+lengthOfArray answerArray =
+    String.fromInt (Array.length answerArray)
 
 
 
@@ -89,7 +114,12 @@ update msg model =
         GotJson result ->
             case result of
                 Ok fullText ->
-                    ( Success fullText.answer, Cmd.none )
+                    ( Success
+                        (answerToStringAnswer
+                            (arrayOfAnswersToAnswer ( 0, fullText ))
+                        )
+                    , Cmd.none
+                    )
 
                 Err err ->
                     ( Failure (errorToString err), Cmd.none )
@@ -118,4 +148,4 @@ view model =
             text "Loading..."
 
         Success fullText ->
-            pre [] [ text fullText ]
+            div [] [ text fullText ]
