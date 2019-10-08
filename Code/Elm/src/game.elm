@@ -61,23 +61,30 @@ arrayOfAnswerDecoder =
     JD.array answerDecoder
 
 
-arrayOfAnswersToAnswer : ( Int, Array Answer ) -> Maybe Answer
-arrayOfAnswersToAnswer ( int, array ) =
+arrayOfAnswersToAnswerRecord : ( Int, Array Answer ) -> Maybe Answer
+arrayOfAnswersToAnswerRecord ( int, array ) =
     Array.get int array
 
 
-answerToStringAnswer : Maybe Answer -> String
-answerToStringAnswer maybe =
+answerToString : ( String, Maybe Answer ) -> String
+answerToString ( whatShouldIReturn, maybe ) =
     case maybe of
         Nothing ->
             "String empty"
 
         Just a ->
-            a.answer
+            case whatShouldIReturn of
+                "answer" ->
+                    a.answer
 
+                "question" ->
+                    a.question
 
-lengthOfArray answerArray =
-    String.fromInt (Array.length answerArray)
+                "points" ->
+                    a.points
+
+                _ ->
+                    "Record not present"
 
 
 
@@ -147,7 +154,7 @@ view model =
         Success fullText ->
             div []
                 [ text
-                    (answerToStringAnswer
-                        (arrayOfAnswersToAnswer ( 0, fullText ))
+                    (answerToString
+                        ( "answer", arrayOfAnswersToAnswerRecord ( 0, fullText ) )
                     )
                 ]
