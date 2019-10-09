@@ -153,8 +153,8 @@ view model =
 
         Success fullText ->
             div []
-                [ text
-                    (answerToString
-                        ( "answer", arrayOfAnswersToAnswerRecord ( 0, fullText ) )
-                    )
+                [ arrayOfAnswersToAnswerRecord ( 0, fullText )
+                    |> Tuple.pair "answer"
+                    |> answerToString
+                    |> text
                 ]
