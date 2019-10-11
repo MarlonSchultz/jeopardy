@@ -2,9 +2,10 @@ module GAME exposing (Msg(..), main, update, view)
 
 import Array exposing (Array)
 import Browser
-import Html exposing (Html, div, pre, text)
+import Html exposing (Attribute, Html, div, text)
+import Html.Attributes exposing (style)
 import Http exposing (..)
-import Json.Decode as JD exposing (Decoder, array, field, int, string)
+import Json.Decode as JD exposing (Decoder, field, string)
 
 
 main =
@@ -38,12 +39,6 @@ type alias Answer =
     }
 
 
-type alias Category =
-    { category : String
-    , answerList : List Answer
-    }
-
-
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( Loading
@@ -69,30 +64,14 @@ arrayOfAnswerDecoder =
     JD.list answerDecoder
 
 
-listOfAnswersToAnswerRecord : List Answer -> Maybe Answer
-listOfAnswersToAnswerRecord list =
-    List.head list
+answerRecordToHtmlRecord : Answer -> Html msg
+answerRecordToHtmlRecord answer =
+    div [ style "background-color:" "blue" ] [ text answer.question ]
 
 
-answerToString : String -> Maybe Answer -> String
-answerToString whatShouldIReturn maybe =
-    case maybe of
-        Nothing ->
-            "String empty"
-
-        Just a ->
-            case whatShouldIReturn of
-                "answer" ->
-                    a.answer
-
-                "question" ->
-                    a.question
-
-                "points" ->
-                    a.points
-
-                _ ->
-                    "Record not present"
+listOfAnswersToHtmlListOfHtml : List Answer -> List (Html msg)
+listOfAnswersToHtmlListOfHtml list =
+    List.map answerRecordToHtmlRecord list
 
 
 
@@ -160,8 +139,8 @@ view model =
             text "Loading..."
 
         Success fullText ->
-            div []
-                [ listOfAnswersToAnswerRecord fullText
-                    |> answerToString "answer"
-                    |> text
+            div
+                [ style "color:" "red"
+                , style "background-color:" "blue"
                 ]
+                (List.map answerRecordToHtmlRecord fullText)
