@@ -34,6 +34,13 @@ type alias Answer =
     { points : String
     , answer : String
     , question : String
+    , category : String
+    }
+
+
+type alias Category =
+    { category : String
+    , answerList : List Answer
     }
 
 
@@ -49,11 +56,12 @@ init _ =
 
 answerDecoder : JD.Decoder Answer
 answerDecoder =
-    JD.map3
+    JD.map4
         Answer
         (field "points" string)
         (field "answer" string)
         (field "question" string)
+        (field "category" string)
 
 
 arrayOfAnswerDecoder : JD.Decoder (Array Answer)
@@ -61,13 +69,13 @@ arrayOfAnswerDecoder =
     JD.array answerDecoder
 
 
-arrayOfAnswersToAnswerRecord : ( Int, Array Answer ) -> Maybe Answer
-arrayOfAnswersToAnswerRecord ( int, array ) =
+arrayOfAnswersToAnswerRecord : Int -> Array Answer -> Maybe Answer
+arrayOfAnswersToAnswerRecord int array =
     Array.get int array
 
 
-answerToString : ( String, Maybe Answer ) -> String
-answerToString ( whatShouldIReturn, maybe ) =
+answerToString : String -> Maybe Answer -> String
+answerToString whatShouldIReturn maybe =
     case maybe of
         Nothing ->
             "String empty"
@@ -153,8 +161,11 @@ view model =
 
         Success fullText ->
             div []
-                [ arrayOfAnswersToAnswerRecord ( 0, fullText )
-                    |> Tuple.pair "answer"
-                    |> answerToString
+                [ let
+                    curry =
+                        arrayOfAnswersToAnswerRecord 0
+                  in
+                  curry fullText
+                    |> answerToString "answer"
                     |> text
                 ]
