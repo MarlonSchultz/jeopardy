@@ -17,7 +17,7 @@ main =
 
 
 type Msg
-    = GotJson (Result Http.Error (Array Answer))
+    = GotJson (Result Http.Error (List Answer))
 
 
 
@@ -27,7 +27,7 @@ type Msg
 type Model
     = Failure String
     | Loading
-    | Success (Array Answer)
+    | Success (List Answer)
 
 
 type alias Answer =
@@ -64,14 +64,14 @@ answerDecoder =
         (field "category" string)
 
 
-arrayOfAnswerDecoder : JD.Decoder (Array Answer)
+arrayOfAnswerDecoder : JD.Decoder (List Answer)
 arrayOfAnswerDecoder =
-    JD.array answerDecoder
+    JD.list answerDecoder
 
 
-arrayOfAnswersToAnswerRecord : Int -> Array Answer -> Maybe Answer
-arrayOfAnswersToAnswerRecord int array =
-    Array.get int array
+listOfAnswersToAnswerRecord : List Answer -> Maybe Answer
+listOfAnswersToAnswerRecord list =
+    List.head list
 
 
 answerToString : String -> Maybe Answer -> String
@@ -161,11 +161,7 @@ view model =
 
         Success fullText ->
             div []
-                [ let
-                    curry =
-                        arrayOfAnswersToAnswerRecord 0
-                  in
-                  curry fullText
+                [ listOfAnswersToAnswerRecord fullText
                     |> answerToString "answer"
                     |> text
                 ]
