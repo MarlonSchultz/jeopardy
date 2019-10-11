@@ -1,6 +1,5 @@
-module GAME exposing (Msg(..), main, update, view)
+module Game exposing (Answer, Msg(..), answerRecordToHtmlRecord, main, update, view)
 
-import Array exposing (Array)
 import Browser
 import Html exposing (Attribute, Html, div, text)
 import Html.Attributes exposing (style)

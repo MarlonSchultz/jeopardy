@@ -1,0 +1,32 @@
+module Example exposing (suite)
+
+import Expect exposing (Expectation)
+import Fuzz exposing (Fuzzer, int, list, string)
+import Game exposing (..)
+import Html exposing (div, text)
+import Html.Attributes exposing (style)
+import Test exposing (..)
+
+
+answer : Answer
+answer =
+    { points = "10"
+    , answer = "answer"
+    , question = "question"
+    , category = "category"
+    }
+
+
+suite : Test
+suite =
+    describe "Answer record"
+        [ test "should be transformed to html msg" <|
+            \_ ->
+                answerRecordToHtmlRecord answer
+                    |> (let
+                            returnValue =
+                                div [ style "background-color:" "blue" ] [ text "question" ]
+                        in
+                        Expect.equal returnValue
+                       )
+        ]
