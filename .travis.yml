@@ -25,4 +25,5 @@ script:
   - php vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 Controller/ Library/ Model/ ValueObject/
   - vendor/phpunit/phpunit/phpunit --configuration phpunit.xml Tests
   - vendor/bin/phpstan analyse Controller Library Model DTO View
-  - ${TRAVIS_BUILD_DIR}/Code/Elm/elm-test
+  - cd ${TRAVIS_BUILD_DIR}/Code/Elm/
+  - elm-test
