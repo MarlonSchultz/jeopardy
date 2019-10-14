@@ -5,6 +5,7 @@ import Html exposing (Attribute, Html, div, text)
 import Html.Attributes exposing (style)
 import Http exposing (..)
 import Json.Decode as JD exposing (Decoder, field, string)
+import List.Extra
 
 
 main =
@@ -68,9 +69,33 @@ answerRecordToHtmlRecord answer =
     div [ style "background-color" "blue" ] [ text answer.question ]
 
 
-listOfAnswersToHtmlListOfHtml : List Answer -> List (Html msg)
-listOfAnswersToHtmlListOfHtml list =
-    List.map answerRecordToHtmlRecord list
+listOfCategory : List Answer -> List (Html Msg)
+listOfCategory list =
+    let
+        listOfCategories =
+            List.map returnOnlyCategory list
+    in
+    List.Extra.unique listOfCategories
+        |> List.map text
+
+
+returnOnlyCategory : Answer -> String
+returnOnlyCategory answer =
+    answer.category
+
+
+getHtmlListOfAnswersByCategory : String -> List Answer -> List (Html Msg)
+getHtmlListOfAnswersByCategory string list =
+    let
+        listOfAnswers =
+            List.filter (getAnswerWithCat string) list
+    in
+    List.map answerRecordToHtmlRecord listOfAnswers
+
+
+getAnswerWithCat : String -> Answer -> Bool
+getAnswerWithCat string { category } =
+    category == string
 
 
 
@@ -138,8 +163,14 @@ view model =
             text "Loading..."
 
         Success fullText ->
-            div
-                [ style "color" "red"
-                , style "background-color" "blue"
+            div []
+                [ div
+                    [ style "color" "red"
+                    , style "background-color" "blue"
+                    ]
+                    (List.map
+                        answerRecordToHtmlRecord
+                        fullText
+                    )
+                , div [] [ div [] (getHtmlListOfAnswersByCategory "Akronyme" fullText) ]
                 ]
-                (List.map answerRecordToHtmlRecord fullText)
