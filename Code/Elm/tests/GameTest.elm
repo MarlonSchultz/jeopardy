@@ -1,4 +1,4 @@
-module Example exposing (suite)
+module GameTest exposing (suite)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
@@ -25,7 +25,7 @@ suite =
                 answerRecordToHtmlRecord answer
                     |> (let
                             returnValue =
-                                div [ style "background-color:" "blue" ] [ text "question" ]
+                                div [ style "background-color" "blue" ] [ text "question" ]
                         in
                         Expect.equal returnValue
                        )

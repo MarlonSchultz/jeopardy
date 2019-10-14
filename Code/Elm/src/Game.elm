@@ -65,7 +65,7 @@ arrayOfAnswerDecoder =
 
 answerRecordToHtmlRecord : Answer -> Html msg
 answerRecordToHtmlRecord answer =
-    div [ style "background-color:" "blue" ] [ text answer.question ]
+    div [ style "background-color" "blue" ] [ text answer.question ]
 
 
 listOfAnswersToHtmlListOfHtml : List Answer -> List (Html msg)
@@ -139,7 +139,7 @@ view model =
 
         Success fullText ->
             div
-                [ style "color:" "red"
-                , style "background-color:" "blue"
+                [ style "color" "red"
+                , style "background-color" "blue"
                 ]
                 (List.map answerRecordToHtmlRecord fullText)
