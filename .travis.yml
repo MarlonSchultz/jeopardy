@@ -15,11 +15,7 @@ install:
   - nvm use $TARGET_NODE_VERSION
   - node --version
   - npm --version
-  - cd ${TRAVIS_BUILD_DIR}/Code/Elm/tests
   - npm install -g elm elm-test
-  - chmod +x $(npm config get prefix)/bin/elm-make
-  - npm install
-  - elm package install --yes
 
 before_script:
   - cd ${TRAVIS_BUILD_DIR}/Code/PHP
