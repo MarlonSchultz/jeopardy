@@ -65,14 +65,23 @@ answerRecordToStringByProperty string answer =
             "Property not found in Record"
 
 
-listOfCategory : List Answer -> List (Html Msg)
-listOfCategory list =
+getlistOfCategoryAsListHtmlMsg : List Answer -> List (Html Msg)
+getlistOfCategoryAsListHtmlMsg list =
     let
         listOfCategories =
             List.map returnOnlyCategory list
     in
     List.Extra.unique listOfCategories
         |> List.map text
+
+
+getListOfCategoryAsListString : List Answer -> List String
+getListOfCategoryAsListString list =
+    let
+        listOfCategories =
+            List.map returnOnlyCategory list
+    in
+    List.Extra.unique listOfCategories
 
 
 returnOnlyCategory : Answer -> String
@@ -103,10 +112,6 @@ getAnswerWithCat string { category } =
     category == string
 
 
-
--- UPDATE
-
-
 errorToString : Http.Error -> String
 errorToString error =
     case error of
@@ -130,6 +135,29 @@ errorToString error =
 
         BadBody errorMessage ->
             errorMessage
+
+
+singleCategoryAsHtml : String -> List Answer -> Html Msg
+singleCategoryAsHtml string list =
+    div []
+        [ div [] [ div [] (getListOfAnswersAsHtmlMsgByCategory string list) ]
+        ]
+
+
+getListOfHtmlAnswers : List Answer -> List (Html Msg)
+getListOfHtmlAnswers listAnswer =
+    let
+        listString =
+            getListOfCategoryAsListString listAnswer
+
+        listToBeConcat =
+            List.map (\singleString -> getListOfAnswersAsHtmlMsgByCategory singleString listAnswer) listString
+    in
+    List.concat listToBeConcat
+
+
+
+-- UPDATE
 
 
 update msg model =
@@ -167,15 +195,7 @@ view model =
         Loading ->
             text "Loading..."
 
-        Success fullText ->
+        Success jsonDecoded ->
             div []
-                [ div
-                    [ style "color" "red"
-                    , style "background-color" "blue"
-                    ]
-                    (List.map
-                        answerRecordToHtmlRecord
-                        fullText
-                    )
-                , div [] [ div [] (getListOfAnswersAsHtmlMsgByCategory "Akronyme" fullText) ]
+                [ Html.div [] (getListOfHtmlAnswers jsonDecoded)
                 ]
