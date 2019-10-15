@@ -1,10 +1,10 @@
-module Game exposing (Answer, Msg(..), answerRecordToHtmlRecord, main, update, view)
+module Main exposing (Msg(..), answerRecordToHtmlRecord, main, update, view)
 
+import AnswerDecoder exposing (Answer, arrayOfAnswerDecoder)
 import Browser
 import Html exposing (Attribute, Html, div, text)
 import Html.Attributes exposing (style)
 import Http exposing (..)
-import Json.Decode as JD exposing (Decoder, field, string)
 import List.Extra
 
 
@@ -31,14 +31,6 @@ type Model
     | Success (List Answer)
 
 
-type alias Answer =
-    { points : String
-    , answer : String
-    , question : String
-    , category : String
-    }
-
-
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( Loading
@@ -49,24 +41,28 @@ init _ =
     )
 
 
-answerDecoder : JD.Decoder Answer
-answerDecoder =
-    JD.map4
-        Answer
-        (field "points" string)
-        (field "answer" string)
-        (field "question" string)
-        (field "category" string)
-
-
-arrayOfAnswerDecoder : JD.Decoder (List Answer)
-arrayOfAnswerDecoder =
-    JD.list answerDecoder
-
-
 answerRecordToHtmlRecord : Answer -> Html msg
 answerRecordToHtmlRecord answer =
     div [ style "background-color" "blue" ] [ text answer.question ]
+
+
+answerRecordToStringByProperty : String -> Answer -> String
+answerRecordToStringByProperty string answer =
+    case string of
+        "answer" ->
+            answer.answer
+
+        "question" ->
+            answer.question
+
+        "points" ->
+            answer.question
+
+        "category" ->
+            answer.category
+
+        _ ->
+            "Property not found in Record"
 
 
 listOfCategory : List Answer -> List (Html Msg)
@@ -84,8 +80,17 @@ returnOnlyCategory answer =
     answer.category
 
 
-getHtmlListOfAnswersByCategory : String -> List Answer -> List (Html Msg)
-getHtmlListOfAnswersByCategory string list =
+getListOfAnswersAsStringByCategory : String -> String -> List Answer -> List String
+getListOfAnswersAsStringByCategory categoryToReturn propertyToReturn list =
+    let
+        listOfAnswer =
+            List.filter ((\cat answer -> cat == answer.category) categoryToReturn) list
+    in
+    List.map (answerRecordToStringByProperty propertyToReturn) listOfAnswer
+
+
+getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Html Msg)
+getListOfAnswersAsHtmlMsgByCategory string list =
     let
         listOfAnswers =
             List.filter (getAnswerWithCat string) list
@@ -172,5 +177,5 @@ view model =
                         answerRecordToHtmlRecord
                         fullText
                     )
-                , div [] [ div [] (getHtmlListOfAnswersByCategory "Akronyme" fullText) ]
+                , div [] [ div [] (getListOfAnswersAsHtmlMsgByCategory "Akronyme" fullText) ]
                 ]

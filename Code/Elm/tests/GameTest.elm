@@ -1,10 +1,11 @@
 module GameTest exposing (suite)
 
+import AnswerDecoder exposing (Answer)
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import Game exposing (..)
 import Html exposing (div, text)
 import Html.Attributes exposing (style)
+import Main exposing (..)
 import Test exposing (..)
 
 
