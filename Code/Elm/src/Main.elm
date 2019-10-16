@@ -43,36 +43,7 @@ init _ =
 
 answerRecordToHtmlRecord : Answer -> Html msg
 answerRecordToHtmlRecord answer =
-    div [ style "background-color" "blue" ] [ text answer.question ]
-
-
-answerRecordToStringByProperty : String -> Answer -> String
-answerRecordToStringByProperty string answer =
-    case string of
-        "answer" ->
-            answer.answer
-
-        "question" ->
-            answer.question
-
-        "points" ->
-            answer.question
-
-        "category" ->
-            answer.category
-
-        _ ->
-            "Property not found in Record"
-
-
-getlistOfCategoryAsListHtmlMsg : List Answer -> List (Html Msg)
-getlistOfCategoryAsListHtmlMsg list =
-    let
-        listOfCategories =
-            List.map returnOnlyCategory list
-    in
-    List.Extra.unique listOfCategories
-        |> List.map text
+    div [ style "background-color" "blue", style "margin-bottom" "15px" ] [ text answer.points ]
 
 
 getListOfCategoryAsListString : List Answer -> List String
@@ -87,15 +58,6 @@ getListOfCategoryAsListString list =
 returnOnlyCategory : Answer -> String
 returnOnlyCategory answer =
     answer.category
-
-
-getListOfAnswersAsStringByCategory : String -> String -> List Answer -> List String
-getListOfAnswersAsStringByCategory categoryToReturn propertyToReturn list =
-    let
-        listOfAnswer =
-            List.filter ((\cat answer -> cat == answer.category) categoryToReturn) list
-    in
-    List.map (answerRecordToStringByProperty propertyToReturn) listOfAnswer
 
 
 getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Html Msg)
@@ -137,13 +99,6 @@ errorToString error =
             errorMessage
 
 
-singleCategoryAsHtml : String -> List Answer -> Html Msg
-singleCategoryAsHtml string list =
-    div []
-        [ div [] [ div [] (getListOfAnswersAsHtmlMsgByCategory string list) ]
-        ]
-
-
 getListOfHtmlAnswers : List Answer -> List (Html Msg)
 getListOfHtmlAnswers listAnswer =
     let
@@ -153,7 +108,7 @@ getListOfHtmlAnswers listAnswer =
         listToBeConcat =
             List.map (\singleString -> getListOfAnswersAsHtmlMsgByCategory singleString listAnswer) listString
     in
-    List.concat listToBeConcat
+    List.map (div []) listToBeConcat
 
 
 
@@ -196,6 +151,10 @@ view model =
             text "Loading..."
 
         Success jsonDecoded ->
-            div []
-                [ Html.div [] (getListOfHtmlAnswers jsonDecoded)
+            div
+                [ style "display" "grid"
+                , style "grid-template-columns" "repeat(6, 200px)"
+                , style "grid-auto-flow" "column"
+                , style "grid-column-gap" "20px"
                 ]
+                (getListOfHtmlAnswers jsonDecoded)

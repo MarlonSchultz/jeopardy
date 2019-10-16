@@ -26,7 +26,7 @@ suite =
                 answerRecordToHtmlRecord answer
                     |> (let
                             returnValue =
-                                div [ style "background-color" "blue" ] [ text "question" ]
+                                div [ style "background-color" "blue", style "margin-bottom" "15px" ] [ text "10" ]
                         in
                         Expect.equal returnValue
                        )
