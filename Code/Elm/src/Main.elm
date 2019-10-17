@@ -2,8 +2,8 @@ module Main exposing (Msg(..), answerRecordToHtmlRecord, main, update, view)
 
 import AnswerDecoder exposing (Answer, arrayOfAnswerDecoder)
 import Browser
-import Html exposing (Attribute, Html, div, text)
-import Html.Attributes exposing (style)
+import Element exposing (Element, el, layout, row, text)
+import Html exposing (Html)
 import Http exposing (..)
 import List.Extra
 
@@ -41,9 +41,9 @@ init _ =
     )
 
 
-answerRecordToHtmlRecord : Answer -> Html msg
+answerRecordToHtmlRecord : Answer -> Element msg
 answerRecordToHtmlRecord answer =
-    div [ style "background-color" "blue", style "margin-bottom" "15px" ] [ text answer.points ]
+    el [] (text answer.points)
 
 
 getListOfCategoryAsListString : List Answer -> List String
@@ -60,7 +60,7 @@ returnOnlyCategory answer =
     answer.category
 
 
-getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Html Msg)
+getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Element Msg)
 getListOfAnswersAsHtmlMsgByCategory string list =
     let
         listOfAnswers =
@@ -99,7 +99,7 @@ errorToString error =
             errorMessage
 
 
-getListOfHtmlAnswers : List Answer -> List (Html Msg)
+getListOfHtmlAnswers : List Answer -> List (Element Msg)
 getListOfHtmlAnswers listAnswer =
     let
         listString =
@@ -108,7 +108,8 @@ getListOfHtmlAnswers listAnswer =
         listToBeConcat =
             List.map (\singleString -> getListOfAnswersAsHtmlMsgByCategory singleString listAnswer) listString
     in
-    List.map (div []) listToBeConcat
+    List.concat listToBeConcat
+        |> List.map (el [])
 
 
 
@@ -146,15 +147,15 @@ view model =
     case model of
         Failure err ->
             text err
+                |> el []
+                |> layout []
 
         Loading ->
-            text "Loading..."
+            text "Loading"
+                |> el []
+                |> layout []
 
         Success jsonDecoded ->
-            div
-                [ style "display" "grid"
-                , style "grid-template-columns" "repeat(6, 200px)"
-                , style "grid-auto-flow" "column"
-                , style "grid-column-gap" "20px"
-                ]
-                (getListOfHtmlAnswers jsonDecoded)
+            getListOfHtmlAnswers jsonDecoded
+                |> row []
+                |> layout []
