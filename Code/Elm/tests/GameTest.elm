@@ -1,17 +1,15 @@
 module GameTest exposing (suite)
 
 import AnswerDecoder exposing (Answer)
+import Element exposing (el)
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
-import Html exposing (div, text)
-import Html.Attributes exposing (style)
 import Main exposing (..)
 import Test exposing (..)
 
 
 answer : Answer
 answer =
-    { points = "10"
+    { points = "points"
     , answer = "answer"
     , question = "question"
     , category = "category"
@@ -21,12 +19,12 @@ answer =
 suite : Test
 suite =
     describe "Answer record"
-        [ test "should be transformed to html msg" <|
+        [ test "should be transformed to element msg" <|
             \_ ->
-                answerRecordToHtmlRecord answer
+                answerRecordToElementMsg answer
                     |> (let
                             returnValue =
-                                div [ style "background-color" "blue", style "margin-bottom" "15px" ] [ text "10" ]
+                                el [] (Element.text answer.points)
                         in
                         Expect.equal returnValue
                        )

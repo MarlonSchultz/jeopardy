@@ -1,9 +1,12 @@
-module Main exposing (Msg(..), answerRecordToHtmlRecord, main, update, view)
+module Main exposing (Msg(..), answerRecordToElementMsg, main, update, view)
 
 import AnswerDecoder exposing (Answer, arrayOfAnswerDecoder)
 import Browser
-import Element exposing (Element, el, layout, row, text)
+import Element exposing (Color, Element, centerX, centerY, column, el, fill, fromRgb255, height, layout, padding, px, row, spacing, text, width)
+import Element.Background as Background
+import Element.Border as Border
 import Html exposing (Html)
+import Html.Attributes exposing (align, style)
 import Http exposing (..)
 import List.Extra
 
@@ -41,34 +44,6 @@ init _ =
     )
 
 
-answerRecordToHtmlRecord : Answer -> Element msg
-answerRecordToHtmlRecord answer =
-    el [] (text answer.points)
-
-
-getListOfCategoryAsListString : List Answer -> List String
-getListOfCategoryAsListString list =
-    let
-        listOfCategories =
-            List.map returnOnlyCategory list
-    in
-    List.Extra.unique listOfCategories
-
-
-returnOnlyCategory : Answer -> String
-returnOnlyCategory answer =
-    answer.category
-
-
-getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Element Msg)
-getListOfAnswersAsHtmlMsgByCategory string list =
-    let
-        listOfAnswers =
-            List.filter (getAnswerWithCat string) list
-    in
-    List.map answerRecordToHtmlRecord listOfAnswers
-
-
 getAnswerWithCat : String -> Answer -> Bool
 getAnswerWithCat string { category } =
     category == string
@@ -99,8 +74,48 @@ errorToString error =
             errorMessage
 
 
-getListOfHtmlAnswers : List Answer -> List (Element Msg)
-getListOfHtmlAnswers listAnswer =
+answerRecordToElementMsg : Answer -> Element msg
+answerRecordToElementMsg answer =
+    el
+        [ Border.rounded 3
+        , Background.color (fromRgb255 boxBlue)
+        , width (px 100)
+        , height (px 40)
+        ]
+        (text answer.points)
+
+
+getListOfCategoryAsListString : List Answer -> List String
+getListOfCategoryAsListString list =
+    let
+        listOfCategories =
+            List.map returnOnlyCategory list
+    in
+    List.Extra.unique listOfCategories
+
+
+returnOnlyCategory : Answer -> String
+returnOnlyCategory answer =
+    answer.category
+
+
+getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Element Msg)
+getListOfAnswersAsHtmlMsgByCategory string list =
+    let
+        listOfAnswers =
+            List.filter (getAnswerWithCat string) list
+    in
+    let
+        elements =
+            List.map answerRecordToElementMsg listOfAnswers
+    in
+    List.map
+        (column [ spacing 20 ])
+        [ elements ]
+
+
+getListOfElementMsgFromAnswer : List Answer -> List (Element Msg)
+getListOfElementMsgFromAnswer listAnswer =
     let
         listString =
             getListOfCategoryAsListString listAnswer
@@ -109,7 +124,8 @@ getListOfHtmlAnswers listAnswer =
             List.map (\singleString -> getListOfAnswersAsHtmlMsgByCategory singleString listAnswer) listString
     in
     List.concat listToBeConcat
-        |> List.map (el [])
+        |> List.map
+            (el [])
 
 
 
@@ -156,6 +172,27 @@ view model =
                 |> layout []
 
         Success jsonDecoded ->
-            getListOfHtmlAnswers jsonDecoded
-                |> row []
+            getListOfElementMsgFromAnswer jsonDecoded
+                |> row [ spacing 50, padding 10, width fill ]
+                |> el [ centerX, centerY ]
                 |> layout []
+
+
+
+-- CSS Styles
+
+
+type alias ColorRecord =
+    { red : Float
+    , green : Float
+    , blue : Float
+    , alpha : Float
+    }
+
+
+boxBlue =
+    { red = 0
+    , green = 0
+    , blue = 255
+    , alpha = 100
+    }
