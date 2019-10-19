@@ -1,12 +1,11 @@
 module Main exposing (Msg(..), answerRecordToElementMsg, main, update, view)
 
-import AnswerDecoder exposing (Answer, arrayOfAnswerDecoder)
+import AnswerDecoder exposing (Answer(..), UnansweredConfig, listOfAnswerDecoder)
 import Browser
 import Element exposing (Color, Element, centerX, centerY, column, el, fill, fromRgb255, height, layout, padding, px, row, spacing, text, width)
 import Element.Background as Background
 import Element.Border as Border
 import Html exposing (Html)
-import Html.Attributes exposing (align, style)
 import Http exposing (..)
 import List.Extra
 
@@ -21,7 +20,7 @@ main =
 
 
 type Msg
-    = GotJson (Result Http.Error (List Answer))
+    = GotJson (Result Http.Error (List UnansweredConfig))
 
 
 
@@ -39,14 +38,25 @@ init _ =
     ( Loading
     , Http.get
         { url = "http://localhost:8080/api/getAllAnswers"
-        , expect = Http.expectJson GotJson arrayOfAnswerDecoder
+        , expect =
+            Http.expectJson GotJson listOfAnswerDecoder
         }
     )
 
 
-getAnswerWithCat : String -> Answer -> Bool
-getAnswerWithCat string { category } =
-    category == string
+filterByCategory : String -> Answer -> Bool
+filterByCategory string answer =
+    getCategoryFromAnswer answer == string
+
+
+getCategoryFromAnswer : Answer -> String
+getCategoryFromAnswer answer =
+    case answer of
+        Answered answered ->
+            answered.category
+
+        Unanswered unansweredConfig ->
+            unansweredConfig.category
 
 
 errorToString : Http.Error -> String
@@ -74,36 +84,52 @@ errorToString error =
             errorMessage
 
 
-answerRecordToElementMsg : Answer -> Element msg
+answerRecordToElementMsg : Answer -> Element Msg
 answerRecordToElementMsg answer =
+    createBox answer
+
+
+createBox : Maybe Answer -> Element Msg
+createBox answer =
+    let
+        returnVal =
+            case answer of
+                Answered _ ->
+                    "X"
+
+                Unanswered unanswered ->
+                    unanswered.points
+    in
     el
         [ Border.rounded 3
         , Background.color (fromRgb255 boxBlue)
         , width (px 100)
         , height (px 40)
         ]
-        (text answer.points)
+        (el [ centerX, centerY ] (text returnVal))
 
 
 getListOfCategoryAsListString : List Answer -> List String
 getListOfCategoryAsListString list =
     let
         listOfCategories =
-            List.map returnOnlyCategory list
+            List.map getCategoryFromAnswer list
     in
     List.Extra.unique listOfCategories
 
 
-returnOnlyCategory : Answer -> String
-returnOnlyCategory answer =
-    answer.category
+getCategoriesAsHeader : List Answer -> List (Element Msg)
+getCategoriesAsHeader list =
+    list
+        |> getListOfCategoryAsListString
+        |> List.map createBox
 
 
-getListOfAnswersAsHtmlMsgByCategory : String -> List Answer -> List (Element Msg)
-getListOfAnswersAsHtmlMsgByCategory string list =
+getListOfAnswersAsHtmlMsgByCategory : List Answer -> String -> List (Element Msg)
+getListOfAnswersAsHtmlMsgByCategory list string =
     let
         listOfAnswers =
-            List.filter (getAnswerWithCat string) list
+            List.filter (filterByCategory string) list
     in
     let
         elements =
@@ -116,16 +142,9 @@ getListOfAnswersAsHtmlMsgByCategory string list =
 
 getListOfElementMsgFromAnswer : List Answer -> List (Element Msg)
 getListOfElementMsgFromAnswer listAnswer =
-    let
-        listString =
-            getListOfCategoryAsListString listAnswer
-
-        listToBeConcat =
-            List.map (\singleString -> getListOfAnswersAsHtmlMsgByCategory singleString listAnswer) listString
-    in
-    List.concat listToBeConcat
-        |> List.map
-            (el [])
+    listAnswer
+        |> getListOfCategoryAsListString
+        |> List.concatMap (getListOfAnswersAsHtmlMsgByCategory listAnswer)
 
 
 
@@ -136,8 +155,8 @@ update msg model =
     case msg of
         GotJson result ->
             case result of
-                Ok fullText ->
-                    ( Success fullText
+                Ok answer ->
+                    ( Success (List.map Unanswered answer)
                     , Cmd.none
                     )
 
@@ -172,8 +191,12 @@ view model =
                 |> layout []
 
         Success jsonDecoded ->
-            getListOfElementMsgFromAnswer jsonDecoded
-                |> row [ spacing 50, padding 10, width fill ]
+            column []
+                [ row [ spacing 50, padding 10, width fill ] (getCategoriesAsHeader jsonDecoded)
+                , getListOfElementMsgFromAnswer
+                    jsonDecoded
+                    |> row [ spacing 50, padding 10, width fill ]
+                ]
                 |> el [ centerX, centerY ]
                 |> layout []
 
@@ -191,7 +214,7 @@ type alias ColorRecord =
 
 
 boxBlue =
-    { red = 0
+    { red = 150
     , green = 0
     , blue = 255
     , alpha = 100

@@ -1,9 +1,9 @@
-module AnswerDecoder exposing (Answer, answerDecoder, arrayOfAnswerDecoder)
+module AnswerDecoder exposing (Answer(..), UnansweredConfig, answerDecoder, listOfAnswerDecoder)
 
 import Json.Decode as JD exposing (field, string)
 
 
-type alias Answer =
+type alias UnansweredConfig =
     { points : String
     , answer : String
     , question : String
@@ -11,16 +11,26 @@ type alias Answer =
     }
 
 
-answerDecoder : JD.Decoder Answer
+type alias AnsweredConfig =
+    { category : String
+    }
+
+
+type Answer
+    = Answered AnsweredConfig
+    | Unanswered UnansweredConfig
+
+
+answerDecoder : JD.Decoder UnansweredConfig
 answerDecoder =
     JD.map4
-        Answer
+        UnansweredConfig
         (field "points" string)
         (field "answer" string)
         (field "question" string)
         (field "category" string)
 
 
-arrayOfAnswerDecoder : JD.Decoder (List Answer)
-arrayOfAnswerDecoder =
+listOfAnswerDecoder : JD.Decoder (List UnansweredConfig)
+listOfAnswerDecoder =
     JD.list answerDecoder
