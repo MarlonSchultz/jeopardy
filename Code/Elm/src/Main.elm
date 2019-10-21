@@ -1,11 +1,9 @@
-module Main exposing (Msg(..), answerRecordToElementMsg, main, update, view)
+module Main exposing (Msg(..), main, update, view)
 
 import AnswerDecoder exposing (Answer(..), UnansweredConfig, listOfAnswerDecoder)
 import Browser
-import Element exposing (Color, Element, centerX, centerY, column, el, fill, fromRgb255, height, layout, padding, px, row, spacing, text, width)
-import Element.Background as Background
-import Element.Border as Border
-import Html exposing (Html)
+import Html exposing (Html, div, h1, node, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, id, rel)
 import Http exposing (..)
 import List.Extra
 
@@ -84,67 +82,10 @@ errorToString error =
             errorMessage
 
 
-answerRecordToElementMsg : Answer -> Element Msg
-answerRecordToElementMsg answer =
-    createBox answer
-
-
-createBox : Maybe Answer -> Element Msg
-createBox answer =
-    let
-        returnVal =
-            case answer of
-                Answered _ ->
-                    "X"
-
-                Unanswered unanswered ->
-                    unanswered.points
-    in
-    el
-        [ Border.rounded 3
-        , Background.color (fromRgb255 boxBlue)
-        , width (px 100)
-        , height (px 40)
-        ]
-        (el [ centerX, centerY ] (text returnVal))
-
-
 getListOfCategoryAsListString : List Answer -> List String
 getListOfCategoryAsListString list =
-    let
-        listOfCategories =
-            List.map getCategoryFromAnswer list
-    in
-    List.Extra.unique listOfCategories
-
-
-getCategoriesAsHeader : List Answer -> List (Element Msg)
-getCategoriesAsHeader list =
-    list
-        |> getListOfCategoryAsListString
-        |> List.map createBox
-
-
-getListOfAnswersAsHtmlMsgByCategory : List Answer -> String -> List (Element Msg)
-getListOfAnswersAsHtmlMsgByCategory list string =
-    let
-        listOfAnswers =
-            List.filter (filterByCategory string) list
-    in
-    let
-        elements =
-            List.map answerRecordToElementMsg listOfAnswers
-    in
-    List.map
-        (column [ spacing 20 ])
-        [ elements ]
-
-
-getListOfElementMsgFromAnswer : List Answer -> List (Element Msg)
-getListOfElementMsgFromAnswer listAnswer =
-    listAnswer
-        |> getListOfCategoryAsListString
-        |> List.concatMap (getListOfAnswersAsHtmlMsgByCategory listAnswer)
+    List.map getCategoryFromAnswer list
+        |> List.Extra.unique
 
 
 
@@ -177,45 +118,132 @@ subscriptions model =
 -- VIEW
 
 
+loadCss : String -> Html Msg
+loadCss cssLink =
+    node "link"
+        [ rel "stylesheet"
+        , href cssLink
+        ]
+        []
+
+
+headline : Html Msg
+headline =
+    div []
+        [ h1 [ class "light-blue center-align z-depth-1" ]
+            [ text "Jeopardy" ]
+        ]
+
+
+tableHead : List String -> Html Msg
+tableHead listOfCategories =
+    thead []
+        [ tr [] (singleTableHead listOfCategories)
+        ]
+
+
+singleTableHead : List String -> List (Html Msg)
+singleTableHead listOfCategories =
+    List.map
+        (\singleCategory ->
+            th [] [ text singleCategory ]
+        )
+        listOfCategories
+
+
+answerBox : List Answer -> List (Html Msg)
+answerBox list =
+    List.map getSingleBox list
+
+
+getSingleBox : Answer -> Html Msg
+getSingleBox answer =
+    td [ id (getIdFromAnswer answer) ]
+        [ div [ class "card blue-grey darken-1" ]
+            [ div
+                [ class "card-content white-text" ]
+                [ span
+                    [ class "card-title" ]
+                    [ text (getPointsFromAnswer answer) ]
+                ]
+            ]
+        ]
+
+
+tableRow : List Answer -> List (Html Msg)
+tableRow list =
+    let
+        answersByPoints =
+            getAnswersByPoints list
+    in
+    List.map
+        (\singleList ->
+            tr []
+                (answerBox singleList)
+        )
+        answersByPoints
+
+
+getAnswersByPoints : List Answer -> List (List Answer)
+getAnswersByPoints list =
+    getPossiblePoints list
+        |> List.map
+            (\singlePoints ->
+                List.filter (\singleAnswer -> getPointsFromAnswer singleAnswer == singlePoints) list
+            )
+
+
+getPossiblePoints : List Answer -> List String
+getPossiblePoints listAnswers =
+    List.map getPointsFromAnswer listAnswers
+        |> List.Extra.unique
+
+
+getPointsFromAnswer : Answer -> String
+getPointsFromAnswer answer =
+    case answer of
+        Answered answered ->
+            answered.points
+
+        Unanswered unansweredConfig ->
+            unansweredConfig.points
+
+
+getIdFromAnswer : Answer -> String
+getIdFromAnswer answer =
+    case answer of
+        Answered answered ->
+            answered.id
+
+        Unanswered unansweredConfig ->
+            unansweredConfig.id
+
+
 view : Model -> Html Msg
 view model =
     case model of
         Failure err ->
-            text err
-                |> el []
-                |> layout []
+            div []
+                [ loadCss "stylesheets/materialize/css/materialize.min.css"
+                , text ("error" ++ err)
+                ]
 
         Loading ->
-            text "Loading"
-                |> el []
-                |> layout []
+            div []
+                [ loadCss "stylesheets/materialize/css/materialize.min.css"
+                , text "Loading"
+                ]
 
         Success jsonDecoded ->
-            column []
-                [ row [ spacing 50, padding 10, width fill ] (getCategoriesAsHeader jsonDecoded)
-                , getListOfElementMsgFromAnswer
-                    jsonDecoded
-                    |> row [ spacing 50, padding 10, width fill ]
+            div []
+                [ loadCss "stylesheets/materialize/css/materialize.min.css"
+                , loadCss "stylesheets/jeopardy.css"
+                , div [ class "container" ]
+                    [ headline
+                    , table [ class "highlight centered fixed" ]
+                        [ tableHead (getListOfCategoryAsListString jsonDecoded)
+                        , tbody []
+                            (tableRow jsonDecoded)
+                        ]
+                    ]
                 ]
-                |> el [ centerX, centerY ]
-                |> layout []
-
-
-
--- CSS Styles
-
-
-type alias ColorRecord =
-    { red : Float
-    , green : Float
-    , blue : Float
-    , alpha : Float
-    }
-
-
-boxBlue =
-    { red = 150
-    , green = 0
-    , blue = 255
-    , alpha = 100
-    }

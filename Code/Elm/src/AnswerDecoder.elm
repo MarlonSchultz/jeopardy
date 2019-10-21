@@ -1,30 +1,28 @@
 module AnswerDecoder exposing (Answer(..), UnansweredConfig, answerDecoder, listOfAnswerDecoder)
 
+import Html exposing (text)
 import Json.Decode as JD exposing (field, string)
 
 
 type alias UnansweredConfig =
-    { points : String
+    { id : String
+    , points : String
     , answer : String
     , question : String
     , category : String
     }
 
 
-type alias AnsweredConfig =
-    { category : String
-    }
-
-
 type Answer
-    = Answered AnsweredConfig
+    = Answered UnansweredConfig
     | Unanswered UnansweredConfig
 
 
 answerDecoder : JD.Decoder UnansweredConfig
 answerDecoder =
-    JD.map4
+    JD.map5
         UnansweredConfig
+        (field "id" string)
         (field "points" string)
         (field "answer" string)
         (field "question" string)
