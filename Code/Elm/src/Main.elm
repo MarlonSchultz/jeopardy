@@ -2,8 +2,9 @@ module Main exposing (Msg(..), main, update, view)
 
 import AnswerDecoder exposing (Answer(..), UnansweredConfig, listOfAnswerDecoder)
 import Browser
-import Html exposing (Html, div, h1, node, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, href, id, rel)
+import Html exposing (Html, a, div, h1, i, node, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, id, rel, src, style)
+import Html.Events exposing (onClick)
 import Http exposing (..)
 import List.Extra
 
@@ -19,6 +20,7 @@ main =
 
 type Msg
     = GotJson (Result Http.Error (List UnansweredConfig))
+    | OpenModal Answer
 
 
 
@@ -40,11 +42,6 @@ init _ =
             Http.expectJson GotJson listOfAnswerDecoder
         }
     )
-
-
-filterByCategory : String -> Answer -> Bool
-filterByCategory string answer =
-    getCategoryFromAnswer answer == string
 
 
 getCategoryFromAnswer : Answer -> String
@@ -104,6 +101,9 @@ update msg model =
                 Err err ->
                     ( Failure (errorToString err), Cmd.none )
 
+        OpenModal answer ->
+            ( model, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -159,7 +159,7 @@ answerBox list =
 getSingleBox : Answer -> Html Msg
 getSingleBox answer =
     td [ id (getIdFromAnswer answer) ]
-        [ div [ class "card blue-grey darken-1" ]
+        [ div [ class "card blue-grey darken-1", onClick <| OpenModal answer ]
             [ div
                 [ class "card-content white-text" ]
                 [ span
@@ -219,6 +219,61 @@ getIdFromAnswer answer =
             unansweredConfig.id
 
 
+modalStructure : Html Msg
+modalStructure =
+    div
+        [ id "modal1", class "modal", style "z-index" "1003" ]
+        [ div
+            [ class "modal-content" ]
+            [ div
+                [ class "card blue-grey lighten-2" ]
+                [ div
+                    [ class "card-content white-text center-align", id "buzzerColour" ]
+                    [ div
+                        [ class "card-title", id "answer" ]
+                        []
+                    , div
+                        [ id "question" ]
+                        []
+                    , div
+                        [ id "countdown" ]
+                        []
+                    ]
+                ]
+            ]
+        , div
+            [ class "modal-footer" ]
+            [ div
+                [ class "card-action center-align" ]
+                [ div
+                    [ id "wrong", class "btn-floating red" ]
+                    [ i
+                        [ class "close material-icons" ]
+                        [ text "close" ]
+                    ]
+                , div
+                    [ id "right", class " btn-floating green" ]
+                    [ i
+                        [ class "close material-icons" ]
+                        [ text "check" ]
+                    ]
+                , div
+                    [ id "reveal", class " btn-floating grey" ]
+                    [ i
+                        [ class "close material-icons" ]
+                        [ text "search" ]
+                    ]
+                , div
+                    [ id "close", class "waves-effect waves-green btn-flat" ]
+                    [ i
+                        [ class "close material-icons" ]
+                        [ text "close" ]
+                    ]
+                ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     case model of
@@ -240,6 +295,7 @@ view model =
                 , loadCss "stylesheets/jeopardy.css"
                 , div [ class "container" ]
                     [ headline
+                    , modalStructure
                     , table [ class "highlight centered fixed" ]
                         [ tableHead (getListOfCategoryAsListString jsonDecoded)
                         , tbody []

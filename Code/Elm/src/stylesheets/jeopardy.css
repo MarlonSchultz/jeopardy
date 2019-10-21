@@ -9,7 +9,44 @@ table.fixed {
 
 .card.green .card-title, .card.red .card-title {
     color: transparent !important;
+}
 
 img {
     max-height: 450px;
+}
+
+.material-icons {
+    font-family: 'Material Icons', serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.woff2) format('woff2'),
+    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.woff) format('woff'),
+    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.ttf) format('truetype');
 }
