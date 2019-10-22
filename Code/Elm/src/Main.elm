@@ -1,12 +1,13 @@
 module Main exposing (Msg(..), main, update, view)
 
-import AnswerDecoder exposing (Answer(..), UnansweredConfig, listOfAnswerDecoder)
+import AnswerDecoder exposing (Answer, decodeJson)
 import Browser
-import Html exposing (Html, a, div, h1, i, node, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, href, id, rel, src, style)
+import Html exposing (Html, div, h1, i, node, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, href, id, rel, style)
 import Html.Events exposing (onClick)
 import Http exposing (..)
 import List.Extra
+import Maybe exposing (withDefault)
 
 
 main =
@@ -19,7 +20,7 @@ main =
 
 
 type Msg
-    = GotJson (Result Http.Error (List UnansweredConfig))
+    = GotJson (Result Http.Error (List Answer))
     | OpenModal Answer
 
 
@@ -27,31 +28,32 @@ type Msg
 -- MODEL
 
 
-type Model
+type RequestResult
     = Failure String
     | Loading
     | Success (List Answer)
 
 
+type alias Model =
+    { requestState : RequestResult
+    , chosenAnswer : Answer
+    }
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Loading
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" }
     , Http.get
         { url = "http://localhost:8080/api/getAllAnswers"
         , expect =
-            Http.expectJson GotJson listOfAnswerDecoder
+            Http.expectJson GotJson decodeJson
         }
     )
 
 
 getCategoryFromAnswer : Answer -> String
 getCategoryFromAnswer answer =
-    case answer of
-        Answered answered ->
-            answered.category
-
-        Unanswered unansweredConfig ->
-            unansweredConfig.category
+    answer.category
 
 
 errorToString : Http.Error -> String
@@ -79,8 +81,8 @@ errorToString error =
             errorMessage
 
 
-getListOfCategoryAsListString : List Answer -> List String
-getListOfCategoryAsListString list =
+getListOfCategories : List Answer -> List String
+getListOfCategories list =
     List.map getCategoryFromAnswer list
         |> List.Extra.unique
 
@@ -89,20 +91,21 @@ getListOfCategoryAsListString list =
 -- UPDATE
 
 
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotJson result ->
             case result of
                 Ok answer ->
-                    ( Success (List.map Unanswered answer)
+                    ( { model | requestState = Success answer }
                     , Cmd.none
                     )
 
                 Err err ->
-                    ( Failure (errorToString err), Cmd.none )
+                    ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         OpenModal answer ->
-            ( model, Cmd.none )
+            ( { model | chosenAnswer = answer }, Cmd.none )
 
 
 
@@ -201,28 +204,18 @@ getPossiblePoints listAnswers =
 
 getPointsFromAnswer : Answer -> String
 getPointsFromAnswer answer =
-    case answer of
-        Answered answered ->
-            answered.points
-
-        Unanswered unansweredConfig ->
-            unansweredConfig.points
+    answer.points
 
 
 getIdFromAnswer : Answer -> String
 getIdFromAnswer answer =
-    case answer of
-        Answered answered ->
-            answered.id
-
-        Unanswered unansweredConfig ->
-            unansweredConfig.id
+    answer.id
 
 
-modalStructure : Html Msg
-modalStructure =
+modalStructure : Answer -> Html Msg
+modalStructure answer =
     div
-        [ id "modal1", class "modal", style "z-index" "1003" ]
+        [ id "modal1", class "modal1", style "z-index" "1003" ]
         [ div
             [ class "modal-content" ]
             [ div
@@ -231,10 +224,10 @@ modalStructure =
                     [ class "card-content white-text center-align", id "buzzerColour" ]
                     [ div
                         [ class "card-title", id "answer" ]
-                        []
+                        [ text answer.answer ]
                     , div
                         [ id "question" ]
-                        []
+                        [ text answer.question ]
                     , div
                         [ id "countdown" ]
                         []
@@ -276,7 +269,7 @@ modalStructure =
 
 view : Model -> Html Msg
 view model =
-    case model of
+    case model.requestState of
         Failure err ->
             div []
                 [ loadCss "stylesheets/materialize/css/materialize.min.css"
@@ -295,9 +288,9 @@ view model =
                 , loadCss "stylesheets/jeopardy.css"
                 , div [ class "container" ]
                     [ headline
-                    , modalStructure
+                    , modalStructure model.chosenAnswer
                     , table [ class "highlight centered fixed" ]
-                        [ tableHead (getListOfCategoryAsListString jsonDecoded)
+                        [ tableHead (getListOfCategories jsonDecoded)
                         , tbody []
                             (tableRow jsonDecoded)
                         ]
