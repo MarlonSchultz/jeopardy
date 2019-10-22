@@ -3,11 +3,10 @@ module Main exposing (Msg(..), main, update, view)
 import AnswerDecoder exposing (Answer, decodeJson)
 import Browser
 import Html exposing (Html, div, h1, i, node, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, href, id, rel, style)
+import Html.Attributes exposing (class, classList, href, id, rel, style)
 import Html.Events exposing (onClick)
 import Http exposing (..)
 import List.Extra
-import Maybe exposing (withDefault)
 
 
 main =
@@ -21,7 +20,7 @@ main =
 
 type Msg
     = GotJson (Result Http.Error (List Answer))
-    | OpenModal Answer
+    | ToggleModal Answer
 
 
 
@@ -37,12 +36,13 @@ type RequestResult
 type alias Model =
     { requestState : RequestResult
     , chosenAnswer : Answer
+    , openModal : Bool
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" }
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True
     , Http.get
         { url = "http://localhost:8080/api/getAllAnswers"
         , expect =
@@ -104,8 +104,8 @@ update msg model =
                 Err err ->
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
-        OpenModal answer ->
-            ( { model | chosenAnswer = answer }, Cmd.none )
+        ToggleModal answer ->
+            ( { model | chosenAnswer = answer, openModal = not model.openModal }, Cmd.none )
 
 
 
@@ -162,7 +162,7 @@ answerBox list =
 getSingleBox : Answer -> Html Msg
 getSingleBox answer =
     td [ id (getIdFromAnswer answer) ]
-        [ div [ class "card blue-grey darken-1", onClick <| OpenModal answer ]
+        [ div [ class "card blue-grey darken-1", onClick <| ToggleModal answer ]
             [ div
                 [ class "card-content white-text" ]
                 [ span
@@ -175,16 +175,12 @@ getSingleBox answer =
 
 tableRow : List Answer -> List (Html Msg)
 tableRow list =
-    let
-        answersByPoints =
-            getAnswersByPoints list
-    in
-    List.map
-        (\singleList ->
-            tr []
-                (answerBox singleList)
-        )
-        answersByPoints
+    getAnswersByPoints list
+        |> List.map
+            (\singleList ->
+                tr []
+                    (answerBox singleList)
+            )
 
 
 getAnswersByPoints : List Answer -> List (List Answer)
@@ -212,12 +208,11 @@ getIdFromAnswer answer =
     answer.id
 
 
-modalStructure : Answer -> Html Msg
-modalStructure answer =
-    div
-        [ id "modal1", class "modal1", style "z-index" "1003" ]
+modalStructure : Answer -> Bool -> Html Msg
+modalStructure answer open =
+    div [ class "row" ]
         [ div
-            [ class "modal-content" ]
+            [ id "modal1", classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", open ) ], style "z-index" "1003" ]
             [ div
                 [ class "card blue-grey lighten-2" ]
                 [ div
@@ -233,34 +228,28 @@ modalStructure answer =
                         []
                     ]
                 ]
-            ]
-        , div
-            [ class "modal-footer" ]
-            [ div
-                [ class "card-action center-align" ]
+            , div
+                [ class "modal-footer" ]
                 [ div
-                    [ id "wrong", class "btn-floating red" ]
-                    [ i
-                        [ class "close material-icons" ]
-                        [ text "close" ]
-                    ]
-                , div
-                    [ id "right", class " btn-floating green" ]
-                    [ i
-                        [ class "close material-icons" ]
-                        [ text "check" ]
-                    ]
-                , div
-                    [ id "reveal", class " btn-floating grey" ]
-                    [ i
-                        [ class "close material-icons" ]
-                        [ text "search" ]
-                    ]
-                , div
-                    [ id "close", class "waves-effect waves-green btn-flat" ]
-                    [ i
-                        [ class "close material-icons" ]
-                        [ text "close" ]
+                    [ class "card-action center-align" ]
+                    [ div
+                        [ id "wrong", class "btn-floating red" ]
+                        [ i
+                            [ class "close material-icons" ]
+                            [ text "close" ]
+                        ]
+                    , div
+                        [ id "right", class " btn-floating green" ]
+                        [ i
+                            [ class "close material-icons" ]
+                            [ text "check" ]
+                        ]
+                    , div
+                        [ id "reveal", class " btn-floating grey" ]
+                        [ i
+                            [ class "close material-icons" ]
+                            [ text "search" ]
+                        ]
                     ]
                 ]
             ]
@@ -288,7 +277,7 @@ view model =
                 , loadCss "stylesheets/jeopardy.css"
                 , div [ class "container" ]
                     [ headline
-                    , modalStructure model.chosenAnswer
+                    , modalStructure model.chosenAnswer model.openModal
                     , table [ class "highlight centered fixed" ]
                         [ tableHead (getListOfCategories jsonDecoded)
                         , tbody []

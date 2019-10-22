@@ -4,18 +4,8 @@ cache:
   directories:
     - test/elm-stuff/build-artifacts
 
-env:
-  - ELM_VERSION=0.19.0 TARGET_NODE_VERSION=node
-
 php:
   - '7.3'
-
-install:
-  - nvm install $TARGET_NODE_VERSION
-  - nvm use $TARGET_NODE_VERSION
-  - node --version
-  - npm --version
-  - npm install -g elm elm-test
 
 before_script:
   - cd ${TRAVIS_BUILD_DIR}/Code/PHP
@@ -25,5 +15,4 @@ script:
   - php vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 Controller/ Library/ Model/ ValueObject/
   - vendor/phpunit/phpunit/phpunit --configuration phpunit.xml Tests
   - vendor/bin/phpstan analyse Controller Library Model DTO View
-  - cd ${TRAVIS_BUILD_DIR}/Code/Elm/
-  - elm-test
+
