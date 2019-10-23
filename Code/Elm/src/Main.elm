@@ -44,7 +44,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True
     , Http.get
-        { url = "http://localhost:8080/api/getAllAnswers"
+        { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
             Http.expectJson GotJson decodeJson
         }

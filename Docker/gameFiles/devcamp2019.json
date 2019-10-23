@@ -1,5 +1,4 @@
-{
-  "questions": [
+ [
     {
       "id": "1",
       "category": "Akronyme",
@@ -211,4 +210,4 @@
       "question": "What is OpenStack?"
     }
   ]
-}
+

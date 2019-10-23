@@ -5,24 +5,25 @@ services:
     volumes:
       - ../Code/PHP:/var/www/jeophpardy
       - ../Code/Elm/assets/css:/var/www/jeophpardy/web/css/elm
+      - ./gameFiles/:/var/www/jeophpardy/web/gameFiles
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8080:80"
 
   jeophpardy_php:
-      build:
-        context: .
-        dockerfile: Dockerfile_php
-      environment:
-          PHP_IDE_CONFIG: "serverName=jeophpardy.local"
-      volumes:
-          - ../Code/PHP:/var/www/jeophpardy
+    build:
+      context: .
+      dockerfile: Dockerfile_php
+    environment:
+      PHP_IDE_CONFIG: "serverName=jeophpardy.local"
+    volumes:
+      - ../Code/PHP:/var/www/jeophpardy
 
   jeopardy_node:
-      build:
-          context: ..
-          dockerfile: Docker/Dockerfile_node
-      environment:
-        PORT: 8081
-      ports:
-        - "8081:8081"
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile_node
+    environment:
+      PORT: 8081
+    ports:
+      - "8081:8081"
