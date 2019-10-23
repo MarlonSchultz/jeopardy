@@ -22,11 +22,12 @@ class QuestionController
     {
         $this->questionModel = $this->getService('questionmodel');
     }
+
     public function getAllAnswersAction(): JsonResponse
     {
         if (!\is_array($data = $this->questionModel->getAllQuestions())) {
             throw new DatabaseException('Seems DB is empty');
         }
-        return new JsonResponse($data);
+        return new JsonResponse($data, 200, ['Access-Control-Allow-Origin' => '*']);
     }
 }

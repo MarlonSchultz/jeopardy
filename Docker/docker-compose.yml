@@ -1,9 +1,10 @@
-version: "3.0"
+version: "2.0"
 services:
   jeophardy_nginx:
     image: nginx:latest
     volumes:
       - ../Code/PHP:/var/www/jeophpardy
+      - ../Code/Elm/assets/css:/var/www/jeophpardy/web/css/elm
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8080:80"
