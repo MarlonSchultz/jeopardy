@@ -46,7 +46,7 @@ img {
     font-weight: 400;
     src: local('Material Icons'),
     local('MaterialIcons-Regular'),
-    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.woff2) format('woff2'),
-    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.woff) format('woff'),
-    url(http://localhost:8000/src/stylesheets/materialize/css/MaterialIcons-Regular.ttf) format('truetype');
+    url(http://localhost:8080/css/elm/MaterialIcons-Regular.woff2) format('woff2'),
+    url(http://localhost:8080/css/elm/MaterialIcons-Regular.woff) format('woff'),
+    url(http://localhost:8080/css/elm/MaterialIcons-Regular.ttf) format('truetype');
 }

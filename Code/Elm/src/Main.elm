@@ -212,7 +212,7 @@ modalStructure : Answer -> Bool -> Html Msg
 modalStructure answer open =
     div [ class "row" ]
         [ div
-            [ id "modal1", classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", open ) ], style "z-index" "1003" ]
+            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", open ) ], style "z-index" "1003" ]
             [ div
                 [ class "card blue-grey lighten-2" ]
                 [ div
@@ -261,20 +261,20 @@ view model =
     case model.requestState of
         Failure err ->
             div []
-                [ loadCss "stylesheets/materialize/css/materialize.min.css"
+                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
                 , text ("error" ++ err)
                 ]
 
         Loading ->
             div []
-                [ loadCss "stylesheets/materialize/css/materialize.min.css"
+                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
                 , text "Loading"
                 ]
 
         Success jsonDecoded ->
             div []
-                [ loadCss "stylesheets/materialize/css/materialize.min.css"
-                , loadCss "stylesheets/jeopardy.css"
+                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
+                , loadCss "http://localhost:8080/css/elm/jeopardy.css"
                 , div [ class "container" ]
                     [ headline
                     , modalStructure model.chosenAnswer model.openModal
