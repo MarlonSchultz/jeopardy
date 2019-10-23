@@ -18,11 +18,11 @@ services:
       volumes:
           - ../Code/PHP:/var/www/jeophpardy
 
-#  jeopardy_node:
-#      build:
-#          context: ..
-#          dockerfile: Docker/Dockerfile_node
-#      environment:
-#        PORT: 8081
-#      ports:
-#        - "8081:8081"
+  jeopardy_node:
+      build:
+          context: ..
+          dockerfile: Docker/Dockerfile_node
+      environment:
+        PORT: 8081
+      ports:
+        - "8081:8081"

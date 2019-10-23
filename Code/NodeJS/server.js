@@ -1,64 +1,51 @@
-let WebSocketServer = require('websocket').server;
 let http = require('http');
 const fs = require("fs");
-let server = http.createServer(function (request, response) {
 
-});
-server.listen(process.env.PORT, function () {
-});
 
-// create the server
-wsServer = new WebSocketServer({
-    httpServer: server
-});
+//create a server object:
+http.createServer(function (request, response) {
+    response.write('Hello World!'); //write a response to the client
+    response.end(); //end the response
 
-// WebSocket server
-wsServer.on('request', function (request) {
-    let connection = request.accept(null, request.origin);
+    try {
+        console.log(request.url);
+        let calledUrl = request.url;
 
-    // This is the most important callback for us, we'll handle
-    // all messages from users here.
-    connection.on('message', function (message) {
-        try {
-            if (message.type === 'utf8') {
-                // QuestionOpened
-                let payload = JSON.parse(message.utf8Data);
-
-                if (payload.message === 'questionOpen') {
-                    fs.writeFile('questionOpen', 'True', (err) => {
-                        // throws an error, you could also catch it here
-                        if (err) throw err;
-
-                        // success case, the file was saved
-                        console.log('questionOpen!');
-                    });
-                }
-
-                // QuestionClosed
-                if (payload.message === 'questionClosed') {
-                    fs.writeFile('questionOpen', 'False', (err) => {
-                        // throws an error, you could also catch it here
-                        if (err) throw err;
-
-                        // success case, the file was saved
-                        console.log('questionClosed!');
-                    });
-                }
-            }
-        } catch (e) {
-            console.log('Error:', e);
+        switch (calledUrl) {
+            case '/openQuestion':
+                openQuestion();
+                break;
+            case '/closeQuestion':
+                openQuestion();
+                break;
+            default:
+                console.log('No url pattern matched')
+                break;
         }
-    });
 
-    connection.on('close', function (connection) {
-        // close user connection
-    });
-});
+    } catch (e) {
+        console.log('Weird things! Error:', e);
+    }
 
-// kick everyone off the server if docker shuts down
-process.on('SIGINT', function () {
-    // terminate all clients on close
-    wsServer.closeAllConnections();
-    console.log('Good bye');
-    process.exit();
-});
+}).listen(process.env.PORT); //the server object listens on port 8080
+
+
+const openQuestion = () => {
+    fs.writeFile('questionOpen', 'True', (err) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+        // success case, the file was saved
+        console.log('questionOpen!');
+    });
+};
+
+const closeQuestion = () => {
+    fs.writeFile('questionOpen', 'False', (err) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+        // success case, the file was saved
+        console.log('questionClosed!');
+    });
+};
+
+
