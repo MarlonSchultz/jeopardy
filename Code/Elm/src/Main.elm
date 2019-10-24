@@ -2,7 +2,7 @@ module Main exposing (Msg(..), main, update, view)
 
 import AnswerDecoder exposing (Answer, decodeJson)
 import Browser
-import Html exposing (Html, div, h1, i, node, span, table, tbody, td, text, th, thead, tr)
+import Html exposing (Html, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, classList, href, id, rel, style)
 import Html.Events exposing (onClick)
 import Http exposing (..)
@@ -22,6 +22,8 @@ type Msg
     = GotJson (Result Http.Error (List Answer))
     | ToggleModal Answer
     | AnswerToggle (Result Http.Error ())
+    | RevealAnswer String
+    | PollBuzzer (Result Http.Error String)
 
 
 
@@ -38,12 +40,13 @@ type alias Model =
     { requestState : RequestResult
     , chosenAnswer : Answer
     , openModal : Bool
+    , revealAnswer : String
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0"
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -130,6 +133,9 @@ update msg model =
 
         AnswerToggle result ->
             ( model, Cmd.none )
+
+        RevealAnswer str ->
+            ( { model | revealAnswer = str }, Cmd.none )
 
 
 
@@ -232,21 +238,21 @@ getIdFromAnswer answer =
     answer.id
 
 
-modalStructure : Answer -> Bool -> Html Msg
-modalStructure answer open =
+modalStructure : Model -> Html Msg
+modalStructure { chosenAnswer, openModal, revealAnswer } =
     div [ class "row" ]
         [ div
-            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", open ) ], style "z-index" "1003" ]
+            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", openModal ) ], style "z-index" "1003" ]
             [ div
                 [ class "card blue-grey lighten-2" ]
                 [ div
                     [ class "card-content white-text center-align", id "buzzerColour" ]
                     [ div
-                        [ class "card-title", id "answer" ]
-                        [ text answer.answer ]
+                        [ class "card-title", classList [ ( "hide", chosenAnswer.id /= revealAnswer ) ] ]
+                        [ text chosenAnswer.answer ]
                     , div
-                        [ id "question" ]
-                        [ text answer.question ]
+                        []
+                        [ h2 [] [ text chosenAnswer.question ] ]
                     , div
                         [ id "countdown" ]
                         []
@@ -259,19 +265,19 @@ modalStructure answer open =
                     [ div
                         [ id "wrong", class "btn-floating red" ]
                         [ i
-                            [ class "close material-icons" ]
+                            [ class "close material-icons", onClick <| ToggleModal chosenAnswer ]
                             [ text "close" ]
                         ]
                     , div
                         [ id "right", class " btn-floating green" ]
                         [ i
-                            [ class "close material-icons" ]
+                            [ class "close material-icons", onClick <| ToggleModal chosenAnswer ]
                             [ text "check" ]
                         ]
                     , div
                         [ id "reveal", class " btn-floating grey" ]
                         [ i
-                            [ class "close material-icons" ]
+                            [ class "close material-icons", onClick <| RevealAnswer chosenAnswer.id ]
                             [ text "search" ]
                         ]
                     ]
@@ -301,7 +307,7 @@ view model =
                 , loadCss "http://localhost:8080/css/elm/jeopardy.css"
                 , div [ class "container" ]
                     [ headline
-                    , modalStructure model.chosenAnswer model.openModal
+                    , modalStructure model
                     , table [ class "highlight centered fixed" ]
                         [ tableHead (getListOfCategories jsonDecoded)
                         , tbody []
