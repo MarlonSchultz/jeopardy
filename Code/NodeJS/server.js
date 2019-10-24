@@ -1,21 +1,33 @@
-let http = require('http');
-const fs = require("fs");
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
 
 const openQuestion = () => {
     fs.writeFile('questionOpen', 'True', (err) => {
-        // throws an error, you could also catch it here
         if (err) throw err;
-        // success case, the file was saved
         console.log('questionOpen!');
     });
 };
 
 const closeQuestion = () => {
     fs.writeFile('questionOpen', 'False', (err) => {
-        // throws an error, you could also catch it here
         if (err) throw err;
-        // success case, the file was saved
         console.log('questionClosed!');
+    });
+};
+
+const getBuzzer = () => {
+    fs.readFile('buzzed', (err, data) => {
+        if (err) throw err;
+        console.log('buzzer' + data);
+        return data;
+    });
+};
+
+const setBuzzer = (buzzer) => {
+    fs.writeFile('buzzed', buzzer, (err) => {
+        if (err) throw err;
+        console.log('Buzzer written');
     });
 };
 
@@ -42,8 +54,19 @@ http.createServer(function (request, response) {
                 response.write('Question closed');
                 response.end();
                 break;
+            case '/getBuzzer':
+                response.write(getBuzzer());
+                response.end();
+                break;
+            case '/setBuzzer':
+                let url_parts = url.parse(request.url, true);
+                let query = url_parts.query;
+                console.log(query);
+                response.end();
+                break;
             default:
-                console.log('No url pattern matched')
+                console.log('No url pattern matched');
+                response.end();
                 break;
         }
 

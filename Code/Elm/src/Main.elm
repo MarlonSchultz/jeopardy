@@ -7,6 +7,7 @@ import Html.Attributes exposing (class, classList, href, id, rel, style)
 import Html.Events exposing (onClick)
 import Http exposing (..)
 import List.Extra
+import Time
 
 
 main =
@@ -22,8 +23,9 @@ type Msg
     = GotJson (Result Http.Error (List Answer))
     | ToggleModal Answer
     | AnswerToggle (Result Http.Error ())
+    | RequestBuzzer (Result Http.Error ())
     | RevealAnswer String
-    | PollBuzzer (Result Http.Error String)
+    | PollBuzzerSubscription Time.Posix
 
 
 
@@ -104,6 +106,15 @@ requestCloseQuestion =
         }
 
 
+queryBuzzer : Cmd Msg
+queryBuzzer =
+    Http.get
+        { url = "http://localhost:8080/openQuestion"
+        , expect =
+            Http.expectWhatever RequestBuzzer
+        }
+
+
 
 -- UPDATE
 
@@ -131,11 +142,17 @@ update msg model =
                     requestCloseQuestion
             )
 
-        AnswerToggle result ->
+        AnswerToggle _ ->
             ( model, Cmd.none )
 
         RevealAnswer str ->
             ( { model | revealAnswer = str }, Cmd.none )
+
+        PollBuzzerSubscription _ ->
+            ( model, queryBuzzer )
+
+        RequestBuzzer result ->
+            ( model, Cmd.none )
 
 
 
@@ -144,7 +161,11 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    if not model.openModal then
+        Time.every 500 PollBuzzerSubscription
+
+    else
+        Sub.none
 
 
 
@@ -248,10 +269,10 @@ modalStructure { chosenAnswer, openModal, revealAnswer } =
                 [ div
                     [ class "card-content white-text center-align", id "buzzerColour" ]
                     [ div
-                        [ class "card-title", classList [ ( "hide", chosenAnswer.id /= revealAnswer ) ] ]
-                        [ text chosenAnswer.answer ]
+                        [ class "card-title" ]
+                        [ h2 [] [ text chosenAnswer.answer ] ]
                     , div
-                        []
+                        [ classList [ ( "hide", chosenAnswer.id /= revealAnswer ) ] ]
                         [ h2 [] [ text chosenAnswer.question ] ]
                     , div
                         [ id "countdown" ]
