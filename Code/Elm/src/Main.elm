@@ -21,6 +21,7 @@ main =
 type Msg
     = GotJson (Result Http.Error (List Answer))
     | ToggleModal Answer
+    | AnswerToggle (Result Http.Error ())
 
 
 
@@ -88,6 +89,19 @@ getListOfCategories list =
 
 
 
+-- Requests
+
+
+requestCloseQuestion : Cmd Msg
+requestCloseQuestion =
+    Http.get
+        { url = "http://localhost:8080/openQuestion"
+        , expect =
+            Http.expectWhatever AnswerToggle
+        }
+
+
+
 -- UPDATE
 
 
@@ -105,7 +119,17 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         ToggleModal answer ->
-            ( { model | chosenAnswer = answer, openModal = not model.openModal }, Cmd.none )
+            ( { model | chosenAnswer = answer, openModal = not model.openModal }
+            , case model.openModal of
+                True ->
+                    requestCloseQuestion
+
+                False ->
+                    requestCloseQuestion
+            )
+
+        AnswerToggle result ->
+            ( model, Cmd.none )
 
 
 
