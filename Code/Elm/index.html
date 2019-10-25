@@ -9870,6 +9870,7 @@ var $author$project$Main$Model = F5(
 	function (requestState, chosenAnswer, openModal, revealAnswer, buzzerColor) {
 		return {buzzerColor: buzzerColor, chosenAnswer: chosenAnswer, openModal: openModal, requestState: requestState, revealAnswer: revealAnswer};
 	});
+var $author$project$Main$None = {$: 'None'};
 var $author$project$AnswerDecoder$Answer = F5(
 	function (id, points, answer, question, category) {
 		return {answer: answer, category: category, id: id, points: points, question: question};
@@ -10145,7 +10146,7 @@ var $author$project$Main$init = function (_v0) {
 			{answer: 'string', category: 'Nothing', id: '1', points: '10', question: 'whatever'},
 			true,
 			'0',
-			'None'),
+			$author$project$Main$None),
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotJson, $author$project$AnswerDecoder$decodeJson),
@@ -10342,6 +10343,7 @@ var $author$project$Main$subscriptions = function (model) {
 var $author$project$Main$Failure = function (a) {
 	return {$: 'Failure', a: a};
 };
+var $author$project$Main$Red = {$: 'Red'};
 var $author$project$Main$Success = function (a) {
 	return {$: 'Success', a: a};
 };
@@ -10461,11 +10463,38 @@ var $author$project$Main$update = F2(
 				var result = msg.a;
 				if (result.$ === 'Ok') {
 					var string = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{buzzerColor: string}),
-						$elm$core$Platform$Cmd$none);
+					switch (string) {
+						case 'red':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{buzzerColor: $author$project$Main$Red}),
+								$elm$core$Platform$Cmd$none);
+						case 'blue':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{buzzerColor: $author$project$Main$Red}),
+								$elm$core$Platform$Cmd$none);
+						case 'yellow':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{buzzerColor: $author$project$Main$Red}),
+								$elm$core$Platform$Cmd$none);
+						case 'green':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{buzzerColor: $author$project$Main$Red}),
+								$elm$core$Platform$Cmd$none);
+						default:
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{buzzerColor: $author$project$Main$None}),
+								$elm$core$Platform$Cmd$none);
+					}
 				} else {
 					var err = result.a;
 					return _Utils_Tuple2(
@@ -10576,12 +10605,15 @@ var $author$project$Main$loadCss = function (cssLink) {
 			]),
 		_List_Nil);
 };
+var $author$project$Main$Blue = {$: 'Blue'};
+var $author$project$Main$Green = {$: 'Green'};
 var $author$project$Main$RevealAnswer = function (a) {
 	return {$: 'RevealAnswer', a: a};
 };
 var $author$project$Main$ToggleModal = function (a) {
 	return {$: 'ToggleModal', a: a};
 };
+var $author$project$Main$Yellow = {$: 'Yellow'};
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -10643,11 +10675,21 @@ var $author$project$Main$modalStructure = function (_v0) {
 								$elm$html$Html$Attributes$classList(
 								_List_fromArray(
 									[
-										_Utils_Tuple2('blue-grey', buzzerColor === 'none'),
-										_Utils_Tuple2('blue', buzzerColor === 'blue'),
-										_Utils_Tuple2('red', buzzerColor === 'red'),
-										_Utils_Tuple2('yellow', buzzerColor === 'yellow'),
-										_Utils_Tuple2('green', buzzerColor === 'green')
+										_Utils_Tuple2(
+										'blue-grey',
+										_Utils_eq(buzzerColor, $author$project$Main$None)),
+										_Utils_Tuple2(
+										'blue',
+										_Utils_eq(buzzerColor, $author$project$Main$Blue)),
+										_Utils_Tuple2(
+										'red',
+										_Utils_eq(buzzerColor, $author$project$Main$Red)),
+										_Utils_Tuple2(
+										'yellow',
+										_Utils_eq(buzzerColor, $author$project$Main$Yellow)),
+										_Utils_Tuple2(
+										'green',
+										_Utils_eq(buzzerColor, $author$project$Main$Green))
 									])),
 								$elm$html$Html$Attributes$class('card lighten-2')
 							]),

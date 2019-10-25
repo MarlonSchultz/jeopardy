@@ -28,6 +28,14 @@ type Msg
     | PollBuzzerSubscription Time.Posix
 
 
+type Buzzed
+    = None
+    | Red
+    | Green
+    | Blue
+    | Yellow
+
+
 
 -- MODEL
 
@@ -43,13 +51,13 @@ type alias Model =
     , chosenAnswer : Answer
     , openModal : Bool
     , revealAnswer : String
-    , buzzerColor : String
+    , buzzerColor : Buzzed
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" "None"
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" None
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -107,6 +115,15 @@ requestCloseQuestion =
         }
 
 
+resetBuzzer : Cmd Msg
+resetBuzzer =
+    Http.get
+        { url = "http://localhost:8080/setBuzzer"
+        , expect =
+            Http.expectWhatever AnswerToggle
+        }
+
+
 queryBuzzer : Cmd Msg
 queryBuzzer =
     Http.get
@@ -155,9 +172,31 @@ update msg model =
         RequestBuzzer result ->
             case result of
                 Ok string ->
-                    ( { model | buzzerColor = string }
-                    , Cmd.none
-                    )
+                    case string of
+                        "red" ->
+                            ( { model | buzzerColor = Red }
+                            , Cmd.none
+                            )
+
+                        "blue" ->
+                            ( { model | buzzerColor = Red }
+                            , Cmd.none
+                            )
+
+                        "yellow" ->
+                            ( { model | buzzerColor = Red }
+                            , Cmd.none
+                            )
+
+                        "green" ->
+                            ( { model | buzzerColor = Red }
+                            , Cmd.none
+                            )
+
+                        _ ->
+                            ( { model | buzzerColor = None }
+                            , Cmd.none
+                            )
 
                 Err err ->
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
@@ -273,7 +312,15 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
         [ div
             [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", openModal ) ], style "z-index" "1003" ]
             [ div
-                [ classList [ ( "blue-grey", buzzerColor == "none" ), ( "blue", buzzerColor == "blue" ), ( "red", buzzerColor == "red" ), ( "yellow", buzzerColor == "yellow" ), ( "green", buzzerColor == "green" ) ], class "card lighten-2" ]
+                [ classList
+                    [ ( "blue-grey", buzzerColor == None )
+                    , ( "blue", buzzerColor == Blue )
+                    , ( "red", buzzerColor == Red )
+                    , ( "yellow", buzzerColor == Yellow )
+                    , ( "green", buzzerColor == Green )
+                    ]
+                , class "card lighten-2"
+                ]
                 [ div
                     [ class "card-content white-text center-align", id "buzzerColour" ]
                     [ div

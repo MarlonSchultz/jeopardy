@@ -82,6 +82,12 @@ http.createServer(function (request, response) {
                 response.end();
                 break;
 
+            case '/setBuzzer/none':
+                setBuzzer('none');
+                response.write('Reset buzzer');
+                response.end();
+                break;
+
             default:
                 console.log('No url pattern matched');
                 response.end();
