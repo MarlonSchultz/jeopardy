@@ -1,6 +1,5 @@
 const http = require('http');
 const fs = require('fs');
-const url = require('url');
 
 const openQuestion = () => {
     fs.writeFile('questionOpen', 'True', (err) => {
@@ -17,7 +16,7 @@ const closeQuestion = () => {
 };
 
 const getBuzzer = () => {
-    fs.readFile('buzzed', (err, data) => {
+    return fs.readFileSync('buzzed', (err, data) => {
         if (err) throw err;
         console.log('buzzer' + data);
         return data;
@@ -33,12 +32,10 @@ const setBuzzer = (buzzer) => {
 
 //Reset questions
 closeQuestion();
+setBuzzer('none');
 
 //create a server object:
 http.createServer(function (request, response) {
-    response.write('You have reached the node server, pls wait for response\n');
-
-
     try {
         console.log(request.url);
         let calledUrl = request.url;
@@ -49,21 +46,42 @@ http.createServer(function (request, response) {
                 response.write('Question opened');
                 response.end();
                 break;
+
             case '/closeQuestion':
                 closeQuestion();
                 response.write('Question closed');
                 response.end();
                 break;
+
             case '/getBuzzer':
                 response.write(getBuzzer());
                 response.end();
                 break;
-            case '/setBuzzer':
-                let url_parts = url.parse(request.url, true);
-                let query = url_parts.query;
-                console.log(query);
+
+            case '/setBuzzer/green':
+                setBuzzer('green');
+                response.write('Buzzed green');
                 response.end();
                 break;
+
+            case '/setBuzzer/blue':
+                setBuzzer('blue');
+                response.write('Buzzed blue');
+                response.end();
+                break;
+
+            case '/setBuzzer/yellow':
+                setBuzzer('yellow');
+                response.write('Buzzed yellow');
+                response.end();
+                break;
+
+            case '/setBuzzer/red':
+                setBuzzer('red');
+                response.write('Buzzed red');
+                response.end();
+                break;
+
             default:
                 console.log('No url pattern matched');
                 response.end();

@@ -23,7 +23,7 @@ type Msg
     = GotJson (Result Http.Error (List Answer))
     | ToggleModal Answer
     | AnswerToggle (Result Http.Error ())
-    | RequestBuzzer (Result Http.Error ())
+    | RequestBuzzer (Result Http.Error String)
     | RevealAnswer String
     | PollBuzzerSubscription Time.Posix
 
@@ -43,12 +43,13 @@ type alias Model =
     , chosenAnswer : Answer
     , openModal : Bool
     , revealAnswer : String
+    , buzzerColor : String
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0"
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" "None"
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -109,9 +110,9 @@ requestCloseQuestion =
 queryBuzzer : Cmd Msg
 queryBuzzer =
     Http.get
-        { url = "http://localhost:8080/openQuestion"
+        { url = "http://localhost:8080/getBuzzer"
         , expect =
-            Http.expectWhatever RequestBuzzer
+            Http.expectString RequestBuzzer
         }
 
 
@@ -152,7 +153,14 @@ update msg model =
             ( model, queryBuzzer )
 
         RequestBuzzer result ->
-            ( model, Cmd.none )
+            case result of
+                Ok string ->
+                    ( { model | buzzerColor = string }
+                    , Cmd.none
+                    )
+
+                Err err ->
+                    ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
 
 
@@ -260,12 +268,12 @@ getIdFromAnswer answer =
 
 
 modalStructure : Model -> Html Msg
-modalStructure { chosenAnswer, openModal, revealAnswer } =
+modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
     div [ class "row" ]
         [ div
             [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", openModal ) ], style "z-index" "1003" ]
             [ div
-                [ class "card blue-grey lighten-2" ]
+                [ classList [ ( "blue-grey", buzzerColor == "none" ), ( "blue", buzzerColor == "blue" ), ( "red", buzzerColor == "red" ), ( "yellow", buzzerColor == "yellow" ), ( "green", buzzerColor == "green" ) ], class "card lighten-2" ]
                 [ div
                     [ class "card-content white-text center-align", id "buzzerColour" ]
                     [ div
