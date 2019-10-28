@@ -33,7 +33,14 @@ type Buzzed
     | Red
     | Green
     | Blue
+    | Wrong
     | Yellow
+
+
+type alias AnsweredAnswers =
+    { id : String
+    , buzzer : Buzzed
+    }
 
 
 
@@ -52,12 +59,13 @@ type alias Model =
     , openModal : Bool
     , revealAnswer : String
     , buzzerColor : Buzzed
+    , answeredAnswers : List AnsweredAnswers
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" None
+    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" None (List.singleton { id = "0", buzzer = None })
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -158,7 +166,7 @@ update msg model =
                     )
 
                 False ->
-                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None }
+                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None, answeredAnswers = { id = answer.id, buzzer = Wrong } :: model.answeredAnswers }
                     , requestCloseQuestion
                     )
 
