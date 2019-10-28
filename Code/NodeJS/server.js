@@ -12,6 +12,7 @@ const closeQuestion = () => {
     fs.writeFile('questionOpen', 'False', (err) => {
         if (err) throw err;
         console.log('questionClosed!');
+        setBuzzer("none");
     });
 };
 
@@ -40,49 +41,49 @@ http.createServer(function (request, response) {
         console.log(request.url);
         let calledUrl = request.url;
 
-        switch (calledUrl) {
-            case '/openQuestion':
+        switch (calledUrl.toLowerCase()) {
+            case '/openquestion':
                 openQuestion();
                 response.write('Question opened');
                 response.end();
                 break;
 
-            case '/closeQuestion':
+            case '/closequestion':
                 closeQuestion();
                 response.write('Question closed');
                 response.end();
                 break;
 
-            case '/getBuzzer':
+            case '/getbuzzer':
                 response.write(getBuzzer());
                 response.end();
                 break;
 
-            case '/setBuzzer/green':
+            case '/setbuzzer/green':
                 setBuzzer('green');
                 response.write('Buzzed green');
                 response.end();
                 break;
 
-            case '/setBuzzer/blue':
+            case '/setbuzzer/blue':
                 setBuzzer('blue');
                 response.write('Buzzed blue');
                 response.end();
                 break;
 
-            case '/setBuzzer/yellow':
+            case '/setbuzzer/yellow':
                 setBuzzer('yellow');
                 response.write('Buzzed yellow');
                 response.end();
                 break;
 
-            case '/setBuzzer/red':
+            case '/setbuzzer/red':
                 setBuzzer('red');
                 response.write('Buzzed red');
                 response.end();
                 break;
 
-            case '/setBuzzer/none':
+            case '/setbuzzer/none':
                 setBuzzer('none');
                 response.write('Reset buzzer');
                 response.end();

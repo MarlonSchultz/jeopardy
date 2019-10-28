@@ -2,7 +2,7 @@
 import time
 import RPi.GPIO as GPIO
 
-mapping = { 11: 1, 12: 3, 13: 2, 16: 4 }
+mapping = { 11: "red", 12: "blue", 13: "green", 16: "yellow" }
 lastStamp = 0
 
 # RPi.GPIO Layout verwenden (wie Pin-Nummern)

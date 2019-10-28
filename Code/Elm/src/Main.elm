@@ -106,8 +106,8 @@ getListOfCategories list =
 -- Requests
 
 
-requestCloseQuestion : Cmd Msg
-requestCloseQuestion =
+requestOpenQuestion : Cmd Msg
+requestOpenQuestion =
     Http.get
         { url = "http://localhost:8080/openQuestion"
         , expect =
@@ -115,10 +115,10 @@ requestCloseQuestion =
         }
 
 
-resetBuzzer : Cmd Msg
-resetBuzzer =
+requestCloseQuestion : Cmd Msg
+requestCloseQuestion =
     Http.get
-        { url = "http://localhost:8080/setBuzzer"
+        { url = "http://localhost:8080/closeQuestion"
         , expect =
             Http.expectWhatever AnswerToggle
         }
@@ -151,14 +151,16 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         ToggleModal answer ->
-            ( { model | chosenAnswer = answer, openModal = not model.openModal }
-            , case model.openModal of
+            case model.openModal of
                 True ->
-                    requestCloseQuestion
+                    ( { model | chosenAnswer = answer, openModal = not model.openModal }
+                    , requestOpenQuestion
+                    )
 
                 False ->
-                    requestCloseQuestion
-            )
+                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None }
+                    , requestCloseQuestion
+                    )
 
         AnswerToggle _ ->
             ( model, Cmd.none )
