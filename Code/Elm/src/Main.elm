@@ -264,21 +264,20 @@ singleTableHead listOfCategories =
 
 answerBox : List Answer -> List (Html Msg)
 answerBox list =
-    List.map getSingleBox list
-
-
-getSingleBox : Answer -> Html Msg
-getSingleBox answer =
-    td [ id (String.fromInt (getIdFromAnswer answer)) ]
-        [ div [ class "card blue-grey darken-1", onClick <| ToggleModal answer ]
-            [ div
-                [ class "card-content white-text" ]
-                [ span
-                    [ class "card-title" ]
-                    [ text (String.fromInt (getPointsFromAnswer answer)) ]
+    List.map
+        (\answer ->
+            td [ id (String.fromInt answer.id) ]
+                [ div [ class "card blue-grey darken-1", onClick <| ToggleModal answer ]
+                    [ div
+                        [ class "card-content white-text" ]
+                        [ span
+                            [ class "card-title" ]
+                            [ text (String.fromInt answer.points) ]
+                        ]
+                    ]
                 ]
-            ]
-        ]
+        )
+        list
 
 
 tableRow : List Answer -> List (Html Msg)
@@ -296,24 +295,14 @@ getAnswersByPoints list =
     getPossiblePoints list
         |> List.map
             (\singlePoints ->
-                List.filter (\singleAnswer -> getPointsFromAnswer singleAnswer == singlePoints) list
+                List.filter (\singleAnswer -> singleAnswer.points == singlePoints) list
             )
 
 
 getPossiblePoints : List Answer -> List Int
 getPossiblePoints listAnswers =
-    List.map getPointsFromAnswer listAnswers
+    List.map (\singleAnswer -> singleAnswer.points) listAnswers
         |> List.Extra.unique
-
-
-getPointsFromAnswer : Answer -> Int
-getPointsFromAnswer answer =
-    answer.points
-
-
-getIdFromAnswer : Answer -> Int
-getIdFromAnswer answer =
-    answer.id
 
 
 modalStructure : Model -> Html Msg
