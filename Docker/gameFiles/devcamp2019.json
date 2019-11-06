@@ -1,211 +1,211 @@
  [
     {
-      "id": "1",
+      "id": 1,
       "category": "Akronyme",
-      "points": "10",
+      "points": 10,
       "answer": "CCC",
       "question": "Was ist der Chaos Computer Club?"
     },
     {
-      "id": "2",
+      "id": 2,
       "category": "Akronyme",
-      "points": "20",
+      "points": 20,
       "answer": "IBM",
       "question": "Was ist International Business Machines?"
     },
     {
-      "id": "3",
+      "id": 3,
       "category": "Akronyme",
-      "points": "30",
+      "points": 30,
       "answer": "<img src=\"https://www.todaysparent.com/wp-content/uploads/2017/06/when-your-kid-becomes-a-meme-1024x576-1497986561.jpg\" />",
       "question": "Was ist Universal Serial Bus?"
     },
     {
-      "id": "4",
+      "id": 4,
       "category": "Akronyme",
-      "points": "40",
+      "points": 40,
       "answer": "TCP",
       "question": "Was ist das Transmission Control Protocol?"
     },
     {
-      "id": "5",
+      "id": 5,
       "category": "Akronyme",
-      "points": "50",
+      "points": 50,
       "answer": "RAID",
       "question": "Was ist ein Redundant Array of Independent Discs"
     },
     {
-      "id": "6",
+      "id": 6,
       "category": "Menschen",
-      "points": "10",
+      "points": 10,
       "answer": "Er ist der Namenspate für das T in CapTcha",
       "question": "Wer war Alan Turing?"
     },
     {
-      "id": "7",
+      "id": 7,
       "category": "Menschen",
-      "points": "20",
+      "points": 20,
       "answer": "Sie entwickelte den ersten Compiler A-0 (lief auf dem UNIVAC I)",
       "question": "Wer war Grace Hopper?"
     },
     {
-      "id": "8",
+      "id": 8,
       "category": "Menschen",
-      "points": "30",
+      "points": 30,
       "answer": "Sie ist die Namenspatin für das L in SOLID",
       "question": "Wer ist Barbara Liskov? (Liskovsche Substitutionsprinzip)"
     },
     {
-      "id": "9",
+      "id": 9,
       "category": "Menschen",
-      "points": "40",
+      "points": 40,
       "answer": "Das sind die Namesgeber für das asymmetrische Kryptoververfahren RSA",
       "question": "Wer sind die Mathematiker Rivest, Shamir und Adleman?"
     },
     {
-      "id": "10",
+      "id": 10,
       "category": "Menschen",
-      "points": "50",
+      "points": 50,
       "answer": "Er ist der \"Vater\" eines ersten ChatBots names “ELIZA” 1966",
       "question": "Wer war Jospeh Weizenbaum?"
     },
     {
-      "id": "11",
+      "id": 11,
       "category": "Libraries",
-      "points": "10",
+      "points": 10,
       "answer": "An ORM maintained by Ocramius",
       "question": "What is Doctrine ORM?"
     },
     {
-      "id": "12",
+      "id": 12,
       "category": "Libraries",
-      "points": "20",
+      "points": 20,
       "answer": "Logs all your log messages",
       "question": "What is Monolog?"
     },
     {
-      "id": "13",
+      "id": 13,
       "category": "Libraries",
-      "points": "30",
+      "points": 30,
       "answer": "Most popular HTTP library",
       "question": "What is Guzzle?"
     },
     {
-      "id": "14",
+      "id": 14,
       "category": "Libraries",
-      "points": "40",
+      "points": 40,
       "answer": "The small - but deprecated - sister of Symfony",
       "question": "What is Silex?"
     },
     {
-      "id": "15",
+      "id": 15,
       "category": "Libraries",
-      "points": "50",
+      "points": 50,
       "answer": "The most downloaded package from packagist.org",
       "question": "What is psr/log?"
     },
     {
-      "id": "16",
+      "id": 16,
       "category": "Berlin",
-      "points": "10",
+      "points": 10,
       "answer": "The part of the city we are currently in",
       "question": "What is Kreuzberg?"
     },
     {
-      "id": "17",
+      "id": 17,
       "category": "Berlin",
-      "points": "20",
+      "points": 20,
       "answer": "A Usergroup monthly happening at Co.up (first Tue of the month)",
       "question": "What is the Berlin PHP Usergroup?"
     },
     {
-      "id": "18",
+      "id": 18,
       "category": "Berlin",
-      "points": "30",
+      "points": 30,
       "answer": "Builds a lot e-commerce portals with Alice & Bob",
       "question": "What is Rocket Internet?"
     },
     {
-      "id": "19",
+      "id": 19,
       "category": "Berlin",
-      "points": "40",
+      "points": 40,
       "answer": "Europe's biggest fashion e-commerce based in Berlin.",
       "question": "What is Zalando?"
     },
     {
-      "id": "20",
+      "id": 20,
       "category": "Berlin",
-      "points": "50",
+      "points": 50,
       "answer": "The oldest crashed space station on earth",
       "question": "What is the c-base?"
     },
     {
-      "id": "21",
+      "id": 21,
       "category": "Tools",
-      "points": "10",
+      "points": 10,
       "answer": "A dependency manager for PHP",
       "question": "What is Composer?"
     },
     {
-      "id": "22",
+      "id": 22,
       "category": "Tools",
-      "points": "20",
+      "points": 20,
       "answer": "Sebastian Bergmann and contributors.",
       "question": "What is PHPUnit?"
     },
     {
-      "id": "23",
+      "id": 23,
       "category": "Tools",
-      "points": "30",
+      "points": 30,
       "answer": "Calculates the npath complexity",
       "question": "What is PHP Mess Detector?"
     },
     {
-      "id": "24",
+      "id": 24,
       "category": "Tools",
-      "points": "40",
+      "points": 40,
       "answer": "Checks and fixes Symfony's Code Style",
       "question": "What is PHP-Cs-Fixer?"
     },
     {
-      "id": "25",
+      "id": 25,
       "category": "Tools",
-      "points": "50",
+      "points": 50,
       "answer": "Uses Mink to execute E2E tests",
       "question": "What is behat?"
     },
     {
-      "id": "26",
+      "id": 26,
       "category": "DevOps",
-      "points": "10",
+      "points": 10,
       "answer": "Used to inject sensitive config into containers",
       "question": "What are Environment Variables?"
     },
     {
-      "id": "27",
+      "id": 27,
       "category": "DevOps",
-      "points": "20",
+      "points": 20,
       "answer": "A tool managing virtual machines",
       "question": "What is Vagrant?"
     },
     {
-      "id": "28",
+      "id": 28,
       "category": "DevOps",
-      "points": "30",
+      "points": 30,
       "answer": "Software hosting without server management",
       "question": "What is Serverless?"
     },
     {
-      "id": "29",
+      "id": 29,
       "category": "DevOps",
-      "points": "40",
+      "points": 40,
       "answer": "A container-orchestration system by Google",
       "question": "What is Kubernetes?"
     },
     {
-      "id": "30",
+      "id": 30,
       "category": "DevOps",
-      "points": "50",
+      "points": 50,
       "answer": "OSS IaaS platform by Rackspace and NASA",
       "question": "What is OpenStack?"
     }

@@ -24,7 +24,7 @@ type Msg
     | ToggleModal Answer
     | AnswerToggle (Result Http.Error ())
     | RequestBuzzer (Result Http.Error String)
-    | RevealAnswer String
+    | RevealAnswer Int
     | PollBuzzerSubscription Time.Posix
 
 
@@ -38,7 +38,7 @@ type Buzzed
 
 
 type alias AnsweredAnswers =
-    { id : String
+    { id : Int
     , buzzer : Buzzed
     }
 
@@ -57,7 +57,7 @@ type alias Model =
     { requestState : RequestResult
     , chosenAnswer : Answer
     , openModal : Bool
-    , revealAnswer : String
+    , revealAnswer : Int
     , buzzerColor : Buzzed
     , answeredAnswers : List AnsweredAnswers
     }
@@ -65,7 +65,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = "1", category = "Nothing", points = "10", answer = "string", question = "whatever" } True "0" None (List.singleton { id = "0", buzzer = None })
+    ( Model Loading { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" } True 0 None (List.singleton { id = 0, buzzer = None })
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -269,13 +269,13 @@ answerBox list =
 
 getSingleBox : Answer -> Html Msg
 getSingleBox answer =
-    td [ id (getIdFromAnswer answer) ]
+    td [ id (String.fromInt (getIdFromAnswer answer)) ]
         [ div [ class "card blue-grey darken-1", onClick <| ToggleModal answer ]
             [ div
                 [ class "card-content white-text" ]
                 [ span
                     [ class "card-title" ]
-                    [ text (getPointsFromAnswer answer) ]
+                    [ text (String.fromInt (getPointsFromAnswer answer)) ]
                 ]
             ]
         ]
@@ -300,18 +300,18 @@ getAnswersByPoints list =
             )
 
 
-getPossiblePoints : List Answer -> List String
+getPossiblePoints : List Answer -> List Int
 getPossiblePoints listAnswers =
     List.map getPointsFromAnswer listAnswers
         |> List.Extra.unique
 
 
-getPointsFromAnswer : Answer -> String
+getPointsFromAnswer : Answer -> Int
 getPointsFromAnswer answer =
     answer.points
 
 
-getIdFromAnswer : Answer -> String
+getIdFromAnswer : Answer -> Int
 getIdFromAnswer answer =
     answer.id
 

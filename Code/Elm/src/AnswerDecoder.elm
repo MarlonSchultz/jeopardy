@@ -1,11 +1,11 @@
 module AnswerDecoder exposing (Answer, answerDecoder, decodeJson)
 
-import Json.Decode as JD exposing (field, string)
+import Json.Decode as JD exposing (field, int, string)
 
 
 type alias Answer =
-    { id : String
-    , points : String
+    { id : Int
+    , points : Int
     , answer : String
     , question : String
     , category : String
@@ -16,8 +16,8 @@ answerDecoder : JD.Decoder Answer
 answerDecoder =
     JD.map5
         Answer
-        (field "id" string)
-        (field "points" string)
+        (field "id" int)
+        (field "points" int)
         (field "answer" string)
         (field "question" string)
         (field "category" string)
