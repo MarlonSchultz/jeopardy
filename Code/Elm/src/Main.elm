@@ -1,11 +1,11 @@
 module Main exposing (Msg(..), main, update, view)
 
-import AnswerDecoder exposing (Answer, decodeJson)
 import Browser
 import Html exposing (Html, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, classList, href, id, rel, style)
 import Html.Events exposing (onClick)
 import Http exposing (..)
+import Json.Decode as JD exposing (field, int, string)
 import List.Extra
 import Time
 
@@ -21,7 +21,7 @@ main =
 
 type Msg
     = GotJson (Result Http.Error (List Answer))
-    | ToggleModal Answer
+    | ToggleModal AnswerContent
     | AnswerToggle (Result Http.Error ())
     | RequestBuzzer (Result Http.Error String)
     | RevealAnswer Int
@@ -33,18 +33,22 @@ type Buzzed
     | Red
     | Green
     | Blue
-    | Wrong
     | Yellow
 
 
-type alias AnsweredAnswers =
+type Answer
+    = Wrong AnswerContent
+    | Correct AnswerContent
+    | NotAnswered AnswerContent
+
+
+type alias AnswerContent =
     { id : Int
-    , buzzer : Buzzed
+    , points : Int
+    , answer : String
+    , question : String
+    , category : String
     }
-
-
-
--- MODEL
 
 
 type RequestResult
@@ -55,17 +59,16 @@ type RequestResult
 
 type alias Model =
     { requestState : RequestResult
-    , chosenAnswer : Answer
+    , chosenAnswer : AnswerContent
     , openModal : Bool
     , revealAnswer : Int
     , buzzerColor : Buzzed
-    , answeredAnswers : List AnsweredAnswers
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" } True 0 None (List.singleton { id = 0, buzzer = None })
+    ( Model Loading createInitialAnswer True 0 None
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -74,9 +77,56 @@ init _ =
     )
 
 
+
+-- Decoder
+
+
+answerDecoder : JD.Decoder Answer
+answerDecoder =
+    JD.map NotAnswered <|
+        JD.map5
+            AnswerContent
+            (field "id" int)
+            (field "points" int)
+            (field "answer" string)
+            (field "question" string)
+            (field "category" string)
+
+
+decodeJson : JD.Decoder (List Answer)
+decodeJson =
+    JD.list answerDecoder
+
+
+createInitialAnswer : AnswerContent
+createInitialAnswer =
+    { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" }
+
+
 getCategoryFromAnswer : Answer -> String
 getCategoryFromAnswer answer =
-    answer.category
+    case answer of
+        NotAnswered answerConfig ->
+            answerConfig.category
+
+        Wrong answerConfig ->
+            answerConfig.category
+
+        Correct answerConfig ->
+            answerConfig.category
+
+
+getAnswerConfig : Answer -> AnswerContent
+getAnswerConfig answer =
+    case answer of
+        NotAnswered answerConfig ->
+            answerConfig
+
+        Wrong answerConfig ->
+            answerConfig
+
+        Correct answerConfig ->
+            answerConfig
 
 
 errorToString : Http.Error -> String
@@ -166,7 +216,7 @@ update msg model =
                     )
 
                 False ->
-                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None, answeredAnswers = { id = answer.id, buzzer = Wrong } :: model.answeredAnswers }
+                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None }
                     , requestCloseQuestion
                     )
 
@@ -262,7 +312,7 @@ singleTableHead listOfCategories =
         listOfCategories
 
 
-answerBox : List Answer -> List (Html Msg)
+answerBox : List AnswerContent -> List (Html Msg)
 answerBox list =
     List.map
         (\answer ->
@@ -282,7 +332,8 @@ answerBox list =
 
 tableRow : List Answer -> List (Html Msg)
 tableRow list =
-    getAnswersByPoints list
+    getAnswerConfigList list
+        |> getAnswersByPoints
         |> List.map
             (\singleList ->
                 tr []
@@ -290,7 +341,7 @@ tableRow list =
             )
 
 
-getAnswersByPoints : List Answer -> List (List Answer)
+getAnswersByPoints : List AnswerContent -> List (List AnswerContent)
 getAnswersByPoints list =
     getPossiblePoints list
         |> List.map
@@ -299,7 +350,24 @@ getAnswersByPoints list =
             )
 
 
-getPossiblePoints : List Answer -> List Int
+getAnswerConfigList : List Answer -> List AnswerContent
+getAnswerConfigList list =
+    List.map
+        (\singleAnswer ->
+            case singleAnswer of
+                NotAnswered answerConfig ->
+                    answerConfig
+
+                Wrong answerConfig ->
+                    answerConfig
+
+                Correct answerConfig ->
+                    answerConfig
+        )
+        list
+
+
+getPossiblePoints : List AnswerContent -> List Int
 getPossiblePoints listAnswers =
     List.map (\singleAnswer -> singleAnswer.points) listAnswers
         |> List.Extra.unique
