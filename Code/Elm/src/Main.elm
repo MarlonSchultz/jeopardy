@@ -68,7 +68,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading createInitialAnswer True 0 None
+    ( Model Loading createInitialAnswer False 0 None
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -239,17 +239,17 @@ update msg model =
                             )
 
                         "blue" ->
-                            ( { model | buzzerColor = Red }
+                            ( { model | buzzerColor = Blue }
                             , Cmd.none
                             )
 
                         "yellow" ->
-                            ( { model | buzzerColor = Red }
+                            ( { model | buzzerColor = Yellow }
                             , Cmd.none
                             )
 
                         "green" ->
-                            ( { model | buzzerColor = Red }
+                            ( { model | buzzerColor = Green }
                             , Cmd.none
                             )
 
@@ -268,7 +268,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if not model.openModal then
+    if model.openModal then
         Time.every 500 PollBuzzerSubscription
 
     else
@@ -377,7 +377,7 @@ modalStructure : Model -> Html Msg
 modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
     div [ class "row" ]
         [ div
-            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", openModal ) ], style "z-index" "1003" ]
+            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", not openModal ) ], style "z-index" "1003" ]
             [ div
                 [ classList
                     [ ( "blue-grey", buzzerColor == None )
