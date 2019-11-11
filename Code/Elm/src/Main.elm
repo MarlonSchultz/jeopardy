@@ -116,19 +116,6 @@ getCategoryFromAnswer answer =
             answerConfig.category
 
 
-getAnswerConfig : Answer -> AnswerContent
-getAnswerConfig answer =
-    case answer of
-        NotAnswered answerConfig ->
-            answerConfig
-
-        Wrong answerConfig ->
-            answerConfig
-
-        Correct answerConfig ->
-            answerConfig
-
-
 errorToString : Http.Error -> String
 errorToString error =
     case error of
@@ -312,17 +299,29 @@ singleTableHead listOfCategories =
         listOfCategories
 
 
-answerBox : List AnswerContent -> List (Html Msg)
+answerBox : List Answer -> List (Html Msg)
 answerBox list =
     List.map
         (\answer ->
-            td [ id (String.fromInt answer.id) ]
-                [ div [ class "card blue-grey darken-1", onClick <| ToggleModal answer ]
+            let
+                answerColor =
+                    case answer of
+                        NotAnswered _ ->
+                            "card blue-grey darken-1"
+
+                        Wrong _ ->
+                            "card red lighten-1"
+
+                        Correct _ ->
+                            "card green darken-3"
+            in
+            td [ id (String.fromInt (getAnswerConfig answer).id) ]
+                [ div [ class answerColor, onClick <| ToggleModal (getAnswerConfig answer) ]
                     [ div
                         [ class "card-content white-text" ]
                         [ span
                             [ class "card-title" ]
-                            [ text (String.fromInt answer.points) ]
+                            [ text (String.fromInt (getAnswerConfig answer).points) ]
                         ]
                     ]
                 ]
@@ -330,10 +329,18 @@ answerBox list =
         list
 
 
+getAnswersByPoints : List Answer -> List (List Answer)
+getAnswersByPoints list =
+    getPossiblePoints (getAnswerConfigList list)
+        |> List.map
+            (\singlePoints ->
+                List.filter (\singleAnswer -> (getAnswerConfig singleAnswer).points == singlePoints) list
+            )
+
+
 tableRow : List Answer -> List (Html Msg)
 tableRow list =
-    getAnswerConfigList list
-        |> getAnswersByPoints
+    getAnswersByPoints list
         |> List.map
             (\singleList ->
                 tr []
@@ -341,13 +348,17 @@ tableRow list =
             )
 
 
-getAnswersByPoints : List AnswerContent -> List (List AnswerContent)
-getAnswersByPoints list =
-    getPossiblePoints list
-        |> List.map
-            (\singlePoints ->
-                List.filter (\singleAnswer -> singleAnswer.points == singlePoints) list
-            )
+getAnswerConfig : Answer -> AnswerContent
+getAnswerConfig answer =
+    case answer of
+        NotAnswered answerConfig ->
+            answerConfig
+
+        Wrong answerConfig ->
+            answerConfig
+
+        Correct answerConfig ->
+            answerConfig
 
 
 getAnswerConfigList : List Answer -> List AnswerContent
