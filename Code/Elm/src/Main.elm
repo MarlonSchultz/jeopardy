@@ -26,6 +26,8 @@ type Msg
     | RequestBuzzer (Result Http.Error String)
     | RevealAnswer Int
     | PollBuzzerSubscription Time.Posix
+    | SetAnswerToWrong AnswerContent
+    | SetAnswerToCorrect AnswerContent
 
 
 type Buzzed
@@ -34,6 +36,7 @@ type Buzzed
     | Green
     | Blue
     | Yellow
+    | NotSolved
 
 
 type Answer
@@ -77,6 +80,11 @@ init _ =
     )
 
 
+createInitialAnswer : AnswerContent
+createInitialAnswer =
+    { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" }
+
+
 
 -- Decoder
 
@@ -98,11 +106,6 @@ decodeJson =
     JD.list answerDecoder
 
 
-createInitialAnswer : AnswerContent
-createInitialAnswer =
-    { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" }
-
-
 getCategoryFromAnswer : Answer -> String
 getCategoryFromAnswer answer =
     case answer of
@@ -114,6 +117,57 @@ getCategoryFromAnswer answer =
 
         Correct answerConfig ->
             answerConfig.category
+
+
+setAnswerState : Model -> AnswerContent -> Bool -> Model
+setAnswerState model answerContent setToWrong =
+    case model.requestState of
+        Success jsonData ->
+            let
+                newList =
+                    List.map
+                        (\singleRecord ->
+                            case singleRecord of
+                                Correct data ->
+                                    if answerContent.id == data.id then
+                                        if setToWrong then
+                                            Wrong data
+
+                                        else
+                                            Correct data
+
+                                    else
+                                        singleRecord
+
+                                Wrong data ->
+                                    if answerContent.id == data.id then
+                                        if setToWrong then
+                                            Wrong data
+
+                                        else
+                                            Correct data
+
+                                    else
+                                        singleRecord
+
+                                NotAnswered data ->
+                                    if answerContent.id == data.id then
+                                        if setToWrong then
+                                            Wrong data
+
+                                        else
+                                            Correct data
+
+                                    else
+                                        singleRecord
+                        )
+                        jsonData
+                        |> Success
+            in
+            { model | requestState = newList }
+
+        _ ->
+            model
 
 
 errorToString : Http.Error -> String
@@ -179,6 +233,15 @@ queryBuzzer =
 
 
 
+-- BusinessLogic
+
+
+toggleModal : Model -> AnswerContent -> Model
+toggleModal model answerContent =
+    { model | chosenAnswer = answerContent, openModal = not model.openModal, buzzerColor = None }
+
+
+
 -- UPDATE
 
 
@@ -198,12 +261,12 @@ update msg model =
         ToggleModal answer ->
             case model.openModal of
                 True ->
-                    ( { model | chosenAnswer = answer, openModal = not model.openModal }
+                    ( toggleModal model answer
                     , requestOpenQuestion
                     )
 
                 False ->
-                    ( { model | chosenAnswer = answer, openModal = not model.openModal, buzzerColor = None }
+                    ( toggleModal model answer
                     , requestCloseQuestion
                     )
 
@@ -211,7 +274,7 @@ update msg model =
             ( model, Cmd.none )
 
         RevealAnswer str ->
-            ( { model | revealAnswer = str }, Cmd.none )
+            ( { model | revealAnswer = str, buzzerColor = NotSolved }, requestCloseQuestion )
 
         PollBuzzerSubscription _ ->
             ( model, queryBuzzer )
@@ -248,6 +311,28 @@ update msg model =
                 Err err ->
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
+        SetAnswerToWrong answerContent ->
+            if model.buzzerColor /= None then
+                let
+                    newModel =
+                        toggleModal model answerContent
+                in
+                ( setAnswerState newModel answerContent True, Cmd.none )
+
+            else
+                ( toggleModal model answerContent, Cmd.none )
+
+        SetAnswerToCorrect answerContent ->
+            if model.buzzerColor /= None then
+                let
+                    newModel =
+                        toggleModal model answerContent
+                in
+                ( setAnswerState newModel answerContent False, Cmd.none )
+
+            else
+                ( toggleModal model answerContent, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -255,7 +340,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.openModal then
+    if model.openModal && model.buzzerColor /= NotSolved then
         Time.every 500 PollBuzzerSubscription
 
     else
@@ -392,6 +477,7 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
             [ div
                 [ classList
                     [ ( "blue-grey", buzzerColor == None )
+                    , ( "blue-grey", buzzerColor == NotSolved )
                     , ( "blue", buzzerColor == Blue )
                     , ( "red", buzzerColor == Red )
                     , ( "yellow", buzzerColor == Yellow )
@@ -419,13 +505,13 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
                     [ div
                         [ id "wrong", class "btn-floating red" ]
                         [ i
-                            [ class "close material-icons", onClick <| ToggleModal chosenAnswer ]
+                            [ class "close material-icons", onClick <| SetAnswerToWrong chosenAnswer ]
                             [ text "close" ]
                         ]
                     , div
                         [ id "right", class " btn-floating green" ]
                         [ i
-                            [ class "close material-icons", onClick <| ToggleModal chosenAnswer ]
+                            [ class "close material-icons", onClick <| SetAnswerToCorrect chosenAnswer ]
                             [ text "check" ]
                         ]
                     , div
