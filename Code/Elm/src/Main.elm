@@ -259,7 +259,7 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         ToggleModal answer ->
-            case model.openModal of
+            case not model.openModal of
                 True ->
                     ( toggleModal model answer
                     , requestOpenQuestion
@@ -320,7 +320,7 @@ update msg model =
                 ( setAnswerState newModel answerContent True, Cmd.none )
 
             else
-                ( toggleModal model answerContent, Cmd.none )
+                ( toggleModal model answerContent, requestCloseQuestion )
 
         SetAnswerToCorrect answerContent ->
             if model.buzzerColor /= None then
@@ -331,7 +331,7 @@ update msg model =
                 ( setAnswerState newModel answerContent False, Cmd.none )
 
             else
-                ( toggleModal model answerContent, Cmd.none )
+                ( toggleModal model answerContent, requestCloseQuestion )
 
 
 

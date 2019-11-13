@@ -17,31 +17,55 @@ const closeQuestion = () => {
 };
 
 const getBuzzer = () => {
-    return fs.readFileSync('buzzed', (err, data) => {
+    return fs.readFileSync('buzzed', 'utf8', (err, data) => {
         if (err) throw err;
-        console.log('buzzer' + data);
         return data;
     });
 };
 
+isQuestionOpen = () => {
+    let dataFromFile = fs.readFileSync('questionOpen', 'utf8', (err, data) => {
+        if (err) throw err;
+        return data;
+    });
+    return dataFromFile.trim() === 'True';
+};
+
 const setBuzzer = (buzzer) => {
+    console.log(getBuzzer());
+    console.log(isQuestionOpen());
+    // always allow buzzer reset
+    if (buzzer === 'none') {
+        writeBuzzer(buzzer);
+        console.log('Reset buzzer');
+        return;
+    }
+    // if no current buzzer is set and no question is open, log bad condition
+    if (getBuzzer().trim() !== 'none' || !isQuestionOpen()) {
+        console.log('Either someone already buzzed, or no question is open');
+        return;
+    }
+
+    if (getBuzzer().trim() === 'none' && isQuestionOpen()) {
+        writeBuzzer(buzzer);
+        console.log("Buzzer set to " + buzzer)
+
+    }
+};
+
+writeBuzzer = (buzzer) => {
     fs.writeFile('buzzed', buzzer, (err) => {
         if (err) throw err;
-        console.log('Buzzer written');
     });
 };
 
 //Reset questions
 closeQuestion();
-setBuzzer('none');
 
 //create a server object:
 http.createServer(function (request, response) {
     try {
-        console.log(request.url);
-        let calledUrl = request.url;
-
-        switch (calledUrl.toLowerCase()) {
+        switch (request.url.toLowerCase()) {
             case '/openquestion':
                 openQuestion();
                 response.write('Question opened');
