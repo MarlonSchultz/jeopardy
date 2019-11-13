@@ -1,3 +1,0 @@
-landing_page:
-    path:     /
-    defaults: { _controller: 'mgbs\Controller\IndexController::indexAction' }
