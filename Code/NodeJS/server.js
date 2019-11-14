@@ -1,64 +1,67 @@
 const http = require('http');
 const fs = require('fs');
 
-const openQuestion = () => {
-    fs.writeFile('questionOpen', 'True', (err) => {
-        if (err) throw err;
-        console.log('questionOpen!');
-    });
+module.exports = {
+    openQuestion: openQuestion = () => {
+        fs.writeFile('questionOpen', 'True', (err) => {
+            if (err) throw err;
+            console.log('questionOpen!');
+        });
+    },
+
+    setBuzzer: setBuzzer = (buzzer) => {
+        //console.log(getBuzzer());
+        //console.log(isQuestionOpen());
+        // always allow buzzer reset
+        if (buzzer === 'none') {
+            writeBuzzer(buzzer);
+            console.log('Reset buzzer');
+            return;
+        }
+        // if no current buzzer is set and no question is open, log bad condition
+        if (getBuzzer().trim() !== 'none' || !isQuestionOpen()) {
+            console.log('Either someone already buzzed, or no question is open');
+            return;
+        }
+
+        if (getBuzzer().trim() === 'none' && isQuestionOpen()) {
+            writeBuzzer(buzzer);
+            console.log("Buzzer set to " + buzzer)
+
+        }
+    },
+
+
+    closeQuestion: closeQuestion = () => {
+        fs.writeFile('questionOpen', 'False', (err) => {
+            if (err) throw err;
+            console.log('questionClosed!');
+            setBuzzer("none");
+        });
+    },
+
+    getBuzzer: getBuzzer = () => {
+        return fs.readFileSync('buzzed', 'utf8', (err, data) => {
+            if (err) throw err;
+            return data;
+        });
+    },
+
+    isQuestionOpen: isQuestionOpen = () => {
+        let dataFromFile = fs.readFileSync('questionOpen', 'utf8', (err, data) => {
+            if (err) throw err;
+            return data;
+        });
+        return dataFromFile.trim() === 'True';
+    },
+
+
+    writeBuzzer: writeBuzzer = (buzzer) => {
+        fs.writeFile('buzzed', buzzer, (err) => {
+            if (err) throw err;
+        });
+    },
 };
-
-const closeQuestion = () => {
-    fs.writeFile('questionOpen', 'False', (err) => {
-        if (err) throw err;
-        console.log('questionClosed!');
-        setBuzzer("none");
-    });
-};
-
-const getBuzzer = () => {
-    return fs.readFileSync('buzzed', 'utf8', (err, data) => {
-        if (err) throw err;
-        return data;
-    });
-};
-
-isQuestionOpen = () => {
-    let dataFromFile = fs.readFileSync('questionOpen', 'utf8', (err, data) => {
-        if (err) throw err;
-        return data;
-    });
-    return dataFromFile.trim() === 'True';
-};
-
-const setBuzzer = (buzzer) => {
-    console.log(getBuzzer());
-    console.log(isQuestionOpen());
-    // always allow buzzer reset
-    if (buzzer === 'none') {
-        writeBuzzer(buzzer);
-        console.log('Reset buzzer');
-        return;
-    }
-    // if no current buzzer is set and no question is open, log bad condition
-    if (getBuzzer().trim() !== 'none' || !isQuestionOpen()) {
-        console.log('Either someone already buzzed, or no question is open');
-        return;
-    }
-
-    if (getBuzzer().trim() === 'none' && isQuestionOpen()) {
-        writeBuzzer(buzzer);
-        console.log("Buzzer set to " + buzzer)
-
-    }
-};
-
-writeBuzzer = (buzzer) => {
-    fs.writeFile('buzzed', buzzer, (err) => {
-        if (err) throw err;
-    });
-};
-
 //Reset questions
 closeQuestion();
 
@@ -124,8 +127,4 @@ http.createServer(function (request, response) {
     }
 
 }).listen(process.env.PORT); //the server object listens on port 8080
-
-
-
-
 
