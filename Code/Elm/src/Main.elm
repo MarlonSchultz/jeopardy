@@ -1,8 +1,9 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
-import Html exposing (Html, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, classList, href, id, rel, style)
+import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (autoplay, class, classList, href, id, loop, preload, rel, src, style)
+import Html.Attributes.Extra exposing (volume)
 import Html.Events exposing (onClick)
 import Http exposing (..)
 import Json.Decode as JD exposing (field, int, string)
@@ -66,12 +67,13 @@ type alias Model =
     , openModal : Bool
     , revealAnswer : Int
     , buzzerColor : Buzzed
+    , volume : Float
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading createInitialAnswer False 0 None
+    ( Model Loading createInitialAnswer False 0 None 0.2
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -238,7 +240,15 @@ queryBuzzer =
 
 toggleModal : Model -> AnswerContent -> Model
 toggleModal model answerContent =
-    { model | chosenAnswer = answerContent, openModal = not model.openModal, buzzerColor = None }
+    let
+        newVolume =
+            if model.volume == 1 then
+                0.2
+
+            else
+                1
+    in
+    { model | chosenAnswer = answerContent, openModal = not model.openModal, buzzerColor = None, volume = newVolume }
 
 
 
@@ -553,5 +563,6 @@ view model =
                         , tbody []
                             (tableRow jsonDecoded)
                         ]
+                    , audio [ src "http://localhost:8080/mp3/jeopardy.mp3", autoplay True, loop True, preload "auto", volume model.volume ] []
                     ]
                 ]

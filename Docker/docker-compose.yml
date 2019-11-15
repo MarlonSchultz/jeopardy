@@ -4,6 +4,7 @@ services:
     image: nginx:latest
     volumes:
       - ../Code/Elm/assets/css:/var/www/jeophpardy/web/css/elm
+      - ../Code/Elm/assets/mp3:/var/www/jeophpardy/web/mp3
       - ./gameFiles/:/var/www/jeophpardy/web/gameFiles
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
