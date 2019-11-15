@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/MarlonSchultz/jeopardy/workflows/Node%20CI/badge.svg)](https://travis-ci.org/mayflower/jeopardy)
+![Build Status](https://github.com/MarlonSchultz/jeopardy/workflows/Node%20CI/badge.svg)
 
 # Jeopardy 
 

@@ -62,11 +62,10 @@ module.exports = {
         });
     },
 };
-//Reset questions
-closeQuestion();
+
 
 //create a server object:
-if (process.env.CI !== 'CI') {
+if (!process.env.CI) {
     http.createServer(function (request, response) {
         try {
             switch (request.url.toLowerCase()) {
@@ -128,4 +127,11 @@ if (process.env.CI !== 'CI') {
         }
 
     }).listen(process.env.PORT); //the server object listens on port 8080
+
+    //Reset questions
+    closeQuestion();
 }
+
+console.log('Server exit');
+
+
