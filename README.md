@@ -1,88 +1,60 @@
-[![Build Status](https://travis-ci.org/mayflower/jeopardy.svg?branch=master)](https://travis-ci.org/mayflower/jeopardy)
+[![Build Status](https://github.com/MarlonSchultz/jeopardy/workflows/Node%20CI/badge.svg)](https://travis-ci.org/mayflower/jeopardy)
 
-# Jeopardy in PHP
+# Jeopardy 
 
-This is a simple implementation of the game "Jeopardy".
-It relies on PHP 7 and SQLite3.
+This is a side project of mine. It utilises a RaspBerry Pi with buzzers to run a game of Jeopardy.
 
-# Install locally
+# How to run
 
-Clone repository, run docker-compose build
+The setup uses Docker to run a node server. The node server provides an api for the FrontEnd.
+The BackEnd talks to the node server via Rest.
 
-# Adding own questions
-
-In Var/Data is an example.db in sqlite3 format. Use it for scaffolding.
-You will need a db tool for editing (i.e. DBBrowser, or DBeaver)
-For this set the paramaters.yml to:
-```yml
-db_path: '../Var/Data/jeopardy.db'
-db_type: 'sqlite3'
+```bash
+cd Docker
+docker-compose up -d
 ```
 
-# Consider this:
+Will start the node server and a nginx server that works as a proxy.
 
-Answer should be as precise as possible, to help contestants asking the correct question.
+If there is no index.html in the elm directory. The FrontEnd has not been compiled yet.
 
-If you dont want to edit a sqlite3 file, you can use the database.json file.
-
-Set the paramaters.yml to:
-```yml
-db_path: '../Var/Data/FlatFile/database.json'
-db_type: 'flatfile'
-```
-The database to which the game connects can be set in config/parameters.yml
-
-# Roadmap (?)
-
-There is no such thing. This is for fun.
-If you want to add features, either fork and PR, or fork and do whatever you want.
-
-# API
-```yml
-host.tld/api/getAllAnswers
+```bash
+cd Code/Elm
+elm make src/Main.elm
 ```
 
-Returns Json with all Answers and coresponding questions:
+If index.html is present, open the HTML file in a browser. It will try to fetch data from the nginx on localhost:8080
 
-```yml
-host.tld/api/setQuestionOpen/{id}
-```
+# How to play
 
-Inserts new question/answer in gameEvents
+### I have an Raspberry
 
-```yml
-host.tld/api/getAllGameEvents
-```
+If you have a Raspberry and know how to connect things to the GPIO, use the python script. You need to run the docker setup on the Raspberry, or change the ip within the Python scripts.
 
-Returns Json with all game events
+### I dont have an Raspberry
 
-```yml
-host.tld/api/insertBuzzer/{buzzer_id}
-```
+There is no implementation of phones or whatever as of now. You can however call the Rest Endpoints.
 
-Looks for the latest open answer/question in GameEvents an adds buzzer_id
+##### Buzz
 
-```yml
-host.tld/api/setQuestionWrong
-```
+Buzzing is only possible if question has been marked as open, or no other buzzer has buzzed.
 
-Sets last opened question to wrong, if not yet set.
+```openQuestion```
 
-```yml
-host.tld/api/setQuestionCorrect
-```
+Sets question as open. Buzzing is allowed, if no buzz has been registered before.
 
-Sets last opened question to correct, if not yet set.
+```closeQuestion```
 
-```yml
-host.tld/api/setQuestionsClosed
-```
-Marks all open questions as closed
+Sets question to closed and resets the buzzer color.
 
-# Flow 
-![alt text](flowdiagramm.png "Title")
+```/setBuzzer/red```
 
-# Contribution
+```/setBuzzer/green```
 
-* Please stick to PSR2 coding style- Travis will sniff you out !
+```/setBuzzer/yellow```
 
+```/setBuzzer/blue```
+
+```/setBuzzer/none```
+
+None resets buzzed color
