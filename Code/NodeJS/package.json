@@ -4,6 +4,6 @@
   },
 
   "scripts": {
-    "test": "jest"
+    "test": "CI=CI jest"
   }
 }
