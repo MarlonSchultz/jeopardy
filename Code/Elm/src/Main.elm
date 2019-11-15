@@ -226,7 +226,7 @@ requestCloseQuestion =
 queryBuzzer : Cmd Msg
 queryBuzzer =
     Http.get
-        { url = "http://localhost:8080/getBuzzer"
+        { url = "http://localhost:8080/getStateOfLastPressedBuzzer"
         , expect =
             Http.expectString RequestBuzzer
         }
