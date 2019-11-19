@@ -1,13 +1,15 @@
-module Main exposing (Msg(..), main, update, view)
+module Main exposing (Buzzed, Model, Msg(..), main, update, view)
 
 import Browser
 import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (autoplay, class, classList, href, id, loop, preload, rel, src, style)
+import Html.Attributes exposing (autoplay, class, classList, controls, href, id, loop, preload, rel, src, style)
 import Html.Attributes.Extra exposing (volume)
 import Html.Events exposing (onClick)
 import Http exposing (..)
 import Json.Decode as JD exposing (field, int, string)
 import List.Extra
+import Svg exposing (rect, svg)
+import Svg.Attributes exposing (fill, fillOpacity, height, rx, ry, stroke, strokeWidth, viewBox, width, x, y)
 import Time
 
 
@@ -29,6 +31,7 @@ type Msg
     | PollBuzzerSubscription Time.Posix
     | SetAnswerToWrong AnswerContent
     | SetAnswerToCorrect AnswerContent
+    | DecrementTimer Time.Posix
 
 
 type Buzzed
@@ -228,7 +231,7 @@ requestCloseQuestion =
 queryBuzzer : Cmd Msg
 queryBuzzer =
     Http.get
-        { url = "http://localhost:8080/getStateOfLastPressedBuzzer"
+        { url = "http://localhost:8080/getBuzzer"
         , expect =
             Http.expectString RequestBuzzer
         }
@@ -269,13 +272,13 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         ToggleModal answer ->
-            case not model.openModal of
-                True ->
+            case model.openModal of
+                False ->
                     ( toggleModal model answer
                     , requestOpenQuestion
                     )
 
-                False ->
+                True ->
                     ( toggleModal model answer
                     , requestCloseQuestion
                     )
@@ -327,10 +330,10 @@ update msg model =
                     newModel =
                         toggleModal model answerContent
                 in
-                ( setAnswerState newModel answerContent True, Cmd.none )
+                ( setAnswerState newModel answerContent True, requestCloseQuestion )
 
             else
-                ( toggleModal model answerContent, requestCloseQuestion )
+                ( toggleModal model answerContent, Cmd.none )
 
         SetAnswerToCorrect answerContent ->
             if model.buzzerColor /= None then
@@ -338,10 +341,13 @@ update msg model =
                     newModel =
                         toggleModal model answerContent
                 in
-                ( setAnswerState newModel answerContent False, Cmd.none )
+                ( setAnswerState newModel answerContent False, requestCloseQuestion )
 
             else
-                ( toggleModal model answerContent, requestCloseQuestion )
+                ( toggleModal model answerContent, Cmd.none )
+
+        DecrementTimer _ ->
+            ( model, Cmd.none )
 
 
 
@@ -350,11 +356,18 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.openModal && model.buzzerColor /= NotSolved then
-        Time.every 500 PollBuzzerSubscription
+    Sub.batch
+        [ if model.openModal && model.buzzerColor /= NotSolved then
+            Time.every 500 PollBuzzerSubscription
 
-    else
-        Sub.none
+          else
+            Sub.none
+        , if model.buzzerColor /= NotSolved && model.buzzerColor /= None then
+            Time.every 500 DecrementTimer
+
+          else
+            Sub.none
+        ]
 
 
 
@@ -505,7 +518,15 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
                         [ h2 [] [ text chosenAnswer.question ] ]
                     , div
                         [ id "countdown" ]
-                        []
+                        [ svg
+                            [ viewBox "0 0 510 100" ]
+                            [ rect [ x "2", y "10", width "500", height "30", rx "15", ry "15", strokeWidth "2", stroke "red", fillOpacity "0" ]
+                                []
+                            , rect [ x "2", y "10", width "250", height "30", rx "15", ry "15" ]
+                                []
+                            , Svg.text_ [ x "200", y "30", fill "yellow" ] [ text "Buzz! You want to!" ]
+                            ]
+                        ]
                     ]
                 ]
             , div
@@ -563,6 +584,8 @@ view model =
                         , tbody []
                             (tableRow jsonDecoded)
                         ]
-                    , audio [ src "http://localhost:8080/mp3/jeopardy.mp3", autoplay True, loop True, preload "auto", volume model.volume ] []
+                    , div [ style "text-align" "center" ]
+                        [ audio [ src "http://localhost:8080/mp3/jeopardy.mp3", autoplay False, loop True, preload "auto", controls True, volume model.volume ] []
+                        ]
                     ]
                 ]
