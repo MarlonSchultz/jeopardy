@@ -9866,9 +9866,9 @@ var $author$project$Main$GotJson = function (a) {
 	return {$: 'GotJson', a: a};
 };
 var $author$project$Main$Loading = {$: 'Loading'};
-var $author$project$Main$Model = F6(
-	function (requestState, chosenAnswer, openModal, revealAnswer, buzzerColor, volume) {
-		return {buzzerColor: buzzerColor, chosenAnswer: chosenAnswer, openModal: openModal, requestState: requestState, revealAnswer: revealAnswer, volume: volume};
+var $author$project$Main$Model = F7(
+	function (requestState, chosenAnswer, openModal, revealAnswer, buzzerColor, volume, timerSeconds) {
+		return {buzzerColor: buzzerColor, chosenAnswer: chosenAnswer, openModal: openModal, requestState: requestState, revealAnswer: revealAnswer, timerSeconds: timerSeconds, volume: volume};
 	});
 var $author$project$Main$None = {$: 'None'};
 var $author$project$Main$createInitialAnswer = {answer: 'string', category: 'Nothing', id: 1, points: 10, question: 'whatever'};
@@ -10148,7 +10148,7 @@ var $elm$http$Http$get = function (r) {
 };
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		A6($author$project$Main$Model, $author$project$Main$Loading, $author$project$Main$createInitialAnswer, false, 0, $author$project$Main$None, 0.2),
+		A7($author$project$Main$Model, $author$project$Main$Loading, $author$project$Main$createInitialAnswer, false, 0, $author$project$Main$None, 0.2, 30),
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotJson, $author$project$Main$decodeJson),
@@ -10590,7 +10590,11 @@ var $author$project$Main$update = F2(
 						$elm$core$Platform$Cmd$none);
 				}
 			default:
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				return (model.timerSeconds > 0) ? _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{timerSeconds: model.timerSeconds - 1}),
+					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$html$Html$audio = _VirtualDom_node('audio');
@@ -10744,6 +10748,10 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 };
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $author$project$Main$getRemainingLengthOfTimer = function (_float) {
+	return $elm$core$String$fromFloat((500 * _float) / 30);
+};
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var $elm$html$Html$i = _VirtualDom_node('i');
@@ -10764,6 +10772,7 @@ var $author$project$Main$modalStructure = function (_v0) {
 	var openModal = _v0.openModal;
 	var revealAnswer = _v0.revealAnswer;
 	var buzzerColor = _v0.buzzerColor;
+	var timerSeconds = _v0.timerSeconds;
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -10904,7 +10913,8 @@ var $author$project$Main$modalStructure = function (_v0) {
 															[
 																$elm$svg$Svg$Attributes$x('2'),
 																$elm$svg$Svg$Attributes$y('10'),
-																$elm$svg$Svg$Attributes$width('250'),
+																$elm$svg$Svg$Attributes$width(
+																$author$project$Main$getRemainingLengthOfTimer(timerSeconds)),
 																$elm$svg$Svg$Attributes$height('30'),
 																$elm$svg$Svg$Attributes$rx('15'),
 																$elm$svg$Svg$Attributes$ry('15')

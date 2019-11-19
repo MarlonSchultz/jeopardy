@@ -71,12 +71,13 @@ type alias Model =
     , revealAnswer : Int
     , buzzerColor : Buzzed
     , volume : Float
+    , timerSeconds : Float
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading createInitialAnswer False 0 None 0.2
+    ( Model Loading createInitialAnswer False 0 None 0.2 30
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -347,7 +348,11 @@ update msg model =
                 ( toggleModal model answerContent, Cmd.none )
 
         DecrementTimer _ ->
-            ( model, Cmd.none )
+            if model.timerSeconds > 0 then
+                ( { model | timerSeconds = model.timerSeconds - 1 }, Cmd.none )
+
+            else
+                ( model, Cmd.none )
 
 
 
@@ -437,6 +442,14 @@ answerBox list =
         list
 
 
+getRemainingLengthOfTimer : Float -> String
+getRemainingLengthOfTimer float =
+    500
+        * float
+        / 30
+        |> String.fromFloat
+
+
 getAnswersByPoints : List Answer -> List (List Answer)
 getAnswersByPoints list =
     getPossiblePoints (getAnswerConfigList list)
@@ -493,7 +506,7 @@ getPossiblePoints listAnswers =
 
 
 modalStructure : Model -> Html Msg
-modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
+modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSeconds } =
     div [ class "row" ]
         [ div
             [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", not openModal ) ], style "z-index" "1003" ]
@@ -522,7 +535,7 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor } =
                             [ viewBox "0 0 510 100" ]
                             [ rect [ x "2", y "10", width "500", height "30", rx "15", ry "15", strokeWidth "2", stroke "red", fillOpacity "0" ]
                                 []
-                            , rect [ x "2", y "10", width "250", height "30", rx "15", ry "15" ]
+                            , rect [ x "2", y "10", width (getRemainingLengthOfTimer timerSeconds), height "30", rx "15", ry "15" ]
                                 []
                             , Svg.text_ [ x "200", y "30", fill "yellow" ] [ text "Buzz! You want to!" ]
                             ]
