@@ -75,9 +75,19 @@ type alias Model =
     }
 
 
+timerSecondsStartValue : Float
+timerSecondsStartValue =
+    30
+
+
+timerSvgLengthInPixels : Float
+timerSvgLengthInPixels =
+    500
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading createInitialAnswer False 0 None 0.2 30
+    ( Model Loading createInitialAnswer False 0 None 0.2 timerSecondsStartValue
     , Http.get
         { url = "http://localhost:8080/gameFiles/devcamp2019.json"
         , expect =
@@ -326,26 +336,10 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         SetAnswerToWrong answerContent ->
-            if model.buzzerColor /= None then
-                let
-                    newModel =
-                        toggleModal model answerContent
-                in
-                ( setAnswerState newModel answerContent True, requestCloseQuestion )
-
-            else
-                ( toggleModal model answerContent, Cmd.none )
+            setAnswerStatus model answerContent True
 
         SetAnswerToCorrect answerContent ->
-            if model.buzzerColor /= None then
-                let
-                    newModel =
-                        toggleModal model answerContent
-                in
-                ( setAnswerState newModel answerContent False, requestCloseQuestion )
-
-            else
-                ( toggleModal model answerContent, Cmd.none )
+            setAnswerStatus model answerContent False
 
         DecrementTimer _ ->
             if model.timerSeconds > 0 then
@@ -353,6 +347,33 @@ update msg model =
 
             else
                 ( model, Cmd.none )
+
+
+setAnswerStatus : Model -> AnswerContent -> Bool -> ( Model, Cmd Msg )
+setAnswerStatus model answerContent bool =
+    if model.buzzerColor /= None then
+        let
+            newModel =
+                toggleModalAndSetAnswerToWrongOrCorrect model answerContent bool
+        in
+        ( resetTimerSeconds newModel, requestCloseQuestion )
+
+    else
+        ( toggleModal model answerContent, Cmd.none )
+
+
+resetTimerSeconds : Model -> Model
+resetTimerSeconds model =
+    { model | timerSeconds = timerSecondsStartValue }
+
+
+toggleModalAndSetAnswerToWrongOrCorrect : Model -> AnswerContent -> Bool -> Model
+toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerIsFalse =
+    let
+        newModel =
+            toggleModal model answerContent
+    in
+    setAnswerState newModel answerContent answerIsFalse
 
 
 
@@ -443,9 +464,9 @@ answerBox list =
 
 
 getRemainingLengthOfTimer : Float -> String
-getRemainingLengthOfTimer float =
-    500
-        * float
+getRemainingLengthOfTimer remainingTime =
+    timerSvgLengthInPixels
+        * remainingTime
         / 30
         |> String.fromFloat
 
