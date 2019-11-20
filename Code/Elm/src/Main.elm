@@ -31,6 +31,7 @@ type Msg
     | PollBuzzerSubscription Time.Posix
     | SetAnswerToWrong AnswerContent
     | SetAnswerToCorrect AnswerContent
+    | SetAnswerToRepeat
     | DecrementTimer Time.Posix
 
 
@@ -247,6 +248,15 @@ queryBuzzer =
         }
 
 
+setBuzzer : String -> Cmd Msg
+setBuzzer buzzer =
+    Http.get
+        { url = "http://localhost:8080/setBuzzer/" ++ buzzer
+        , expect =
+            Http.expectString RequestBuzzer
+        }
+
+
 
 -- BusinessLogic
 
@@ -346,6 +356,9 @@ update msg model =
 
             else
                 ( model, Cmd.none )
+
+        SetAnswerToRepeat ->
+            ( { model | timerSeconds = timerSecondsStartValue }, setBuzzer "none" )
 
 
 setAnswerStatus : Model -> AnswerContent -> Bool -> ( Model, Cmd Msg )
@@ -552,7 +565,7 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
                         [ id "countdown" ]
                         [ svg
                             [ viewBox "0 0 510 100" ]
-                            [ rect [ x "2", y "10", width "500", height "30", rx "15", ry "15", strokeWidth "2", stroke "red", fillOpacity "0" ]
+                            [ rect [ x "2", y "10", width (String.fromFloat timerSvgLengthInPixels), height "30", rx "15", ry "15", strokeWidth "2", stroke "red", fillOpacity "0" ]
                                 []
                             , rect [ x "2", y "10", width (getRemainingLengthOfTimer timerSeconds), height "30", rx "15", ry "15" ]
                                 []
@@ -566,21 +579,27 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
                 [ div
                     [ class "card-action center-align" ]
                     [ div
+                        [ id "ac_unit", class "btn-floating light-blue darken-2" ]
+                        [ i
+                            [ class "material-icons", onClick <| SetAnswerToRepeat ]
+                            [ text "refresh" ]
+                        ]
+                    , div
                         [ id "wrong", class "btn-floating red" ]
                         [ i
-                            [ class "close material-icons", onClick <| SetAnswerToWrong chosenAnswer ]
+                            [ class "material-icons", onClick <| SetAnswerToWrong chosenAnswer ]
                             [ text "close" ]
                         ]
                     , div
                         [ id "right", class " btn-floating green" ]
                         [ i
-                            [ class "close material-icons", onClick <| SetAnswerToCorrect chosenAnswer ]
+                            [ class "material-icons", onClick <| SetAnswerToCorrect chosenAnswer ]
                             [ text "check" ]
                         ]
                     , div
                         [ id "reveal", class " btn-floating grey" ]
                         [ i
-                            [ class "close material-icons", onClick <| RevealAnswer chosenAnswer.id ]
+                            [ class "material-icons", onClick <| RevealAnswer chosenAnswer.id ]
                             [ text "search" ]
                         ]
                     ]
@@ -607,6 +626,7 @@ view model =
         Success jsonDecoded ->
             div []
                 [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
+                , loadCss "http://localhost:8080/css/elm/material-design-icons.css"
                 , loadCss "http://localhost:8080/css/elm/jeopardy.css"
                 , div [ class "container" ]
                     [ headline

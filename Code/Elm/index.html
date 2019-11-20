@@ -10493,6 +10493,13 @@ var $author$project$Main$setAnswerStatus = F3(
 				$elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Main$setBuzzer = function (buzzer) {
+	return $elm$http$Http$get(
+		{
+			expect: $elm$http$Http$expectString($author$project$Main$RequestBuzzer),
+			url: 'http://localhost:8080/setBuzzer/' + buzzer
+		});
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -10594,12 +10601,18 @@ var $author$project$Main$update = F2(
 			case 'SetAnswerToCorrect':
 				var answerContent = msg.a;
 				return A3($author$project$Main$setAnswerStatus, model, answerContent, false);
-			default:
+			case 'DecrementTimer':
 				return (model.timerSeconds > 0) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{timerSeconds: model.timerSeconds - 1}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{timerSeconds: $author$project$Main$timerSecondsStartValue}),
+					$author$project$Main$setBuzzer('none'));
 		}
 	});
 var $elm$html$Html$audio = _VirtualDom_node('audio');
@@ -10727,6 +10740,7 @@ var $author$project$Main$RevealAnswer = function (a) {
 var $author$project$Main$SetAnswerToCorrect = function (a) {
 	return {$: 'SetAnswerToCorrect', a: a};
 };
+var $author$project$Main$SetAnswerToRepeat = {$: 'SetAnswerToRepeat'};
 var $author$project$Main$SetAnswerToWrong = function (a) {
 	return {$: 'SetAnswerToWrong', a: a};
 };
@@ -10901,7 +10915,8 @@ var $author$project$Main$modalStructure = function (_v0) {
 															[
 																$elm$svg$Svg$Attributes$x('2'),
 																$elm$svg$Svg$Attributes$y('10'),
-																$elm$svg$Svg$Attributes$width('500'),
+																$elm$svg$Svg$Attributes$width(
+																$elm$core$String$fromFloat($author$project$Main$timerSvgLengthInPixels)),
 																$elm$svg$Svg$Attributes$height('30'),
 																$elm$svg$Svg$Attributes$rx('15'),
 																$elm$svg$Svg$Attributes$ry('15'),
@@ -10959,6 +10974,27 @@ var $author$project$Main$modalStructure = function (_v0) {
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
+												$elm$html$Html$Attributes$id('ac_unit'),
+												$elm$html$Html$Attributes$class('btn-floating light-blue darken-2')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$i,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('material-icons'),
+														$elm$html$Html$Events$onClick($author$project$Main$SetAnswerToRepeat)
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('refresh')
+													]))
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
 												$elm$html$Html$Attributes$id('wrong'),
 												$elm$html$Html$Attributes$class('btn-floating red')
 											]),
@@ -10968,7 +11004,7 @@ var $author$project$Main$modalStructure = function (_v0) {
 												$elm$html$Html$i,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('close material-icons'),
+														$elm$html$Html$Attributes$class('material-icons'),
 														$elm$html$Html$Events$onClick(
 														$author$project$Main$SetAnswerToWrong(chosenAnswer))
 													]),
@@ -10990,7 +11026,7 @@ var $author$project$Main$modalStructure = function (_v0) {
 												$elm$html$Html$i,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('close material-icons'),
+														$elm$html$Html$Attributes$class('material-icons'),
 														$elm$html$Html$Events$onClick(
 														$author$project$Main$SetAnswerToCorrect(chosenAnswer))
 													]),
@@ -11012,7 +11048,7 @@ var $author$project$Main$modalStructure = function (_v0) {
 												$elm$html$Html$i,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('close material-icons'),
+														$elm$html$Html$Attributes$class('material-icons'),
 														$elm$html$Html$Events$onClick(
 														$author$project$Main$RevealAnswer(chosenAnswer.id))
 													]),
@@ -11243,6 +11279,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$author$project$Main$loadCss('http://localhost:8080/css/elm/materialize.min.css'),
+						$author$project$Main$loadCss('http://localhost:8080/css/elm/material-design-icons.css'),
 						$author$project$Main$loadCss('http://localhost:8080/css/elm/jeopardy.css'),
 						A2(
 						$elm$html$Html$div,
@@ -11297,7 +11334,7 @@ var $author$project$Main$view = function (model) {
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.AnswerContent":{"args":[],"type":"{ id : Basics.Int, points : Basics.Int, answer : String.String, question : String.String, category : String.String }"}},"unions":{"Main.Msg":{"args":[],"tags":{"GotJson":["Result.Result Http.Error (List.List Main.Answer)"],"ToggleModal":["Main.AnswerContent"],"AnswerToggle":["Result.Result Http.Error ()"],"RequestBuzzer":["Result.Result Http.Error String.String"],"RevealAnswer":["Basics.Int"],"PollBuzzerSubscription":["Time.Posix"],"SetAnswerToWrong":["Main.AnswerContent"],"SetAnswerToCorrect":["Main.AnswerContent"],"DecrementTimer":["Time.Posix"]}},"Main.Answer":{"args":[],"tags":{"Wrong":["Main.AnswerContent"],"Correct":["Main.AnswerContent"],"NotAnswered":["Main.AnswerContent"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.AnswerContent":{"args":[],"type":"{ id : Basics.Int, points : Basics.Int, answer : String.String, question : String.String, category : String.String }"}},"unions":{"Main.Msg":{"args":[],"tags":{"GotJson":["Result.Result Http.Error (List.List Main.Answer)"],"ToggleModal":["Main.AnswerContent"],"AnswerToggle":["Result.Result Http.Error ()"],"RequestBuzzer":["Result.Result Http.Error String.String"],"RevealAnswer":["Basics.Int"],"PollBuzzerSubscription":["Time.Posix"],"SetAnswerToWrong":["Main.AnswerContent"],"SetAnswerToCorrect":["Main.AnswerContent"],"SetAnswerToRepeat":[],"DecrementTimer":["Time.Posix"]}},"Main.Answer":{"args":[],"tags":{"Wrong":["Main.AnswerContent"],"Correct":["Main.AnswerContent"],"NotAnswered":["Main.AnswerContent"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
 
   var app = Elm.Main.init({ node: document.getElementById("elm") });
 }
