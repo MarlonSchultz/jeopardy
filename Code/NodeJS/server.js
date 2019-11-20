@@ -7,14 +7,12 @@ if (!process.env.CI) {
         try {
             switch (request.url.toLowerCase()) {
                 case '/openquestion':
-                    openQuestion();
-                    response.write('Question opened');
+                    response.write(openQuestion());
                     response.end();
                     break;
 
                 case '/closequestion':
-                    closeQuestion();
-                    response.write('Question closed');
+                    response.write(closeQuestion());
                     response.end();
                     break;
 
@@ -24,32 +22,28 @@ if (!process.env.CI) {
                     break;
 
                 case '/setbuzzer/green':
-                    setBuzzer('green');
-                    response.write('Buzzed green');
+                    response.write(setBuzzer('green'));
                     response.end();
                     break;
 
                 case '/setbuzzer/blue':
-                    setBuzzer('blue');
-                    response.write('Buzzed blue');
+                    response.write(setBuzzer('blue'));
                     response.end();
                     break;
 
                 case '/setbuzzer/yellow':
-                    setBuzzer('yellow');
-                    response.write('Buzzed yellow');
+
+                    response.write(setBuzzer('yellow'));
                     response.end();
                     break;
 
                 case '/setbuzzer/red':
-                    setBuzzer('red');
-                    response.write('Buzzed red');
+                    response.write(setBuzzer('red'));
                     response.end();
                     break;
 
                 case '/setbuzzer/none':
-                    setBuzzer('none');
-                    response.write('Reset buzzer');
+                    response.write( setBuzzer('none'));
                     response.end();
                     break;
 

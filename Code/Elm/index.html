@@ -10159,7 +10159,6 @@ var $author$project$Main$init = function (_v0) {
 var $author$project$Main$DecrementTimer = function (a) {
 	return {$: 'DecrementTimer', a: a};
 };
-var $author$project$Main$NotSolved = {$: 'NotSolved'};
 var $author$project$Main$PollBuzzerSubscription = function (a) {
 	return {$: 'PollBuzzerSubscription', a: a};
 };
@@ -10348,8 +10347,8 @@ var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$batch(
 		_List_fromArray(
 			[
-				(model.openModal && (!_Utils_eq(model.buzzerColor, $author$project$Main$NotSolved))) ? A2($elm$time$Time$every, 500, $author$project$Main$PollBuzzerSubscription) : $elm$core$Platform$Sub$none,
-				((!_Utils_eq(model.buzzerColor, $author$project$Main$NotSolved)) && (!_Utils_eq(model.buzzerColor, $author$project$Main$None))) ? A2($elm$time$Time$every, 500, $author$project$Main$DecrementTimer) : $elm$core$Platform$Sub$none
+				(model.openModal && _Utils_eq(model.buzzerColor, $author$project$Main$None)) ? A2($elm$time$Time$every, 500, $author$project$Main$PollBuzzerSubscription) : $elm$core$Platform$Sub$none,
+				(!_Utils_eq(model.buzzerColor, $author$project$Main$None)) ? A2($elm$time$Time$every, 500, $author$project$Main$DecrementTimer) : $elm$core$Platform$Sub$none
 			]));
 };
 var $author$project$Main$Blue = {$: 'Blue'};
@@ -10538,7 +10537,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{buzzerColor: $author$project$Main$NotSolved, revealAnswer: str}),
+						{buzzerColor: $author$project$Main$None, revealAnswer: str}),
 					$author$project$Main$requestCloseQuestion);
 			case 'PollBuzzerSubscription':
 				return _Utils_Tuple2(model, $author$project$Main$queryBuzzer);
@@ -10816,9 +10815,6 @@ var $author$project$Main$modalStructure = function (_v0) {
 										_Utils_Tuple2(
 										'blue-grey',
 										_Utils_eq(buzzerColor, $author$project$Main$None)),
-										_Utils_Tuple2(
-										'blue-grey',
-										_Utils_eq(buzzerColor, $author$project$Main$NotSolved)),
 										_Utils_Tuple2(
 										'blue',
 										_Utils_eq(buzzerColor, $author$project$Main$Blue)),

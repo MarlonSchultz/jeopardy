@@ -9,32 +9,29 @@ module.exports = {
         // always allow buzzer reset
         if (buzzer === 'none') {
             writeBuzzerState(buzzer);
-            console.log('Reset buzzer');
-            return;
+            return 'Reset buzzer';
         }
         // if no current buzzer is set and no question is open, log bad condition
         if (getStateOfLastPressedBuzzer() !== 'none' || !isQuestionOpen()) {
-            console.log('Either someone already buzzed, or no question is open');
-            return;
+            return 'Either someone already buzzed, or no question is open';
         }
 
 
         if (getStateOfLastPressedBuzzer() === 'none' && isQuestionOpen()) {
             writeBuzzerState(buzzer);
-            console.log("Buzzer set to " + buzzer)
+            return 'Buzzer set to ' + buzzer
         }
     },
 
 
     closeQuestion: closeQuestion = () => {
         fs.writeFileSync('questionOpen', 'False');
-        console.log('questionClosed!');
-        setBuzzer("none");
+        return ('Question closed and ' + setBuzzer("none"));
     },
 
     openQuestion: openQuestion = () => {
         fs.writeFileSync('questionOpen', 'True');
-        console.log('questionOpen!');
+        return 'question Open!';
     },
 
     getStateOfLastPressedBuzzer: getStateOfLastPressedBuzzer = () => {

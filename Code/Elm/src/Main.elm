@@ -40,7 +40,6 @@ type Buzzed
     | Green
     | Blue
     | Yellow
-    | NotSolved
 
 
 type Answer
@@ -298,7 +297,7 @@ update msg model =
             ( model, Cmd.none )
 
         RevealAnswer str ->
-            ( { model | revealAnswer = str, buzzerColor = NotSolved }, requestCloseQuestion )
+            ( { model | revealAnswer = str, buzzerColor = None }, requestCloseQuestion )
 
         PollBuzzerSubscription _ ->
             ( model, queryBuzzer )
@@ -383,12 +382,12 @@ toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerIsFalse =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ if model.openModal && model.buzzerColor /= NotSolved then
+        [ if model.openModal && model.buzzerColor == None then
             Time.every 500 PollBuzzerSubscription
 
           else
             Sub.none
-        , if model.buzzerColor /= NotSolved && model.buzzerColor /= None then
+        , if model.buzzerColor /= None then
             Time.every 500 DecrementTimer
 
           else
@@ -534,7 +533,6 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
             [ div
                 [ classList
                     [ ( "blue-grey", buzzerColor == None )
-                    , ( "blue-grey", buzzerColor == NotSolved )
                     , ( "blue", buzzerColor == Blue )
                     , ( "red", buzzerColor == Red )
                     , ( "yellow", buzzerColor == Yellow )

@@ -13,37 +13,36 @@ beforeEach(() => {
 
 
 test('reset buzzer works', () => {
-    setBuzzer('none');
-    expect(spyLog).toHaveBeenCalledWith('Reset buzzer');
+    let response = setBuzzer('none');
+    expect(response).toEqual('Reset buzzer')
 });
 
 
 describe('Buzzers are pressed', function () {
     test('close Question', () => {
-        closeQuestion();
-        expect(spyLog).toHaveBeenCalledWith('questionClosed!');
-        expect(spyLog).toHaveBeenCalledWith('Reset buzzer');
+        let response = closeQuestion();
+        expect(response).toEqual('Question closed and Reset buzzer');
     });
 
     test('try to buzz with closed question should not work', () => {
-        setBuzzer('red');
-        expect(spyLog).toHaveBeenCalledWith('Either someone already buzzed, or no question is open');
+        let response = setBuzzer('red');
+        expect(response).toEqual('Either someone already buzzed, or no question is open');
     });
 
     test('open a question and buzz should work', () => {
-        openQuestion();
-        expect(spyLog).toHaveBeenCalledWith('questionOpen!');
-        setBuzzer('green');
-        expect(spyLog).toHaveBeenCalledWith('Buzzer set to green');
+        let openResponse = openQuestion();
+        expect(openResponse).toEqual('question Open!');
+        let response = setBuzzer('green');
+        expect(response).toEqual('Buzzer set to green');
     });
 
     test('that buzzing two times does not work', () => {
-        openQuestion();
-        setBuzzer('green');
-        setBuzzer('red');
-        expect(spyLog).toHaveBeenCalledWith('questionOpen!');
-        expect(spyLog).toHaveBeenCalledWith('Buzzer set to green');
-        expect(spyLog).toHaveBeenCalledWith('Either someone already buzzed, or no question is open');
+        let openResponse = openQuestion();
+        let responseGreen = setBuzzer('green');
+        let responseRed =setBuzzer('red');
+        expect(openResponse).toEqual('question Open!');
+        expect(responseGreen).toEqual('Buzzer set to green');
+        expect(responseRed).toEqual('Either someone already buzzed, or no question is open');
     })
 });
 
