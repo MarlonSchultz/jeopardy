@@ -1,4 +1,4 @@
-module Main exposing (Buzzed, Model, Msg(..), main, update, view)
+module Game exposing (Buzzed, Model, Msg(..), main, update, view)
 
 import Browser
 import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
@@ -352,7 +352,10 @@ update msg model =
 
         DecrementTimer _ ->
             if model.timerSeconds > 0 then
-                ( { model | timerSeconds = model.timerSeconds - 1 }, Cmd.none )
+                ( { model | timerSeconds = model.timerSeconds - 0.1 }, Cmd.none )
+
+            else if model.timerSeconds <= 0 then
+                ( { model | timerSeconds = 0 }, Cmd.none )
 
             else
                 ( model, Cmd.none )
@@ -401,7 +404,7 @@ subscriptions model =
           else
             Sub.none
         , if model.buzzerColor /= None then
-            Time.every 500 DecrementTimer
+            Time.every 100 DecrementTimer
 
           else
             Sub.none
@@ -538,6 +541,15 @@ getPossiblePoints listAnswers =
         |> List.Extra.unique
 
 
+getSvgTimer : Float -> Html Msg
+getSvgTimer timerSeconds =
+    if timerSeconds == 30 then
+        Svg.text_ [ x "220", y "30", fill "yellow" ] [ text "Buzz! Do it!" ]
+
+    else
+        Svg.text_ [ x "245", y "30", fill "yellow" ] [ text (String.fromInt (round timerSeconds)) ]
+
+
 modalStructure : Model -> Html Msg
 modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSeconds } =
     div [ class "row" ]
@@ -569,7 +581,7 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
                                 []
                             , rect [ x "2", y "10", width (getRemainingLengthOfTimer timerSeconds), height "30", rx "15", ry "15" ]
                                 []
-                            , Svg.text_ [ x "200", y "30", fill "yellow" ] [ text "Buzz! You want to!" ]
+                            , getSvgTimer timerSeconds
                             ]
                         ]
                     ]

@@ -7,9 +7,32 @@ table.fixed {
     table-layout: fixed;
 }
 
-
-
 img {
     max-height: 450px;
 }
 
+.buzzer {
+    height: 50vh;
+    width: 50vh;
+    margin: auto;
+    margin-top: 20vh;
+    border-radius: 50%;
+    display: block;
+
+}
+
+.red {
+    background: radial-gradient(circle, rgba(251,154,63,1) 0%, rgba(185,0,0,1) 100%);
+}
+
+.blue {
+    background: radial-gradient(circle, rgba(78,63,251,1) 0%, rgba(74,0,185,1) 100%);
+}
+
+.yellow {
+    background: radial-gradient(circle, rgba(247,251,63,1) 0%, rgba(185,183,0,1) 100%);
+}
+
+.green {
+    background: radial-gradient(circle, rgba(63,251,145,1) 0%, rgba(0,135,54,1) 100%);
+}
