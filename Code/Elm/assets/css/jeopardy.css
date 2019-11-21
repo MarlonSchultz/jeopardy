@@ -12,13 +12,26 @@ img {
 }
 
 .buzzer {
-    height: 50vh;
-    width: 50vh;
-    margin: auto;
-    margin-top: 20vh;
     border-radius: 50%;
     display: block;
+    float:left;
+}
 
+.tinySize {
+    height: 10vh;
+    width: 10vh;
+}
+
+.normalSize{
+    height: 50vh;
+    width: 50vh;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .red {

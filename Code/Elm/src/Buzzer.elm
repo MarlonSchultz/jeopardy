@@ -1,12 +1,24 @@
 module Buzzer exposing (init, main)
 
 import Browser
-import Html exposing (Html, div, node, span)
+import Html exposing (Html, div, h1, node, span, text)
 import Html.Attributes exposing (class, classList, href, rel, style)
+import Html.Events exposing (onClick)
+import Http
 
 
 type Msg
     = Buzz
+    | BuzzerAnswer (Result Http.Error String)
+    | SelectBuzzer BuzzerColor
+
+
+type BuzzerColor
+    = Green
+    | Red
+    | Yellow
+    | Blue
+    | None
 
 
 main =
@@ -20,16 +32,56 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( 1, Cmd.none )
+    ( None, Cmd.none )
 
 
 type alias Model =
-    Int
+    BuzzerColor
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        Buzz ->
+            ( model, buzzRequest (getColor model) )
+
+        BuzzerAnswer result ->
+            ( model, Cmd.none )
+
+        SelectBuzzer buzzerColor ->
+            ( buzzerColor, Cmd.none )
+
+
+getColor : BuzzerColor -> String
+getColor buzzerColor =
+    case buzzerColor of
+        Green ->
+            "green"
+
+        Red ->
+            "red"
+
+        Yellow ->
+            "yellow"
+
+        Blue ->
+            "blue"
+
+        None ->
+            "none"
+
+
+
+-- Requests
+
+
+buzzRequest : String -> Cmd Msg
+buzzRequest buzzerColor =
+    Http.get
+        { url = "http://localhost:8080/setbuzzer/" ++ buzzerColor
+        , expect =
+            Http.expectString BuzzerAnswer
+        }
 
 
 subscriptions : Model -> Sub Msg
@@ -47,8 +99,41 @@ loadCss cssLink =
 
 
 view : Model -> Html Msg
-view _ =
-    div []
-        [ loadCss "http://localhost:8080/css/elm/jeopardy.css"
-        , span [ classList [ ( "buzzer", True ), ( "red", True ) ] ] []
-        ]
+view model =
+    case model of
+        None ->
+            div []
+                [ loadCss "http://localhost:8080/css/elm/jeopardy.css"
+                , div []
+                    [ h1 [ style "text-align" "center" ] [ text "Choose your destiny" ]
+                    , div [ class "center" ]
+                        [ span
+                            [ classList [ ( "buzzer", True ), ( "red", True ), ( "tinySize", True ) ], onClick (SelectBuzzer Red) ]
+                            []
+                        , span
+                            [ classList [ ( "buzzer", True ), ( "blue", True ), ( "tinySize", True ) ], onClick (SelectBuzzer Blue) ]
+                            []
+                        , span
+                            [ classList [ ( "buzzer", True ), ( "green", True ), ( "tinySize", True ) ], onClick (SelectBuzzer Green) ]
+                            []
+                        , span
+                            [ classList [ ( "buzzer", True ), ( "yellow", True ), ( "tinySize", True ) ], onClick (SelectBuzzer Yellow) ]
+                            []
+                        ]
+                    ]
+                ]
+
+        _ ->
+            div []
+                [ loadCss "http://localhost:8080/css/elm/jeopardy.css"
+                , span
+                    [ classList
+                        [ ( "buzzer", True )
+                        , ( getColor model, True )
+                        , ( "normalSize", True )
+                        ]
+                    , style "margin-top" "20vh"
+                    , onClick Buzz
+                    ]
+                    []
+                ]
