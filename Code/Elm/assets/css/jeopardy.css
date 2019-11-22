@@ -39,7 +39,7 @@ img {
 }
 
 .blue {
-    background: radial-gradient(circle, rgba(78,63,251,1) 0%, rgba(74,0,185,1) 100%);
+    background: radial-gradient(circle, rgba(63,168,251,1) 0%, rgba(0,82,135,1) 100%);
 }
 
 .yellow {
@@ -48,4 +48,8 @@ img {
 
 .green {
     background: radial-gradient(circle, rgba(63,251,145,1) 0%, rgba(0,135,54,1) 100%);
+}
+
+.grey {
+    background: radial-gradient(circle, rgba(180,180,180,1) 0%, rgba(91,91,91,1) 100%);
 }

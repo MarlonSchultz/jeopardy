@@ -1,4 +1,4 @@
-module Game exposing (Buzzed, Model, Msg(..), main, update, view)
+module Game exposing (Msg(..))
 
 import Browser
 import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
@@ -14,6 +14,7 @@ import Time
 import Url exposing (getUrl)
 
 
+main : Program () Model Msg
 main =
     Browser.element
         { init = init
@@ -592,7 +593,7 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
                 [ div
                     [ class "card-action center-align" ]
                     [ div
-                        [ id "ac_unit", class "btn-floating light-blue darken-2" ]
+                        [ id "ac_unit", class "btn-floating blue" ]
                         [ i
                             [ class "material-icons", onClick <| SetAnswerToRepeat ]
                             [ text "refresh" ]
