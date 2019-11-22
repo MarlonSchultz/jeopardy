@@ -5,6 +5,8 @@ import Html exposing (Html, div, h1, node, span, text)
 import Html.Attributes exposing (class, classList, href, rel, style)
 import Html.Events exposing (onClick)
 import Http
+import Url exposing (getUrl)
+
 
 
 type Msg
@@ -25,7 +27,7 @@ main =
     Browser.element
         { init = init
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = always Sub.none
         , view = view
         }
 
@@ -45,7 +47,7 @@ update msg model =
         Buzz ->
             ( model, buzzRequest (getColor model) )
 
-        BuzzerAnswer result ->
+        BuzzerAnswer _ ->
             ( model, Cmd.none )
 
         SelectBuzzer buzzerColor ->
@@ -78,15 +80,10 @@ getColor buzzerColor =
 buzzRequest : String -> Cmd Msg
 buzzRequest buzzerColor =
     Http.get
-        { url = "http://localhost:8080/setbuzzer/" ++ buzzerColor
+        { url = getUrl ++ "/setbuzzer/" ++ buzzerColor
         , expect =
             Http.expectString BuzzerAnswer
         }
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
 
 
 loadCss : String -> Html Msg
@@ -103,7 +100,7 @@ view model =
     case model of
         None ->
             div []
-                [ loadCss "http://localhost:8080/css/elm/jeopardy.css"
+                [ loadCss (getUrl ++ "/css/elm/jeopardy.css")
                 , div []
                     [ h1 [ style "text-align" "center" ] [ text "Choose your destiny" ]
                     , div [ class "center" ]
@@ -125,7 +122,7 @@ view model =
 
         _ ->
             div []
-                [ loadCss "http://localhost:8080/css/elm/jeopardy.css"
+                [ loadCss (getUrl ++ "/css/elm/jeopardy.css")
                 , span
                     [ classList
                         [ ( "buzzer", True )

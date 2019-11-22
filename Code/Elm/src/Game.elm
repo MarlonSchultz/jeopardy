@@ -11,6 +11,7 @@ import List.Extra
 import Svg exposing (rect, svg)
 import Svg.Attributes exposing (fill, fillOpacity, height, rx, ry, stroke, strokeWidth, viewBox, width, x, y)
 import Time
+import Url exposing (getUrl)
 
 
 main =
@@ -89,7 +90,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model Loading createInitialAnswer False 0 None 0.2 timerSecondsStartValue
     , Http.get
-        { url = "http://localhost:8080/gameFiles/devcamp2019.json"
+        { url = getUrl ++ "/gameFiles/devcamp2019.json"
         , expect =
             Http.expectJson GotJson decodeJson
         }
@@ -224,7 +225,7 @@ getListOfCategories list =
 requestOpenQuestion : Cmd Msg
 requestOpenQuestion =
     Http.get
-        { url = "http://localhost:8080/openQuestion"
+        { url = getUrl ++ "/openQuestion"
         , expect =
             Http.expectWhatever AnswerToggle
         }
@@ -233,7 +234,7 @@ requestOpenQuestion =
 requestCloseQuestion : Cmd Msg
 requestCloseQuestion =
     Http.get
-        { url = "http://localhost:8080/closeQuestion"
+        { url = getUrl ++ "/closeQuestion"
         , expect =
             Http.expectWhatever AnswerToggle
         }
@@ -242,7 +243,7 @@ requestCloseQuestion =
 queryBuzzer : Cmd Msg
 queryBuzzer =
     Http.get
-        { url = "http://localhost:8080/getBuzzer"
+        { url = getUrl ++ "/getBuzzer"
         , expect =
             Http.expectString RequestBuzzer
         }
@@ -251,7 +252,7 @@ queryBuzzer =
 setBuzzer : String -> Cmd Msg
 setBuzzer buzzer =
     Http.get
-        { url = "http://localhost:8080/setBuzzer/" ++ buzzer
+        { url = getUrl ++ "/setBuzzer/" ++ buzzer
         , expect =
             Http.expectString RequestBuzzer
         }
@@ -292,13 +293,13 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         ToggleModal answer ->
-            case model.openModal of
-                False ->
+            if model.openModal == False then
+            
                     ( toggleModal model answer
                     , requestOpenQuestion
                     )
 
-                True ->
+               else
                     ( toggleModal model answer
                     , requestCloseQuestion
                     )
@@ -625,21 +626,21 @@ view model =
     case model.requestState of
         Failure err ->
             div []
-                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
+                [ loadCss (getUrl ++ "/css/elm/materialize.min.css")
                 , text ("error" ++ err)
                 ]
 
         Loading ->
             div []
-                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
+                [ loadCss (getUrl ++ "/css/elm/materialize.min.css")
                 , text "Loading"
                 ]
 
         Success jsonDecoded ->
             div []
-                [ loadCss "http://localhost:8080/css/elm/materialize.min.css"
-                , loadCss "http://localhost:8080/css/elm/material-design-icons.css"
-                , loadCss "http://localhost:8080/css/elm/jeopardy.css"
+                [ loadCss (getUrl ++ "/css/elm/materialize.min.css")
+                , loadCss (getUrl ++ "/css/elm/material-design-icons.css")
+                , loadCss (getUrl ++ "/css/elm/jeopardy.css")
                 , div [ class "container" ]
                     [ headline
                     , modalStructure model
@@ -649,7 +650,7 @@ view model =
                             (tableRow jsonDecoded)
                         ]
                     , div [ style "text-align" "center" ]
-                        [ audio [ src "http://localhost:8080/mp3/jeopardy.mp3", autoplay False, loop True, preload "auto", controls True, volume model.volume ] []
+                        [ audio [ src (getUrl ++ "/mp3/jeopardy.mp3"), autoplay False, loop True, preload "auto", controls True, volume model.volume ] []
                         ]
                     ]
                 ]
