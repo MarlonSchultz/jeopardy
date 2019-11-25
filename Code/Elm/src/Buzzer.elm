@@ -8,7 +8,6 @@ import Http
 import Url exposing (getUrl)
 
 
-
 type Msg
     = Buzz
     | BuzzerAnswer (Result Http.Error String)
@@ -23,6 +22,10 @@ type BuzzerColor
     | None
 
 
+type alias Model =
+    { buzzerColor : BuzzerColor }
+
+
 main =
     Browser.element
         { init = init
@@ -34,24 +37,30 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( None, Cmd.none )
+    ( createInitialModel, Cmd.none )
 
 
-type alias Model =
-    BuzzerColor
+createInitialModel : Model
+createInitialModel =
+    { buzzerColor = None }
+
+
+setBuzzerColor : Model -> BuzzerColor -> Model
+setBuzzerColor model newBuzzerColor =
+    { model | buzzerColor = newBuzzerColor }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Buzz ->
-            ( model, buzzRequest (getColor model) )
+            ( model, buzzRequest (getColor model.buzzerColor) )
 
         BuzzerAnswer _ ->
             ( model, Cmd.none )
 
         SelectBuzzer buzzerColor ->
-            ( buzzerColor, Cmd.none )
+            ( setBuzzerColor model buzzerColor, Cmd.none )
 
 
 getColor : BuzzerColor -> String
@@ -71,6 +80,15 @@ getColor buzzerColor =
 
         None ->
             "none"
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 
@@ -97,13 +115,13 @@ loadCss cssLink =
 
 view : Model -> Html Msg
 view model =
-    case model of
+    case model.buzzerColor of
         None ->
             div []
                 [ loadCss (getUrl ++ "/css/elm/jeopardy.css")
-                , div []
-                    [ h1 [ style "text-align" "center" ] [ text "Choose your destiny" ]
-                    , div [ class "center" ]
+                , div [ class "containerGrid" ]
+                    [ h1 [] [ text "Choose your destiny" ]
+                    , div []
                         [ span
                             [ classList [ ( "buzzer", True ), ( "red", True ), ( "tinySize", True ) ], onClick (SelectBuzzer Red) ]
                             []
@@ -121,12 +139,12 @@ view model =
                 ]
 
         _ ->
-            div []
+            div [ class "containerGrid" ]
                 [ loadCss (getUrl ++ "/css/elm/jeopardy.css")
                 , span
                     [ classList
                         [ ( "buzzer", True )
-                        , ( getColor model, True )
+                        , ( getColor model.buzzerColor, True )
                         , ( "normalSize", True )
                         ]
                     , style "margin-top" "20vh"

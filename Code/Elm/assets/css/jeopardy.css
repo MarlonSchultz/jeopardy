@@ -20,6 +20,8 @@ img {
 .tinySize {
     height: 10vh;
     width: 10vh;
+    margin: 2vh;
+
 }
 
 .normalSize{
@@ -52,4 +54,10 @@ img {
 
 .grey {
     background: radial-gradient(circle, rgba(180,180,180,1) 0%, rgba(91,91,91,1) 100%);
+}
+
+.containerGrid{
+    display: grid;
+    justify-items: center;
+    grid-gap: 2vh;
 }
