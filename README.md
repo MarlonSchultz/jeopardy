@@ -16,7 +16,7 @@ docker-compose up -d
 
 Will start the node server and a nginx server that works as a proxy.
 
-If there is no index.html in the elm directory. The FrontEnd has not been compiled yet.
+If there is no game.html and buzzer in the elm directory the FrontEnd has not been compiled yet.
 
 ```bash
 cd Code/Elm
@@ -27,13 +27,15 @@ If index.html is present, open the HTML file in a browser. It will try to fetch 
 
 # How to play
 
+You need to change the Url.elm according to oyur docker setup.
+
 ### I have an Raspberry
 
 If you have a Raspberry and know how to connect things to the GPIO, use the python script. You need to run the docker setup on the Raspberry, or change the ip within the Python scripts.
 
 ### I dont have an Raspberry
 
-There is no implementation of phones or whatever as of now. You can however call the Rest Endpoints.
+Open buzzer.html and buzz away.
 
 ##### Buzz
 

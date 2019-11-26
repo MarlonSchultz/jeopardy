@@ -5,7 +5,8 @@ import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td,
 import Html.Attributes exposing (autoplay, class, classList, controls, href, id, loop, preload, rel, src, style)
 import Html.Attributes.Extra exposing (volume)
 import Html.Events exposing (onClick)
-import Http exposing (..)
+import Http
+import HttpHandler exposing (errorToString)
 import Json.Decode as JD exposing (field, int, string)
 import List.Extra
 import Svg exposing (rect, svg)
@@ -188,31 +189,6 @@ setAnswerState model answerContent setToWrong =
             model
 
 
-errorToString : Http.Error -> String
-errorToString error =
-    case error of
-        BadUrl url ->
-            "The URL " ++ url ++ " was invalid"
-
-        Timeout ->
-            "Unable to reach the server, try again"
-
-        NetworkError ->
-            "Unable to reach the server, check your network connection"
-
-        BadStatus 500 ->
-            "The server had a problem, try again later"
-
-        BadStatus 400 ->
-            "Verify your information and try again"
-
-        BadStatus _ ->
-            "Unknown error"
-
-        BadBody errorMessage ->
-            errorMessage
-
-
 getListOfCategories : List Answer -> List String
 getListOfCategories list =
     List.map getCategoryFromAnswer list
@@ -295,15 +271,14 @@ update msg model =
 
         ToggleModal answer ->
             if model.openModal == False then
-            
-                    ( toggleModal model answer
-                    , requestOpenQuestion
-                    )
+                ( toggleModal model answer
+                , requestOpenQuestion
+                )
 
-               else
-                    ( toggleModal model answer
-                    , requestCloseQuestion
-                    )
+            else
+                ( toggleModal model answer
+                , requestCloseQuestion
+                )
 
         AnswerToggle _ ->
             ( model, Cmd.none )
