@@ -1,4 +1,4 @@
-module Url exposing (getUrl)
+module MyUrl exposing (getUrl)
 
 
 getUrl : String
