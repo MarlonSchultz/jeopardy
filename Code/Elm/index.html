@@ -9866,24 +9866,26 @@ var $author$project$Game$GotJson = function (a) {
 	return {$: 'GotJson', a: a};
 };
 var $author$project$Game$Loading = {$: 'Loading'};
-var $author$project$Game$Model = F7(
-	function (requestState, chosenAnswer, openModal, revealAnswer, buzzerColor, volume, timerSeconds) {
-		return {buzzerColor: buzzerColor, chosenAnswer: chosenAnswer, openModal: openModal, requestState: requestState, revealAnswer: revealAnswer, timerSeconds: timerSeconds, volume: volume};
+var $author$project$Game$Model = F8(
+	function (requestState, chosenAnswer, openModal, revealAnswer, buzzerColor, volume, timerSeconds, questionAndAnswers) {
+		return {buzzerColor: buzzerColor, chosenAnswer: chosenAnswer, openModal: openModal, questionAndAnswers: questionAndAnswers, requestState: requestState, revealAnswer: revealAnswer, timerSeconds: timerSeconds, volume: volume};
 	});
 var $author$project$Game$None = {$: 'None'};
-var $author$project$Game$createInitialAnswer = {answer: 'string', category: 'Nothing', id: 1, points: 10, question: 'whatever'};
+var $author$project$Game$NotLoaded = {$: 'NotLoaded'};
+var $author$project$Game$NotAnswered = {$: 'NotAnswered'};
+var $author$project$Game$createInitialAnswer = {answer: 'string', answered: $author$project$Game$NotAnswered, category: 'Nothing', id: 1, points: 10, question: 'whatever'};
 var $author$project$Game$AnswerContent = F5(
 	function (id, points, answer, question, category) {
 		return {answer: answer, category: category, id: id, points: points, question: question};
 	});
-var $author$project$Game$NotAnswered = function (a) {
-	return {$: 'NotAnswered', a: a};
+var $author$project$Game$extendedAnswer = function (answerContent) {
+	return {answer: answerContent.answer, answered: $author$project$Game$NotAnswered, category: answerContent.category, id: answerContent.id, points: answerContent.points, question: answerContent.question};
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$map5 = _Json_map5;
 var $author$project$Game$answerDecoder = A2(
 	$elm$json$Json$Decode$map,
-	$author$project$Game$NotAnswered,
+	$author$project$Game$extendedAnswer,
 	A6(
 		$elm$json$Json$Decode$map5,
 		$author$project$Game$AnswerContent,
@@ -10146,15 +10148,15 @@ var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
 		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
-var $author$project$Url$getUrl = 'http://localhost:8080/';
+var $author$project$MyUrl$getUrl = 'http://localhost:8080/';
 var $author$project$Game$timerSecondsStartValue = 30;
 var $author$project$Game$init = function (_v0) {
 	return _Utils_Tuple2(
-		A7($author$project$Game$Model, $author$project$Game$Loading, $author$project$Game$createInitialAnswer, false, 0, $author$project$Game$None, 0.2, $author$project$Game$timerSecondsStartValue),
+		A8($author$project$Game$Model, $author$project$Game$Loading, $author$project$Game$createInitialAnswer, false, 0, $author$project$Game$None, 0.2, $author$project$Game$timerSecondsStartValue, $author$project$Game$NotLoaded),
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Game$GotJson, $author$project$Game$decodeJson),
-				url: $author$project$Url$getUrl + '/gameFiles/devcamp2019.json'
+				url: $author$project$MyUrl$getUrl + '/gameFiles/devcamp2019.json'
 			}));
 };
 var $author$project$Game$DecrementTimer = function (a) {
@@ -10357,10 +10359,11 @@ var $author$project$Game$Failure = function (a) {
 	return {$: 'Failure', a: a};
 };
 var $author$project$Game$Green = {$: 'Green'};
-var $author$project$Game$Red = {$: 'Red'};
-var $author$project$Game$Success = function (a) {
-	return {$: 'Success', a: a};
+var $author$project$Game$Loaded = function (a) {
+	return {$: 'Loaded', a: a};
 };
+var $author$project$Game$Red = {$: 'Red'};
+var $author$project$Game$Success = {$: 'Success'};
 var $author$project$Game$Yellow = {$: 'Yellow'};
 var $author$project$HttpHandler$errorToString = function (error) {
 	switch (error.$) {
@@ -10397,7 +10400,7 @@ var $elm$http$Http$expectString = function (toMsg) {
 var $author$project$Game$queryBuzzer = $elm$http$Http$get(
 	{
 		expect: $elm$http$Http$expectString($author$project$Game$RequestBuzzer),
-		url: $author$project$Url$getUrl + '/getBuzzer'
+		url: $author$project$MyUrl$getUrl + '/getBuzzer'
 	});
 var $author$project$Game$AnswerToggle = function (a) {
 	return {$: 'AnswerToggle', a: a};
@@ -10422,12 +10425,12 @@ var $elm$http$Http$expectWhatever = function (toMsg) {
 var $author$project$Game$requestCloseQuestion = $elm$http$Http$get(
 	{
 		expect: $elm$http$Http$expectWhatever($author$project$Game$AnswerToggle),
-		url: $author$project$Url$getUrl + '/closeQuestion'
+		url: $author$project$MyUrl$getUrl + '/closeQuestion'
 	});
 var $author$project$Game$requestOpenQuestion = $elm$http$Http$get(
 	{
 		expect: $elm$http$Http$expectWhatever($author$project$Game$AnswerToggle),
-		url: $author$project$Url$getUrl + '/openQuestion'
+		url: $author$project$MyUrl$getUrl + '/openQuestion'
 	});
 var $author$project$Game$resetTimerSeconds = function (model) {
 	return _Utils_update(
@@ -10441,45 +10444,12 @@ var $author$project$Game$toggleModal = F2(
 			model,
 			{buzzerColor: $author$project$Game$None, chosenAnswer: answerContent, openModal: !model.openModal, volume: newVolume});
 	});
-var $author$project$Game$Correct = function (a) {
-	return {$: 'Correct', a: a};
+var $author$project$Game$setAnswerStateDummy = function (model) {
+	return model;
 };
-var $author$project$Game$Wrong = function (a) {
-	return {$: 'Wrong', a: a};
-};
-var $author$project$Game$setAnswerState = F3(
-	function (model, answerContent, setToWrong) {
-		var _v0 = model.requestState;
-		if (_v0.$ === 'Success') {
-			var jsonData = _v0.a;
-			var newList = $author$project$Game$Success(
-				A2(
-					$elm$core$List$map,
-					function (singleRecord) {
-						switch (singleRecord.$) {
-							case 'Correct':
-								var data = singleRecord.a;
-								return _Utils_eq(answerContent.id, data.id) ? (setToWrong ? $author$project$Game$Wrong(data) : $author$project$Game$Correct(data)) : singleRecord;
-							case 'Wrong':
-								var data = singleRecord.a;
-								return _Utils_eq(answerContent.id, data.id) ? (setToWrong ? $author$project$Game$Wrong(data) : $author$project$Game$Correct(data)) : singleRecord;
-							default:
-								var data = singleRecord.a;
-								return _Utils_eq(answerContent.id, data.id) ? (setToWrong ? $author$project$Game$Wrong(data) : $author$project$Game$Correct(data)) : singleRecord;
-						}
-					},
-					jsonData));
-			return _Utils_update(
-				model,
-				{requestState: newList});
-		} else {
-			return model;
-		}
-	});
 var $author$project$Game$toggleModalAndSetAnswerToWrongOrCorrect = F3(
 	function (model, answerContent, answerIsFalse) {
-		var newModel = A2($author$project$Game$toggleModal, model, answerContent);
-		return A3($author$project$Game$setAnswerState, newModel, answerContent, answerIsFalse);
+		return $author$project$Game$setAnswerStateDummy(model);
 	});
 var $author$project$Game$setAnswerStatus = F3(
 	function (model, answerContent, bool) {
@@ -10498,7 +10468,7 @@ var $author$project$Game$setBuzzer = function (buzzer) {
 	return $elm$http$Http$get(
 		{
 			expect: $elm$http$Http$expectString($author$project$Game$RequestBuzzer),
-			url: $author$project$Url$getUrl + ('/setBuzzer/' + buzzer)
+			url: $author$project$MyUrl$getUrl + ('/setBuzzer/' + buzzer)
 		});
 };
 var $author$project$Game$update = F2(
@@ -10507,12 +10477,13 @@ var $author$project$Game$update = F2(
 			case 'GotJson':
 				var result = msg.a;
 				if (result.$ === 'Ok') {
-					var answer = result.a;
+					var content = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								requestState: $author$project$Game$Success(answer)
+								questionAndAnswers: $author$project$Game$Loaded(content),
+								requestState: $author$project$Game$Success
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -10627,17 +10598,7 @@ var $elm$html$Html$Attributes$boolProperty = F2(
 var $elm$html$Html$Attributes$autoplay = $elm$html$Html$Attributes$boolProperty('autoplay');
 var $elm$html$Html$Attributes$controls = $elm$html$Html$Attributes$boolProperty('controls');
 var $author$project$Game$getCategoryFromAnswer = function (answer) {
-	switch (answer.$) {
-		case 'NotAnswered':
-			var answerConfig = answer.a;
-			return answerConfig.category;
-		case 'Wrong':
-			var answerConfig = answer.a;
-			return answerConfig.category;
-		default:
-			var answerConfig = answer.a;
-			return answerConfig.category;
-	}
+	return answer.category;
 };
 var $elm$core$Set$Set_elm_builtin = function (a) {
 	return {$: 'Set_elm_builtin', a: a};
@@ -10701,8 +10662,14 @@ var $elm_community$list_extra$List$Extra$unique = function (list) {
 	return A4($elm_community$list_extra$List$Extra$uniqueHelp, $elm$core$Basics$identity, $elm$core$Set$empty, list, _List_Nil);
 };
 var $author$project$Game$getListOfCategories = function (list) {
-	return $elm_community$list_extra$List$Extra$unique(
-		A2($elm$core$List$map, $author$project$Game$getCategoryFromAnswer, list));
+	if (list.$ === 'NotLoaded') {
+		return _List_fromArray(
+			['NotLoaded']);
+	} else {
+		var answerList = list.a;
+		return $elm_community$list_extra$List$Extra$unique(
+			A2($elm$core$List$map, $author$project$Game$getCategoryFromAnswer, answerList));
+	}
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$Game$headline = A2(
@@ -11119,26 +11086,14 @@ var $author$project$Game$tableHead = function (listOfCategories) {
 var $author$project$Game$ToggleModal = function (a) {
 	return {$: 'ToggleModal', a: a};
 };
-var $author$project$Game$getAnswerConfig = function (answer) {
-	switch (answer.$) {
-		case 'NotAnswered':
-			var answerConfig = answer.a;
-			return answerConfig;
-		case 'Wrong':
-			var answerConfig = answer.a;
-			return answerConfig;
-		default:
-			var answerConfig = answer.a;
-			return answerConfig;
-	}
-};
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $author$project$Game$answerBox = function (list) {
 	return A2(
 		$elm$core$List$map,
-		function (answer) {
+		function (singleAnswer) {
 			var answerColor = function () {
-				switch (answer.$) {
+				var _v0 = singleAnswer.answered;
+				switch (_v0.$) {
 					case 'NotAnswered':
 						return 'card blue-grey darken-1';
 					case 'Wrong':
@@ -11152,8 +11107,7 @@ var $author$project$Game$answerBox = function (list) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$id(
-						$elm$core$String$fromInt(
-							$author$project$Game$getAnswerConfig(answer).id))
+						$elm$core$String$fromInt(singleAnswer.id))
 					]),
 				_List_fromArray(
 					[
@@ -11163,8 +11117,7 @@ var $author$project$Game$answerBox = function (list) {
 							[
 								$elm$html$Html$Attributes$class(answerColor),
 								$elm$html$Html$Events$onClick(
-								$author$project$Game$ToggleModal(
-									$author$project$Game$getAnswerConfig(answer)))
+								$author$project$Game$ToggleModal(singleAnswer))
 							]),
 						_List_fromArray(
 							[
@@ -11185,30 +11138,11 @@ var $author$project$Game$answerBox = function (list) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$elm$core$String$fromInt(
-													$author$project$Game$getAnswerConfig(answer).points))
+												$elm$core$String$fromInt(singleAnswer.points))
 											]))
 									]))
 							]))
 					]));
-		},
-		list);
-};
-var $author$project$Game$getAnswerConfigList = function (list) {
-	return A2(
-		$elm$core$List$map,
-		function (singleAnswer) {
-			switch (singleAnswer.$) {
-				case 'NotAnswered':
-					var answerConfig = singleAnswer.a;
-					return answerConfig;
-				case 'Wrong':
-					var answerConfig = singleAnswer.a;
-					return answerConfig;
-				default:
-					var answerConfig = singleAnswer.a;
-					return answerConfig;
-			}
 		},
 		list);
 };
@@ -11228,25 +11162,36 @@ var $author$project$Game$getAnswersByPoints = function (list) {
 			return A2(
 				$elm$core$List$filter,
 				function (singleAnswer) {
-					return _Utils_eq(
-						$author$project$Game$getAnswerConfig(singleAnswer).points,
-						singlePoints);
+					return _Utils_eq(singleAnswer.points, singlePoints);
 				},
 				list);
 		},
-		$author$project$Game$getPossiblePoints(
-			$author$project$Game$getAnswerConfigList(list)));
+		$author$project$Game$getPossiblePoints(list));
 };
 var $author$project$Game$tableRow = function (list) {
-	return A2(
-		$elm$core$List$map,
-		function (singleList) {
-			return A2(
-				$elm$html$Html$tr,
+	if (list.$ === 'NotLoaded') {
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
 				_List_Nil,
-				$author$project$Game$answerBox(singleList));
-		},
-		$author$project$Game$getAnswersByPoints(list));
+				_List_fromArray(
+					[
+						$elm$html$Html$text('NotLoaded')
+					]))
+			]);
+	} else {
+		var listOfAnswers = list.a;
+		return A2(
+			$elm$core$List$map,
+			function (singleList) {
+				return A2(
+					$elm$html$Html$tr,
+					_List_Nil,
+					$author$project$Game$answerBox(singleList));
+			},
+			$author$project$Game$getAnswersByPoints(listOfAnswers));
+	}
 };
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$json$Json$Encode$float = _Json_wrap;
@@ -11276,7 +11221,7 @@ var $author$project$Game$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Game$loadCss($author$project$Url$getUrl + '/css/elm/materialize.min.css'),
+						$author$project$Game$loadCss($author$project$MyUrl$getUrl + '/css/elm/materialize.min.css'),
 						$elm$html$Html$text('error' + err)
 					]));
 		case 'Loading':
@@ -11285,19 +11230,18 @@ var $author$project$Game$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Game$loadCss($author$project$Url$getUrl + '/css/elm/materialize.min.css'),
+						$author$project$Game$loadCss($author$project$MyUrl$getUrl + '/css/elm/materialize.min.css'),
 						$elm$html$Html$text('Loading')
 					]));
 		default:
-			var jsonDecoded = _v0.a;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Game$loadCss($author$project$Url$getUrl + '/css/elm/materialize.min.css'),
-						$author$project$Game$loadCss($author$project$Url$getUrl + '/css/elm/material-design-icons.css'),
-						$author$project$Game$loadCss($author$project$Url$getUrl + '/css/elm/jeopardy.css'),
+						$author$project$Game$loadCss($author$project$MyUrl$getUrl + '/css/elm/materialize.min.css'),
+						$author$project$Game$loadCss($author$project$MyUrl$getUrl + '/css/elm/material-design-icons.css'),
+						$author$project$Game$loadCss($author$project$MyUrl$getUrl + '/css/elm/jeopardy.css'),
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
@@ -11317,11 +11261,11 @@ var $author$project$Game$view = function (model) {
 								_List_fromArray(
 									[
 										$author$project$Game$tableHead(
-										$author$project$Game$getListOfCategories(jsonDecoded)),
+										$author$project$Game$getListOfCategories(model.questionAndAnswers)),
 										A2(
 										$elm$html$Html$tbody,
 										_List_Nil,
-										$author$project$Game$tableRow(jsonDecoded))
+										$author$project$Game$tableRow(model.questionAndAnswers))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -11335,7 +11279,7 @@ var $author$project$Game$view = function (model) {
 										$elm$html$Html$audio,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$src($author$project$Url$getUrl + '/mp3/jeopardy.mp3'),
+												$elm$html$Html$Attributes$src($author$project$MyUrl$getUrl + '/mp3/jeopardy.mp3'),
 												$elm$html$Html$Attributes$autoplay(false),
 												$elm$html$Html$Attributes$loop(true),
 												$elm$html$Html$Attributes$preload('auto'),
@@ -11351,7 +11295,7 @@ var $author$project$Game$view = function (model) {
 var $author$project$Game$main = $elm$browser$Browser$element(
 	{init: $author$project$Game$init, subscriptions: $author$project$Game$subscriptions, update: $author$project$Game$update, view: $author$project$Game$view});
 _Platform_export({'Game':{'init':$author$project$Game$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Game.Msg","aliases":{"Game.AnswerContent":{"args":[],"type":"{ id : Basics.Int, points : Basics.Int, answer : String.String, question : String.String, category : String.String }"}},"unions":{"Game.Msg":{"args":[],"tags":{"GotJson":["Result.Result Http.Error (List.List Game.Answer)"],"ToggleModal":["Game.AnswerContent"],"AnswerToggle":["Result.Result Http.Error ()"],"RequestBuzzer":["Result.Result Http.Error String.String"],"RevealAnswer":["Basics.Int"],"PollBuzzerSubscription":["Time.Posix"],"SetAnswerToWrong":["Game.AnswerContent"],"SetAnswerToCorrect":["Game.AnswerContent"],"SetAnswerToRepeat":[],"DecrementTimer":["Time.Posix"]}},"Game.Answer":{"args":[],"tags":{"Wrong":["Game.AnswerContent"],"Correct":["Game.AnswerContent"],"NotAnswered":["Game.AnswerContent"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Game.Msg","aliases":{"Game.AnswerContent":{"args":[],"type":"{ id : Basics.Int, points : Basics.Int, answer : String.String, question : String.String, category : String.String }"},"Game.ExtendedContent":{"args":["a"],"type":"{ a | answered : Game.AnswerType }"}},"unions":{"Game.Msg":{"args":[],"tags":{"GotJson":["Result.Result Http.Error (List.List (Game.ExtendedContent Game.AnswerContent))"],"ToggleModal":["Game.ExtendedContent Game.AnswerContent"],"AnswerToggle":["Result.Result Http.Error ()"],"RequestBuzzer":["Result.Result Http.Error String.String"],"RevealAnswer":["Basics.Int"],"PollBuzzerSubscription":["Time.Posix"],"SetAnswerToWrong":["Game.ExtendedContent Game.AnswerContent"],"SetAnswerToCorrect":["Game.ExtendedContent Game.AnswerContent"],"SetAnswerToRepeat":[],"DecrementTimer":["Time.Posix"]}},"Game.AnswerType":{"args":[],"tags":{"NotAnswered":[],"Correct":[],"Wrong":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
 
   var app = Elm.Game.init({ node: document.getElementById("elm") });
 }

@@ -9,10 +9,10 @@ import Http
 import HttpHandler exposing (errorToString)
 import Json.Decode as JD exposing (field, int, string)
 import List.Extra
+import MyUrl exposing (getUrl)
 import Svg exposing (rect, svg)
 import Svg.Attributes exposing (fill, fillOpacity, height, rx, ry, stroke, strokeWidth, viewBox, width, x, y)
 import Time
-import Url exposing (getUrl)
 
 
 main : Program () Model Msg
@@ -26,14 +26,14 @@ main =
 
 
 type Msg
-    = GotJson (Result Http.Error (List Answer))
-    | ToggleModal AnswerContent
+    = GotJson (Result Http.Error (List (ExtendedContent AnswerContent)))
+    | ToggleModal (ExtendedContent AnswerContent)
     | AnswerToggle (Result Http.Error ())
     | RequestBuzzer (Result Http.Error String)
     | RevealAnswer Int
     | PollBuzzerSubscription Time.Posix
-    | SetAnswerToWrong AnswerContent
-    | SetAnswerToCorrect AnswerContent
+    | SetAnswerToWrong (ExtendedContent AnswerContent)
+    | SetAnswerToCorrect (ExtendedContent AnswerContent)
     | SetAnswerToRepeat
     | DecrementTimer Time.Posix
 
@@ -46,12 +46,6 @@ type Buzzed
     | Yellow
 
 
-type Answer
-    = Wrong AnswerContent
-    | Correct AnswerContent
-    | NotAnswered AnswerContent
-
-
 type alias AnswerContent =
     { id : Int
     , points : Int
@@ -61,20 +55,36 @@ type alias AnswerContent =
     }
 
 
+type AnswerType
+    = NotAnswered
+    | Correct
+    | Wrong
+
+
+type alias ExtendedContent a =
+    { a | answered : AnswerType }
+
+
 type RequestResult
     = Failure String
     | Loading
-    | Success (List Answer)
+    | Success
+
+
+type QuestionsAndAnswers
+    = NotLoaded
+    | Loaded (List (ExtendedContent AnswerContent))
 
 
 type alias Model =
     { requestState : RequestResult
-    , chosenAnswer : AnswerContent
+    , chosenAnswer : ExtendedContent AnswerContent
     , openModal : Bool
     , revealAnswer : Int
     , buzzerColor : Buzzed
     , volume : Float
     , timerSeconds : Float
+    , questionAndAnswers : QuestionsAndAnswers
     }
 
 
@@ -90,7 +100,7 @@ timerSvgLengthInPixels =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Loading createInitialAnswer False 0 None 0.2 timerSecondsStartValue
+    ( Model Loading createInitialAnswer False 0 None 0.2 timerSecondsStartValue NotLoaded
     , Http.get
         { url = getUrl ++ "/gameFiles/devcamp2019.json"
         , expect =
@@ -99,18 +109,29 @@ init _ =
     )
 
 
-createInitialAnswer : AnswerContent
+createInitialAnswer : ExtendedContent AnswerContent
 createInitialAnswer =
-    { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever" }
+    { id = 1, category = "Nothing", points = 10, answer = "string", question = "whatever", answered = NotAnswered }
 
 
 
 -- Decoder
 
 
-answerDecoder : JD.Decoder Answer
+extendedAnswer : AnswerContent -> ExtendedContent AnswerContent
+extendedAnswer answerContent =
+    { id = answerContent.id
+    , points = answerContent.points
+    , answer = answerContent.answer
+    , question = answerContent.question
+    , category = answerContent.category
+    , answered = NotAnswered
+    }
+
+
+answerDecoder : JD.Decoder (ExtendedContent AnswerContent)
 answerDecoder =
-    JD.map NotAnswered <|
+    JD.map extendedAnswer <|
         JD.map5
             AnswerContent
             (field "id" int)
@@ -120,79 +141,25 @@ answerDecoder =
             (field "category" string)
 
 
-decodeJson : JD.Decoder (List Answer)
+decodeJson : JD.Decoder (List (ExtendedContent AnswerContent))
 decodeJson =
     JD.list answerDecoder
 
 
-getCategoryFromAnswer : Answer -> String
+getCategoryFromAnswer : ExtendedContent AnswerContent -> String
 getCategoryFromAnswer answer =
-    case answer of
-        NotAnswered answerConfig ->
-            answerConfig.category
-
-        Wrong answerConfig ->
-            answerConfig.category
-
-        Correct answerConfig ->
-            answerConfig.category
+    answer.category
 
 
-setAnswerState : Model -> AnswerContent -> Bool -> Model
-setAnswerState model answerContent setToWrong =
-    case model.requestState of
-        Success jsonData ->
-            let
-                newList =
-                    List.map
-                        (\singleRecord ->
-                            case singleRecord of
-                                Correct data ->
-                                    if answerContent.id == data.id then
-                                        if setToWrong then
-                                            Wrong data
-
-                                        else
-                                            Correct data
-
-                                    else
-                                        singleRecord
-
-                                Wrong data ->
-                                    if answerContent.id == data.id then
-                                        if setToWrong then
-                                            Wrong data
-
-                                        else
-                                            Correct data
-
-                                    else
-                                        singleRecord
-
-                                NotAnswered data ->
-                                    if answerContent.id == data.id then
-                                        if setToWrong then
-                                            Wrong data
-
-                                        else
-                                            Correct data
-
-                                    else
-                                        singleRecord
-                        )
-                        jsonData
-                        |> Success
-            in
-            { model | requestState = newList }
-
-        _ ->
-            model
-
-
-getListOfCategories : List Answer -> List String
+getListOfCategories : QuestionsAndAnswers -> List String
 getListOfCategories list =
-    List.map getCategoryFromAnswer list
-        |> List.Extra.unique
+    case list of
+        NotLoaded ->
+            [ "NotLoaded" ]
+
+        Loaded answerList ->
+            List.map getCategoryFromAnswer answerList
+                |> List.Extra.unique
 
 
 
@@ -239,7 +206,7 @@ setBuzzer buzzer =
 -- BusinessLogic
 
 
-toggleModal : Model -> AnswerContent -> Model
+toggleModal : Model -> ExtendedContent AnswerContent -> Model
 toggleModal model answerContent =
     let
         newVolume =
@@ -261,8 +228,8 @@ update msg model =
     case msg of
         GotJson result ->
             case result of
-                Ok answer ->
-                    ( { model | requestState = Success answer }
+                Ok content ->
+                    ( { model | requestState = Success, questionAndAnswers = Loaded content }
                     , Cmd.none
                     )
 
@@ -341,7 +308,7 @@ update msg model =
             ( { model | timerSeconds = timerSecondsStartValue }, setBuzzer "none" )
 
 
-setAnswerStatus : Model -> AnswerContent -> Bool -> ( Model, Cmd Msg )
+setAnswerStatus : Model -> ExtendedContent AnswerContent -> Bool -> ( Model, Cmd Msg )
 setAnswerStatus model answerContent bool =
     if model.buzzerColor /= None then
         let
@@ -359,13 +326,14 @@ resetTimerSeconds model =
     { model | timerSeconds = timerSecondsStartValue }
 
 
-toggleModalAndSetAnswerToWrongOrCorrect : Model -> AnswerContent -> Bool -> Model
+setAnswerStateDummy : Model -> Model
+setAnswerStateDummy model =
+    model
+
+
+toggleModalAndSetAnswerToWrongOrCorrect : Model -> ExtendedContent AnswerContent -> Bool -> Model
 toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerIsFalse =
-    let
-        newModel =
-            toggleModal model answerContent
-    in
-    setAnswerState newModel answerContent answerIsFalse
+    setAnswerStateDummy model
 
 
 
@@ -425,29 +393,29 @@ singleTableHead listOfCategories =
         listOfCategories
 
 
-answerBox : List Answer -> List (Html Msg)
+answerBox : List (ExtendedContent AnswerContent) -> List (Html Msg)
 answerBox list =
     List.map
-        (\answer ->
+        (\singleAnswer ->
             let
                 answerColor =
-                    case answer of
-                        NotAnswered _ ->
+                    case singleAnswer.answered of
+                        NotAnswered ->
                             "card blue-grey darken-1"
 
-                        Wrong _ ->
+                        Wrong ->
                             "card red lighten-1"
 
-                        Correct _ ->
+                        Correct ->
                             "card green darken-3"
             in
-            td [ id (String.fromInt (getAnswerConfig answer).id) ]
-                [ div [ class answerColor, onClick <| ToggleModal (getAnswerConfig answer) ]
+            td [ id (String.fromInt singleAnswer.id) ]
+                [ div [ class answerColor, onClick <| ToggleModal singleAnswer ]
                     [ div
                         [ class "card-content white-text" ]
                         [ span
                             [ class "card-title" ]
-                            [ text (String.fromInt (getAnswerConfig answer).points) ]
+                            [ text (String.fromInt singleAnswer.points) ]
                         ]
                     ]
                 ]
@@ -463,56 +431,32 @@ getRemainingLengthOfTimer remainingTime =
         |> String.fromFloat
 
 
-getAnswersByPoints : List Answer -> List (List Answer)
+getAnswersByPoints : List (ExtendedContent AnswerContent) -> List (List (ExtendedContent AnswerContent))
 getAnswersByPoints list =
-    getPossiblePoints (getAnswerConfigList list)
+    getPossiblePoints list
         |> List.map
             (\singlePoints ->
-                List.filter (\singleAnswer -> (getAnswerConfig singleAnswer).points == singlePoints) list
+                List.filter (\singleAnswer -> singleAnswer.points == singlePoints) list
             )
 
 
-tableRow : List Answer -> List (Html Msg)
+tableRow : QuestionsAndAnswers -> List (Html Msg)
 tableRow list =
-    getAnswersByPoints list
-        |> List.map
-            (\singleList ->
-                tr []
-                    (answerBox singleList)
-            )
+    case list of
+        NotLoaded ->
+            [ div [] [ text "NotLoaded" ] ]
+
+        Loaded listOfAnswers ->
+            getAnswersByPoints
+                listOfAnswers
+                |> List.map
+                    (\singleList ->
+                        tr []
+                            (answerBox singleList)
+                    )
 
 
-getAnswerConfig : Answer -> AnswerContent
-getAnswerConfig answer =
-    case answer of
-        NotAnswered answerConfig ->
-            answerConfig
-
-        Wrong answerConfig ->
-            answerConfig
-
-        Correct answerConfig ->
-            answerConfig
-
-
-getAnswerConfigList : List Answer -> List AnswerContent
-getAnswerConfigList list =
-    List.map
-        (\singleAnswer ->
-            case singleAnswer of
-                NotAnswered answerConfig ->
-                    answerConfig
-
-                Wrong answerConfig ->
-                    answerConfig
-
-                Correct answerConfig ->
-                    answerConfig
-        )
-        list
-
-
-getPossiblePoints : List AnswerContent -> List Int
+getPossiblePoints : List (ExtendedContent AnswerContent) -> List Int
 getPossiblePoints listAnswers =
     List.map (\singleAnswer -> singleAnswer.points) listAnswers
         |> List.Extra.unique
@@ -612,7 +556,7 @@ view model =
                 , text "Loading"
                 ]
 
-        Success jsonDecoded ->
+        Success ->
             div []
                 [ loadCss (getUrl ++ "/css/elm/materialize.min.css")
                 , loadCss (getUrl ++ "/css/elm/material-design-icons.css")
@@ -621,9 +565,9 @@ view model =
                     [ headline
                     , modalStructure model
                     , table [ class "highlight centered fixed" ]
-                        [ tableHead (getListOfCategories jsonDecoded)
+                        [ tableHead (getListOfCategories model.questionAndAnswers)
                         , tbody []
-                            (tableRow jsonDecoded)
+                            (tableRow model.questionAndAnswers)
                         ]
                     , div [ style "text-align" "center" ]
                         [ audio [ src (getUrl ++ "/mp3/jeopardy.mp3"), autoplay False, loop True, preload "auto", controls True, volume model.volume ] []
