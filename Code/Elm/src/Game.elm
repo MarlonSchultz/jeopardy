@@ -289,10 +289,10 @@ update msg model =
                     ( { model | requestState = Failure (errorToString err) }, Cmd.none )
 
         SetAnswerToWrong answerContent ->
-            setAnswerStatus model answerContent True
+            setAnswerStatus model answerContent Wrong
 
         SetAnswerToCorrect answerContent ->
-            setAnswerStatus model answerContent False
+            setAnswerStatus model answerContent Correct
 
         DecrementTimer _ ->
             if model.timerSeconds > 0 then
@@ -308,12 +308,12 @@ update msg model =
             ( { model | timerSeconds = timerSecondsStartValue }, setBuzzer "none" )
 
 
-setAnswerStatus : Model -> ExtendedContent AnswerContent -> Bool -> ( Model, Cmd Msg )
-setAnswerStatus model answerContent bool =
+setAnswerStatus : Model -> ExtendedContent AnswerContent -> AnswerType -> ( Model, Cmd Msg )
+setAnswerStatus model answerContent answerType =
     if model.buzzerColor /= None then
         let
             newModel =
-                toggleModalAndSetAnswerToWrongOrCorrect model answerContent bool
+                toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerType
         in
         ( resetTimerSeconds newModel, requestCloseQuestion )
 
@@ -326,14 +326,35 @@ resetTimerSeconds model =
     { model | timerSeconds = timerSecondsStartValue }
 
 
-setAnswerStateDummy : Model -> Model
-setAnswerStateDummy model =
-    model
+setAnswerState : AnswerType -> ExtendedContent AnswerContent -> Model -> Model
+setAnswerState answerCorrectOrWrong clickedAnswerContent model =
+    case model.questionAndAnswers of
+        NotLoaded ->
+            model
+
+        Loaded questions ->
+            let
+                newAnswerState =
+                    List.map
+                        (\singleQuestion ->
+                            if singleQuestion.id == clickedAnswerContent.id then
+                                { clickedAnswerContent | answered = answerCorrectOrWrong }
+
+                            else
+                                singleQuestion
+                        )
+                        questions
+            in
+            { model | questionAndAnswers = Loaded newAnswerState }
 
 
-toggleModalAndSetAnswerToWrongOrCorrect : Model -> ExtendedContent AnswerContent -> Bool -> Model
+toggleModalAndSetAnswerToWrongOrCorrect : Model -> ExtendedContent AnswerContent -> AnswerType -> Model
 toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerIsFalse =
-    setAnswerStateDummy model
+    let
+        newModel =
+            setAnswerState answerIsFalse answerContent model
+    in
+    toggleModal newModel answerContent
 
 
 
