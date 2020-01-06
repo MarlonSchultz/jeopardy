@@ -1,4 +1,4 @@
-module Game exposing (Msg(..))
+module Game exposing (Model, Msg(..))
 
 import Browser
 import Html exposing (Html, audio, div, h1, h2, i, node, span, table, tbody, td, text, th, thead, tr)
@@ -357,6 +357,29 @@ toggleModalAndSetAnswerToWrongOrCorrect model answerContent answerIsFalse =
     toggleModal newModel answerContent
 
 
+getRemainingLengthOfTimer : Float -> String
+getRemainingLengthOfTimer remainingTime =
+    timerSvgLengthInPixels
+        * remainingTime
+        / 30
+        |> String.fromFloat
+
+
+getAnswersByPoints : List (ExtendedContent AnswerContent) -> List (List (ExtendedContent AnswerContent))
+getAnswersByPoints list =
+    getPossiblePoints list
+        |> List.map
+            (\singlePoints ->
+                List.filter (\singleAnswer -> singleAnswer.points == singlePoints) list
+            )
+
+
+getPossiblePoints : List (ExtendedContent AnswerContent) -> List Int
+getPossiblePoints listAnswers =
+    List.map (\singleAnswer -> singleAnswer.points) listAnswers
+        |> List.Extra.unique
+
+
 
 -- SUBSCRIPTIONS
 
@@ -418,20 +441,8 @@ answerBox : List (ExtendedContent AnswerContent) -> List (Html Msg)
 answerBox list =
     List.map
         (\singleAnswer ->
-            let
-                answerColor =
-                    case singleAnswer.answered of
-                        NotAnswered ->
-                            "card blue-grey darken-1"
-
-                        Wrong ->
-                            "card red lighten-1"
-
-                        Correct ->
-                            "card green darken-3"
-            in
             td [ id (String.fromInt singleAnswer.id) ]
-                [ div [ class answerColor, onClick <| ToggleModal singleAnswer ]
+                [ div [ class (getAnswerColor singleAnswer), onClick <| ToggleModal singleAnswer ]
                     [ div
                         [ class "card-content white-text" ]
                         [ span
@@ -444,21 +455,17 @@ answerBox list =
         list
 
 
-getRemainingLengthOfTimer : Float -> String
-getRemainingLengthOfTimer remainingTime =
-    timerSvgLengthInPixels
-        * remainingTime
-        / 30
-        |> String.fromFloat
+getAnswerColor : ExtendedContent AnswerContent -> String
+getAnswerColor extendedContent =
+    case extendedContent.answered of
+        NotAnswered ->
+            "card blue-grey darken-1"
 
+        Wrong ->
+            "card red lighten-1"
 
-getAnswersByPoints : List (ExtendedContent AnswerContent) -> List (List (ExtendedContent AnswerContent))
-getAnswersByPoints list =
-    getPossiblePoints list
-        |> List.map
-            (\singlePoints ->
-                List.filter (\singleAnswer -> singleAnswer.points == singlePoints) list
-            )
+        Correct ->
+            "card green darken-3"
 
 
 tableRow : QuestionsAndAnswers -> List (Html Msg)
@@ -468,19 +475,12 @@ tableRow list =
             [ div [] [ text "NotLoaded" ] ]
 
         Loaded listOfAnswers ->
-            getAnswersByPoints
-                listOfAnswers
+            getAnswersByPoints listOfAnswers
                 |> List.map
                     (\singleList ->
                         tr []
                             (answerBox singleList)
                     )
-
-
-getPossiblePoints : List (ExtendedContent AnswerContent) -> List Int
-getPossiblePoints listAnswers =
-    List.map (\singleAnswer -> singleAnswer.points) listAnswers
-        |> List.Extra.unique
 
 
 getSvgTimer : Float -> Html Msg
@@ -562,6 +562,38 @@ modalStructure { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSecond
         ]
 
 
+pointsModal : Model -> Html Msg
+pointsModal { chosenAnswer, openModal, revealAnswer, buzzerColor, timerSeconds } =
+    div [ class "row" ]
+        [ div
+            [ classList [ ( "col", True ), ( "s8", True ), ( "hoverable", True ), ( "pinned", True ), ( "pull-m2", True ), ( "hide", openModal ) ], style "z-index" "1003" ]
+            [ div
+                [ classList
+                    [ ( "blue-grey", buzzerColor == None )
+                    , ( "blue", buzzerColor == Blue )
+                    , ( "red", buzzerColor == Red )
+                    , ( "yellow", buzzerColor == Yellow )
+                    , ( "green", buzzerColor == Green )
+                    ]
+                , class "card lighten-2"
+                ]
+                [ div
+                    [ class "card-content white-text center-align", id "buzzerColour" ]
+                    [ div
+                        [ class "card-title" ]
+                        [ h2 [] [ text "Winners" ] ]
+                    , div
+                        [ classList [ ( "hide", chosenAnswer.id /= revealAnswer ) ] ]
+                        [ h2 [] [ text chosenAnswer.question ] ]
+                    , div
+                        [ id "Winnerbars" ]
+                        []
+                    ]
+                ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     case model.requestState of
@@ -585,6 +617,7 @@ view model =
                 , div [ class "container" ]
                     [ headline
                     , modalStructure model
+                    , pointsModal model
                     , table [ class "highlight centered fixed" ]
                         [ tableHead (getListOfCategories model.questionAndAnswers)
                         , tbody []

@@ -10355,6 +10355,7 @@ var $author$project$Game$subscriptions = function (model) {
 			]));
 };
 var $author$project$Game$Blue = {$: 'Blue'};
+var $author$project$Game$Correct = {$: 'Correct'};
 var $author$project$Game$Failure = function (a) {
 	return {$: 'Failure', a: a};
 };
@@ -10364,6 +10365,7 @@ var $author$project$Game$Loaded = function (a) {
 };
 var $author$project$Game$Red = {$: 'Red'};
 var $author$project$Game$Success = {$: 'Success'};
+var $author$project$Game$Wrong = {$: 'Wrong'};
 var $author$project$Game$Yellow = {$: 'Yellow'};
 var $author$project$HttpHandler$errorToString = function (error) {
 	switch (error.$) {
@@ -10444,17 +10446,37 @@ var $author$project$Game$toggleModal = F2(
 			model,
 			{buzzerColor: $author$project$Game$None, chosenAnswer: answerContent, openModal: !model.openModal, volume: newVolume});
 	});
-var $author$project$Game$setAnswerStateDummy = function (model) {
-	return model;
-};
+var $author$project$Game$setAnswerState = F3(
+	function (answerCorrectOrWrong, clickedAnswerContent, model) {
+		var _v0 = model.questionAndAnswers;
+		if (_v0.$ === 'NotLoaded') {
+			return model;
+		} else {
+			var questions = _v0.a;
+			var newAnswerState = A2(
+				$elm$core$List$map,
+				function (singleQuestion) {
+					return _Utils_eq(singleQuestion.id, clickedAnswerContent.id) ? _Utils_update(
+						clickedAnswerContent,
+						{answered: answerCorrectOrWrong}) : singleQuestion;
+				},
+				questions);
+			return _Utils_update(
+				model,
+				{
+					questionAndAnswers: $author$project$Game$Loaded(newAnswerState)
+				});
+		}
+	});
 var $author$project$Game$toggleModalAndSetAnswerToWrongOrCorrect = F3(
 	function (model, answerContent, answerIsFalse) {
-		return $author$project$Game$setAnswerStateDummy(model);
+		var newModel = A3($author$project$Game$setAnswerState, answerIsFalse, answerContent, model);
+		return A2($author$project$Game$toggleModal, newModel, answerContent);
 	});
 var $author$project$Game$setAnswerStatus = F3(
-	function (model, answerContent, bool) {
+	function (model, answerContent, answerType) {
 		if (!_Utils_eq(model.buzzerColor, $author$project$Game$None)) {
-			var newModel = A3($author$project$Game$toggleModalAndSetAnswerToWrongOrCorrect, model, answerContent, bool);
+			var newModel = A3($author$project$Game$toggleModalAndSetAnswerToWrongOrCorrect, model, answerContent, answerType);
 			return _Utils_Tuple2(
 				$author$project$Game$resetTimerSeconds(newModel),
 				$author$project$Game$requestCloseQuestion);
@@ -10564,10 +10586,10 @@ var $author$project$Game$update = F2(
 				}
 			case 'SetAnswerToWrong':
 				var answerContent = msg.a;
-				return A3($author$project$Game$setAnswerStatus, model, answerContent, true);
+				return A3($author$project$Game$setAnswerStatus, model, answerContent, $author$project$Game$Wrong);
 			case 'SetAnswerToCorrect':
 				var answerContent = msg.a;
-				return A3($author$project$Game$setAnswerStatus, model, answerContent, false);
+				return A3($author$project$Game$setAnswerStatus, model, answerContent, $author$project$Game$Correct);
 			case 'DecrementTimer':
 				return (model.timerSeconds > 0) ? _Utils_Tuple2(
 					_Utils_update(
@@ -11046,6 +11068,124 @@ var $author$project$Game$modalStructure = function (_v0) {
 					]))
 			]));
 };
+var $author$project$Game$pointsModal = function (_v0) {
+	var chosenAnswer = _v0.chosenAnswer;
+	var openModal = _v0.openModal;
+	var revealAnswer = _v0.revealAnswer;
+	var buzzerColor = _v0.buzzerColor;
+	var timerSeconds = _v0.timerSeconds;
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('row')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('col', true),
+								_Utils_Tuple2('s8', true),
+								_Utils_Tuple2('hoverable', true),
+								_Utils_Tuple2('pinned', true),
+								_Utils_Tuple2('pull-m2', true),
+								_Utils_Tuple2('hide', openModal)
+							])),
+						A2($elm$html$Html$Attributes$style, 'z-index', '1003')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$classList(
+								_List_fromArray(
+									[
+										_Utils_Tuple2(
+										'blue-grey',
+										_Utils_eq(buzzerColor, $author$project$Game$None)),
+										_Utils_Tuple2(
+										'blue',
+										_Utils_eq(buzzerColor, $author$project$Game$Blue)),
+										_Utils_Tuple2(
+										'red',
+										_Utils_eq(buzzerColor, $author$project$Game$Red)),
+										_Utils_Tuple2(
+										'yellow',
+										_Utils_eq(buzzerColor, $author$project$Game$Yellow)),
+										_Utils_Tuple2(
+										'green',
+										_Utils_eq(buzzerColor, $author$project$Game$Green))
+									])),
+								$elm$html$Html$Attributes$class('card lighten-2')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('card-content white-text center-align'),
+										$elm$html$Html$Attributes$id('buzzerColour')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('card-title')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$h2,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Winners')
+													]))
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$classList(
+												_List_fromArray(
+													[
+														_Utils_Tuple2(
+														'hide',
+														!_Utils_eq(chosenAnswer.id, revealAnswer))
+													]))
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$h2,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$elm$html$Html$text(chosenAnswer.question)
+													]))
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$id('Winnerbars')
+											]),
+										_List_Nil)
+									]))
+							]))
+					]))
+			]));
+};
 var $elm$html$Html$Attributes$preload = $elm$html$Html$Attributes$stringProperty('preload');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -11086,22 +11226,22 @@ var $author$project$Game$tableHead = function (listOfCategories) {
 var $author$project$Game$ToggleModal = function (a) {
 	return {$: 'ToggleModal', a: a};
 };
+var $author$project$Game$getAnswerColor = function (extendedContent) {
+	var _v0 = extendedContent.answered;
+	switch (_v0.$) {
+		case 'NotAnswered':
+			return 'card blue-grey darken-1';
+		case 'Wrong':
+			return 'card red lighten-1';
+		default:
+			return 'card green darken-3';
+	}
+};
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $author$project$Game$answerBox = function (list) {
 	return A2(
 		$elm$core$List$map,
 		function (singleAnswer) {
-			var answerColor = function () {
-				var _v0 = singleAnswer.answered;
-				switch (_v0.$) {
-					case 'NotAnswered':
-						return 'card blue-grey darken-1';
-					case 'Wrong':
-						return 'card red lighten-1';
-					default:
-						return 'card green darken-3';
-				}
-			}();
 			return A2(
 				$elm$html$Html$td,
 				_List_fromArray(
@@ -11115,7 +11255,8 @@ var $author$project$Game$answerBox = function (list) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class(answerColor),
+								$elm$html$Html$Attributes$class(
+								$author$project$Game$getAnswerColor(singleAnswer)),
 								$elm$html$Html$Events$onClick(
 								$author$project$Game$ToggleModal(singleAnswer))
 							]),
@@ -11252,6 +11393,7 @@ var $author$project$Game$view = function (model) {
 							[
 								$author$project$Game$headline,
 								$author$project$Game$modalStructure(model),
+								$author$project$Game$pointsModal(model),
 								A2(
 								$elm$html$Html$table,
 								_List_fromArray(
