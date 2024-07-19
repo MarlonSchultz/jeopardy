@@ -92,7 +92,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model Loading createInitialAnswer False 0 None 0.2 timerSecondsStartValue
     , Http.get
-        { url = getUrl ++ "/gameFiles/devcamp2019.json"
+        { url = getUrl ++ "/gameFiles/po_de.json"
         , expect =
             Http.expectJson GotJson decodeJson
         }
