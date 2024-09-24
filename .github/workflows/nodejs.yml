@@ -19,7 +19,8 @@ jobs:
       env:
         CI: true
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
-      with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          url: https://codecov.internal.dev.ampeers.cloud/
+      run: |
+          bash <(curl -s https://codecov.internal.dev.ampeers.cloud/bash) \
+          -t ${{ secrets.CODECOV_TOKEN }} \
+          -f ./Code/NodeJS/coverage/lcov.info \
+          -u https://codecov.internal.dev.ampeers.cloud
