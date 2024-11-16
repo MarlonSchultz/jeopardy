@@ -1,0 +1,213 @@
+ [
+    {
+      "id": 1,
+      "category": "AE Menschen",
+      "points": 10,
+      "answer": "Walking metaphor machine",
+      "question": "Who is Jörg?"
+    },
+    {
+      "id": 2,
+      "category": "AE Menschen",
+      "points": 20,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 3,
+      "category": "AE Menschen",
+      "points": 30,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 4,
+      "category": "AE Menschen",
+      "points": 40,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 5,
+      "category": "AE Menschen",
+      "points": 50,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 6,
+      "category": "AE Services",
+      "points": 10,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 7,
+      "category": "AE Services",
+      "points": 20,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 8,
+      "category": "AE Services",
+      "points": 30,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 9,
+      "category": "AE Services",
+      "points": 40,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 10,
+      "category": "AE Services",
+      "points": 50,
+      "answer": "",
+      "question": ""
+    },
+    {
+      "id": 11,
+      "category": "Ports",
+      "points": 10,
+      "answer": "80",
+      "question": "Was ist http?"
+    },
+    {
+      "id": 12,
+      "category": "Ports",
+      "points": 20,
+      "answer": "993",
+      "question": "Auf welchem Port läuft IMAP over SSL (IMAPS)?"
+    },
+    {
+      "id": 13,
+      "category": "Ports",
+      "points": 30,
+      "answer": "Der xmpp-client läuft auf diesem Port.",
+      "question": "Was läuft auf Port 5222?"
+    },
+    {
+      "id": 14,
+      "category": "Ports",
+      "points": 40,
+      "answer": "1833",
+      "question": "Was ist mqtt?"
+    },
+    {
+      "id": 15,
+      "category": "Ports",
+      "points": 50,
+      "answer": "ntp - http + 400",
+      "question": "Was ist https?"
+    },
+    {
+      "id": 16,
+      "category": "Akronyme",
+      "points": 10,
+      "answer": "IBM",
+      "question": "Was ist die Abkürzung für International Business Machines?"
+    },
+    {
+      "id": 17,
+      "category": "Akronyme",
+      "points": 20,
+      "answer": "USB",
+      "question": "Was ist die Abkürzung für Universal Serial Bus?"
+    },
+    {
+      "id": 18,
+      "category": "Akronyme",
+      "points": 30,
+      "answer": "RAID",
+      "question": "Was ist die Abkürzung für Redundant Array of Independent Discs?"
+    },
+    {
+      "id": 19,
+      "category": "Akronyme",
+      "points": 40,
+      "answer": "JPEG",
+      "question": "Was ist die Abkürzung Joint Photographic Experts Group?"
+    },
+    {
+      "id": 20,
+      "category": "Akronyme",
+      "points": 50,
+      "answer": "PCMCIA",
+      "question": "Was ist die abkürzung für Personal Computer Memory Card International Association  "
+    },
+    {
+      "id": 21,
+      "category": "Female IT cornerstones",
+      "points": 10,
+      "answer": "The L in the SOLID design principles for OOP stands for the name of this famous mathematician.",
+      "question": "Who is Barbara Liskov? (Liskov principle of substitution)"
+    },
+    {
+      "id": 22,
+      "category": "Female IT cornerstones",
+      "points": 20,
+      "answer": "She developed the first compiler A-0 and helped develop the COBOL programming language.",
+      "question": "Who is Grace Hopper?"
+    },
+    {
+      "id": 23,
+      "category": "Female IT cornerstones",
+      "points": 30,
+      "answer": "She is considered the world's first computer programmer and worked on the Analytical Engine",
+      "question": "Who is Ada Lovelace?"
+    },
+    {
+      "id": 24,
+      "category": "Female IT cornerstones",
+      "points": 40,
+      "answer": "Known as the \"Mother of the Internet,\" she developed the spanning-tree protocol (STP), a key component of network communications.",
+      "question": "Who is Radia Perlman?"
+    },
+    {
+      "id": 25,
+      "category": "Female IT cornerstones",
+      "points": 50,
+      "answer": "This computer scientist and electrical engineer revolutionized VLSI (very large scale integration) chip design and became a prominent transgender advocate.",
+      "question": "Lynn Conway (not related to Melvin)?"
+    },
+    {
+      "id": 26,
+      "category": "Python",
+      "points": 10,
+      "answer": "a,b = b, a",
+      "question": "What is (tuple) unpacking?"
+    },
+    {
+      "id": 27,
+      "category": "Python",
+      "points": 20,
+      "answer": "This is the inspiration behind the name of the Python programming language.",
+      "question": "What is Monty Python?"
+    },
+    {
+      "id": 28,
+      "category": "Python",
+      "points": 30,
+      "answer": "The creator of the Python programming language.",
+      "question": "Who is Guido van Rossum?"
+    },
+    {
+      "id": 29,
+      "category": "Python",
+      "points": 40,
+      "answer": "This type of function returns an iterator using the yield statement.",
+      "question": "What is a generator?"
+    },
+    {
+      "id": 30,
+      "category": "Python",
+      "points": 50,
+      "answer": "A mechanism in Python that prevents multiple threads from executing Python bytecode simultaneously.",
+      "question": "What is the Global Interpreter Lock (GIL)?"
+    }
+  ]
+

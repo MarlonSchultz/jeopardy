@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Game</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -6163,7 +6149,7 @@ var $author$project$Game$init = function (_v0) {
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Game$GotJson, $author$project$Game$decodeJson),
-				url: $author$project$Url$getUrl + '/gameFiles/ae_dev_ww_2024.json'
+				url: $author$project$Url$getUrl + '/gameFiles/Docker/gameFiles/ae_dev_ww_2024.json'
 			}));
 };
 var $author$project$Game$DecrementTimer = function (a) {
@@ -7502,23 +7488,264 @@ var $author$project$Game$view = function (model) {
 };
 var $author$project$Game$main = $elm$browser$Browser$element(
 	{init: $author$project$Game$init, subscriptions: $author$project$Game$subscriptions, update: $author$project$Game$update, view: $author$project$Game$view});
-_Platform_export({'Game':{'init':$author$project$Game$main(
+var $author$project$Buzzer$None = {$: 'None'};
+var $author$project$Buzzer$NotBuzzed = {$: 'NotBuzzed'};
+var $author$project$Buzzer$createInitialModel = {buzzerColor: $author$project$Buzzer$None, buzzerMessage: $author$project$Buzzer$NotBuzzed, showBuzzerMessage: false};
+var $author$project$Buzzer$init = function (_v0) {
+	return _Utils_Tuple2($author$project$Buzzer$createInitialModel, $elm$core$Platform$Cmd$none);
+};
+var $author$project$Buzzer$HideShowMessage = function (a) {
+	return {$: 'HideShowMessage', a: a};
+};
+var $author$project$Buzzer$subscriptions = function (model) {
+	var _v0 = model.buzzerMessage;
+	if (_v0.$ === 'Buzzed') {
+		return A2($elm$time$Time$every, 2000, $author$project$Buzzer$HideShowMessage);
+	} else {
+		return $elm$core$Platform$Sub$none;
+	}
+};
+var $author$project$Buzzer$Buzzed = function (a) {
+	return {$: 'Buzzed', a: a};
+};
+var $author$project$Buzzer$BuzzerAnswer = function (a) {
+	return {$: 'BuzzerAnswer', a: a};
+};
+var $author$project$Buzzer$buzzRequest = function (buzzerColor) {
+	return $elm$http$Http$get(
+		{
+			expect: $elm$http$Http$expectString($author$project$Buzzer$BuzzerAnswer),
+			url: $author$project$Url$getUrl + ('/setbuzzer/' + buzzerColor)
+		});
+};
+var $author$project$Buzzer$getColor = function (buzzerColor) {
+	switch (buzzerColor.$) {
+		case 'Green':
+			return 'green';
+		case 'Red':
+			return 'red';
+		case 'Yellow':
+			return 'yellow';
+		case 'Blue':
+			return 'blue';
+		default:
+			return 'none';
+	}
+};
+var $author$project$Buzzer$setBuzzerColor = F2(
+	function (model, newBuzzerColor) {
+		return _Utils_update(
+			model,
+			{buzzerColor: newBuzzerColor});
+	});
+var $author$project$Buzzer$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'Buzz':
+				return _Utils_Tuple2(
+					model,
+					$author$project$Buzzer$buzzRequest(
+						$author$project$Buzzer$getColor(model.buzzerColor)));
+			case 'BuzzerAnswer':
+				var httpResult = msg.a;
+				if (httpResult.$ === 'Ok') {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								buzzerMessage: $author$project$Buzzer$Buzzed('Mewp!'),
+								showBuzzerMessage: true
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var httpError = httpResult.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								buzzerMessage: $author$project$Buzzer$Buzzed(
+									$author$project$HttpHandler$errorToString(httpError)),
+								showBuzzerMessage: true
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 'SelectBuzzer':
+				var buzzerColor = msg.a;
+				return _Utils_Tuple2(
+					A2($author$project$Buzzer$setBuzzerColor, model, buzzerColor),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{buzzerMessage: $author$project$Buzzer$NotBuzzed, showBuzzerMessage: false}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
+var $author$project$Buzzer$Blue = {$: 'Blue'};
+var $author$project$Buzzer$Buzz = {$: 'Buzz'};
+var $author$project$Buzzer$Green = {$: 'Green'};
+var $author$project$Buzzer$Red = {$: 'Red'};
+var $author$project$Buzzer$SelectBuzzer = function (a) {
+	return {$: 'SelectBuzzer', a: a};
+};
+var $author$project$Buzzer$Yellow = {$: 'Yellow'};
+var $author$project$Buzzer$getBuzzerStatus = function (model) {
+	var _v0 = model.buzzerMessage;
+	if (_v0.$ === 'Buzzed') {
+		var string = _v0.a;
+		return A2(
+			$elm$html$Html$h1,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(string)
+				]));
+	} else {
+		return A2(
+			$elm$html$Html$h1,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Touch it!')
+				]));
+	}
+};
+var $author$project$Buzzer$loadCss = function (cssLink) {
+	return A3(
+		$elm$html$Html$node,
+		'link',
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$rel('stylesheet'),
+				$elm$html$Html$Attributes$href(cssLink)
+			]),
+		_List_Nil);
+};
+var $author$project$Buzzer$view = function (model) {
+	var _v0 = model.buzzerColor;
+	if (_v0.$ === 'None') {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$author$project$Buzzer$loadCss($author$project$Url$getUrl + '/css/elm/jeopardy.css'),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('containerGrid')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h1,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Choose your destiny')
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$classList(
+											_List_fromArray(
+												[
+													_Utils_Tuple2('buzzer', true),
+													_Utils_Tuple2('red', true),
+													_Utils_Tuple2('tinySize', true)
+												])),
+											$elm$html$Html$Events$onClick(
+											$author$project$Buzzer$SelectBuzzer($author$project$Buzzer$Red))
+										]),
+									_List_Nil),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$classList(
+											_List_fromArray(
+												[
+													_Utils_Tuple2('buzzer', true),
+													_Utils_Tuple2('blue', true),
+													_Utils_Tuple2('tinySize', true)
+												])),
+											$elm$html$Html$Events$onClick(
+											$author$project$Buzzer$SelectBuzzer($author$project$Buzzer$Blue))
+										]),
+									_List_Nil),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$classList(
+											_List_fromArray(
+												[
+													_Utils_Tuple2('buzzer', true),
+													_Utils_Tuple2('green', true),
+													_Utils_Tuple2('tinySize', true)
+												])),
+											$elm$html$Html$Events$onClick(
+											$author$project$Buzzer$SelectBuzzer($author$project$Buzzer$Green))
+										]),
+									_List_Nil),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$classList(
+											_List_fromArray(
+												[
+													_Utils_Tuple2('buzzer', true),
+													_Utils_Tuple2('yellow', true),
+													_Utils_Tuple2('tinySize', true)
+												])),
+											$elm$html$Html$Events$onClick(
+											$author$project$Buzzer$SelectBuzzer($author$project$Buzzer$Yellow))
+										]),
+									_List_Nil)
+								]))
+						]))
+				]));
+	} else {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('containerGrid')
+				]),
+			_List_fromArray(
+				[
+					$author$project$Buzzer$loadCss($author$project$Url$getUrl + '/css/elm/jeopardy.css'),
+					$author$project$Buzzer$getBuzzerStatus(model),
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$classList(
+							_List_fromArray(
+								[
+									_Utils_Tuple2('buzzer', true),
+									_Utils_Tuple2(
+									$author$project$Buzzer$getColor(model.buzzerColor),
+									true),
+									_Utils_Tuple2('normalSize', true)
+								])),
+							$elm$html$Html$Events$onClick($author$project$Buzzer$Buzz)
+						]),
+					_List_Nil)
+				]));
+	}
+};
+var $author$project$Buzzer$main = $elm$browser$Browser$element(
+	{init: $author$project$Buzzer$init, subscriptions: $author$project$Buzzer$subscriptions, update: $author$project$Buzzer$update, view: $author$project$Buzzer$view});
+_Platform_export({'Buzzer':{'init':$author$project$Buzzer$main(
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)},'Game':{'init':$author$project$Game$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Game.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>
